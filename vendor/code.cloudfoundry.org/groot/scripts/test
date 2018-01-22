@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ -z ${REGISTRY_USERNAME+x} ]
+then
+  export REGISTRY_USERNAME="$(lpass show 'Shared-Garden/cf-garden-docker' --username)"
+  export REGISTRY_PASSWORD="$(lpass show 'Shared-Garden/cf-garden-docker' --password)"
+fi
+
+cd "$(dirname $0)/.."
+ginkgo -r -keepGoing -failOnPending -randomizeAllSpecs -randomizeSuites -p "$@"

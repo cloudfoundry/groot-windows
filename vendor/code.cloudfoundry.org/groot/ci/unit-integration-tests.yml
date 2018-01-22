@@ -1,0 +1,22 @@
+---
+image_resource:
+  type: docker-image
+  source:
+    repository: cfgarden/golang-ci
+    tag: 0.3.0
+
+platform: linux
+
+inputs:
+- name: groot
+  path: src/code.cloudfoundry.org/groot
+
+params:
+  REGISTRY_USERNAME:
+  REGISTRY_PASSWORD:
+
+caches:
+- path: pkg
+
+run:
+  path: src/code.cloudfoundry.org/groot/ci/unit-integration-tests.sh
