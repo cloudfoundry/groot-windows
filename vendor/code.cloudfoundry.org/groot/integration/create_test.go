@@ -76,7 +76,7 @@ var _ = Describe("groot", func() {
 				var args toot.UnpackCalls
 				readTestArgsFile(toot.UnpackArgsFileName, &args)
 				Expect(args[0].ID).NotTo(BeEmpty())
-				Expect(args[0].ParentID).To(BeEmpty())
+				Expect(args[0].ParentIDs).To(BeEmpty())
 			})
 
 			It("calls driver.Bundle() with expected args", func() {
@@ -301,6 +301,19 @@ var _ = Describe("groot", func() {
 				})
 
 				whenCreationSucceeds()
+
+				Context("when the image has multiple layers", func() {
+					It("correctly passes parent IDs to each driver.Unpack() call", func() {
+						var args toot.UnpackCalls
+						readTestArgsFile(toot.UnpackArgsFileName, &args)
+
+						chainIDs := []string{}
+						for _, a := range args {
+							Expect(a.ParentIDs).To(Equal(chainIDs))
+							chainIDs = append(chainIDs, a.ID)
+						}
+					})
+				})
 			})
 		})
 

@@ -1,0 +1,3 @@
+FROM microsoft/nanoserver:1709
+
+RUN cmd.exe /C echo hello > C:\ProgramData\out.txt

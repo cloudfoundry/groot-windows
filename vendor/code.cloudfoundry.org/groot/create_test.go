@@ -67,7 +67,7 @@ var _ = Describe("Create", func() {
 
 		BeforeEach(func() {
 			rootfsFileBuffer = bytes.NewBuffer([]byte{})
-			driver.UnpackStub = func(logger lager.Logger, id, parentID string, layerTar io.Reader) error {
+			driver.UnpackStub = func(logger lager.Logger, id string, parentIDs []string, layerTar io.Reader) error {
 				_, err := io.Copy(rootfsFileBuffer, layerTar)
 				Expect(err).NotTo(HaveOccurred())
 				return nil

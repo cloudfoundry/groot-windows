@@ -10,12 +10,12 @@ import (
 )
 
 type FakeVolumeDriver struct {
-	UnpackStub        func(logger lager.Logger, layerID, parentID string, layerTar io.Reader) error
+	UnpackStub        func(logger lager.Logger, layerID string, parentID []string, layerTar io.Reader) error
 	unpackMutex       sync.RWMutex
 	unpackArgsForCall []struct {
 		logger   lager.Logger
 		layerID  string
-		parentID string
+		parentID []string
 		layerTar io.Reader
 	}
 	unpackReturns struct {
@@ -40,16 +40,21 @@ type FakeVolumeDriver struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeVolumeDriver) Unpack(logger lager.Logger, layerID string, parentID string, layerTar io.Reader) error {
+func (fake *FakeVolumeDriver) Unpack(logger lager.Logger, layerID string, parentID []string, layerTar io.Reader) error {
+	var parentIDCopy []string
+	if parentID != nil {
+		parentIDCopy = make([]string, len(parentID))
+		copy(parentIDCopy, parentID)
+	}
 	fake.unpackMutex.Lock()
 	ret, specificReturn := fake.unpackReturnsOnCall[len(fake.unpackArgsForCall)]
 	fake.unpackArgsForCall = append(fake.unpackArgsForCall, struct {
 		logger   lager.Logger
 		layerID  string
-		parentID string
+		parentID []string
 		layerTar io.Reader
-	}{logger, layerID, parentID, layerTar})
-	fake.recordInvocation("Unpack", []interface{}{logger, layerID, parentID, layerTar})
+	}{logger, layerID, parentIDCopy, layerTar})
+	fake.recordInvocation("Unpack", []interface{}{logger, layerID, parentIDCopy, layerTar})
 	fake.unpackMutex.Unlock()
 	if fake.UnpackStub != nil {
 		return fake.UnpackStub(logger, layerID, parentID, layerTar)
@@ -66,7 +71,7 @@ func (fake *FakeVolumeDriver) UnpackCallCount() int {
 	return len(fake.unpackArgsForCall)
 }
 
-func (fake *FakeVolumeDriver) UnpackArgsForCall(i int) (lager.Logger, string, string, io.Reader) {
+func (fake *FakeVolumeDriver) UnpackArgsForCall(i int) (lager.Logger, string, []string, io.Reader) {
 	fake.unpackMutex.RLock()
 	defer fake.unpackMutex.RUnlock()
 	return fake.unpackArgsForCall[i].logger, fake.unpackArgsForCall[i].layerID, fake.unpackArgsForCall[i].parentID, fake.unpackArgsForCall[i].layerTar

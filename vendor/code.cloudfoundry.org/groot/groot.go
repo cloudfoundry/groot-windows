@@ -21,7 +21,7 @@ import (
 // Driver should implement the filesystem interaction
 //go:generate counterfeiter . Driver
 type Driver interface {
-	Unpack(logger lager.Logger, layerID, parentID string, layerTar io.Reader) error
+	Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error
 	Bundle(logger lager.Logger, bundleID string, layerIDs []string) (runspec.Spec, error)
 	Exists(logger lager.Logger, layerID string) bool
 	Delete(logger lager.Logger, bundleID string) error

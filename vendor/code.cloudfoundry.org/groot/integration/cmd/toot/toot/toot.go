@@ -16,7 +16,7 @@ type Toot struct {
 	BaseDir string
 }
 
-func (t *Toot) Unpack(logger lager.Logger, id, parentID string, layerTar io.Reader) error {
+func (t *Toot) Unpack(logger lager.Logger, id string, parentIDs []string, layerTar io.Reader) error {
 	logger.Info("unpack-info")
 	logger.Debug("unpack-debug")
 
@@ -27,7 +27,7 @@ func (t *Toot) Unpack(logger lager.Logger, id, parentID string, layerTar io.Read
 	layerTarContents, err := ioutil.ReadAll(layerTar)
 	must(err)
 	saveObject([]interface{}{
-		UnpackArgs{ID: id, ParentID: parentID, LayerTarContents: layerTarContents},
+		UnpackArgs{ID: id, ParentIDs: parentIDs, LayerTarContents: layerTarContents},
 	}, t.pathTo(UnpackArgsFileName))
 	return nil
 }
@@ -99,7 +99,7 @@ type DeleteArgs struct {
 type UnpackCalls []UnpackArgs
 type UnpackArgs struct {
 	ID               string
-	ParentID         string
+	ParentIDs        []string
 	LayerTarContents []byte
 }
 

@@ -37,7 +37,7 @@ type Fetcher interface {
 }
 
 type VolumeDriver interface {
-	Unpack(logger lager.Logger, layerID, parentID string, layerTar io.Reader) error
+	Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error
 	Exists(logger lager.Logger, layerID string) bool
 }
 
@@ -150,12 +150,14 @@ func (p *ImagePuller) buildLayer(logger lager.Logger, index int, layerInfos []La
 
 	defer downloadResult.Stream.Close()
 
-	parentChainID := ""
+	parentChainIDs := []string{}
 	if index != 0 {
-		parentChainID = layerInfos[index-1].ChainID
+		for i := 0; i < index; i++ {
+			parentChainIDs = append(parentChainIDs, layerInfos[i].ChainID)
+		}
 	}
 
-	return p.volumeDriver.Unpack(logger, layerInfos[index].ChainID, parentChainID, downloadResult.Stream)
+	return p.volumeDriver.Unpack(logger, layerInfos[index].ChainID, parentChainIDs, downloadResult.Stream)
 }
 
 type downloadReturn struct {

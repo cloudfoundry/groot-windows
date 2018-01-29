@@ -11,13 +11,13 @@ import (
 )
 
 type FakeDriver struct {
-	UnpackStub        func(logger lager.Logger, layerID, parentID string, layerTar io.Reader) error
+	UnpackStub        func(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error
 	unpackMutex       sync.RWMutex
 	unpackArgsForCall []struct {
-		logger   lager.Logger
-		layerID  string
-		parentID string
-		layerTar io.Reader
+		logger    lager.Logger
+		layerID   string
+		parentIDs []string
+		layerTar  io.Reader
 	}
 	unpackReturns struct {
 		result1 error
@@ -68,19 +68,24 @@ type FakeDriver struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *FakeDriver) Unpack(logger lager.Logger, layerID string, parentID string, layerTar io.Reader) error {
+func (fake *FakeDriver) Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error {
+	var parentIDsCopy []string
+	if parentIDs != nil {
+		parentIDsCopy = make([]string, len(parentIDs))
+		copy(parentIDsCopy, parentIDs)
+	}
 	fake.unpackMutex.Lock()
 	ret, specificReturn := fake.unpackReturnsOnCall[len(fake.unpackArgsForCall)]
 	fake.unpackArgsForCall = append(fake.unpackArgsForCall, struct {
-		logger   lager.Logger
-		layerID  string
-		parentID string
-		layerTar io.Reader
-	}{logger, layerID, parentID, layerTar})
-	fake.recordInvocation("Unpack", []interface{}{logger, layerID, parentID, layerTar})
+		logger    lager.Logger
+		layerID   string
+		parentIDs []string
+		layerTar  io.Reader
+	}{logger, layerID, parentIDsCopy, layerTar})
+	fake.recordInvocation("Unpack", []interface{}{logger, layerID, parentIDsCopy, layerTar})
 	fake.unpackMutex.Unlock()
 	if fake.UnpackStub != nil {
-		return fake.UnpackStub(logger, layerID, parentID, layerTar)
+		return fake.UnpackStub(logger, layerID, parentIDs, layerTar)
 	}
 	if specificReturn {
 		return ret.result1
@@ -94,10 +99,10 @@ func (fake *FakeDriver) UnpackCallCount() int {
 	return len(fake.unpackArgsForCall)
 }
 
-func (fake *FakeDriver) UnpackArgsForCall(i int) (lager.Logger, string, string, io.Reader) {
+func (fake *FakeDriver) UnpackArgsForCall(i int) (lager.Logger, string, []string, io.Reader) {
 	fake.unpackMutex.RLock()
 	defer fake.unpackMutex.RUnlock()
-	return fake.unpackArgsForCall[i].logger, fake.unpackArgsForCall[i].layerID, fake.unpackArgsForCall[i].parentID, fake.unpackArgsForCall[i].layerTar
+	return fake.unpackArgsForCall[i].logger, fake.unpackArgsForCall[i].layerID, fake.unpackArgsForCall[i].parentIDs, fake.unpackArgsForCall[i].layerTar
 }
 
 func (fake *FakeDriver) UnpackReturns(result1 error) {

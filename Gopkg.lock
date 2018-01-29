@@ -5,19 +5,31 @@
   branch = "master"
   name = "code.cloudfoundry.org/groot"
   packages = [".","fetcher","fetcher/filefetcher","fetcher/layerfetcher","fetcher/layerfetcher/source","imagepuller"]
-  revision = "15e583a53ef8c68c9aa9d57cf615226964650d7d"
+  revision = "867c2bb3d7c7447ee30f208e6c625152703fa72a"
 
 [[projects]]
   branch = "master"
   name = "code.cloudfoundry.org/lager"
-  packages = ["."]
+  packages = [".","lagerctx","lagertest"]
   revision = "0bfa98e49e7a976af91e918d47978f07c00b081f"
 
 [[projects]]
+  branch = "master"
+  name = "code.cloudfoundry.org/windows2016fs"
+  packages = ["compress","downloader","hydrator","oci-metadata","registry"]
+  revision = "a2497906dd1ec1208d0552d1a665c1d553bb11e2"
+
+[[projects]]
   name = "github.com/Microsoft/go-winio"
-  packages = ["."]
+  packages = [".","archive/tar","backuptar"]
   revision = "7da180ee92d8bd8bb8c37fc560e673e6557c392f"
   version = "v0.4.7"
+
+[[projects]]
+  name = "github.com/Microsoft/hcsshim"
+  packages = ["."]
+  revision = "45ef15484298b76abeb9513ea0ea0abd2b5b84b3"
+  version = "v0.6.8"
 
 [[projects]]
   branch = "master"
@@ -74,6 +86,18 @@
   version = "v1.6.1"
 
 [[projects]]
+  name = "github.com/onsi/ginkgo"
+  packages = [".","config","internal/codelocation","internal/containernode","internal/failer","internal/leafnodes","internal/remote","internal/spec","internal/spec_iterator","internal/specrunner","internal/suite","internal/testingtproxy","internal/writer","reporters","reporters/stenographer","reporters/stenographer/support/go-colorable","reporters/stenographer/support/go-isatty","types"]
+  revision = "9eda700730cba42af70d53180f9dcce9266bc2bc"
+  version = "v1.4.0"
+
+[[projects]]
+  name = "github.com/onsi/gomega"
+  packages = [".","format","gbytes","gexec","internal/assertion","internal/asyncassertion","internal/oraclematcher","internal/testingtsupport","matchers","matchers/support/goraph/bipartitegraph","matchers/support/goraph/edge","matchers/support/goraph/node","matchers/support/goraph/util","types"]
+  revision = "003f63b7f4cff3fc95357005358af2de0f5fe152"
+  version = "v1.3.0"
+
+[[projects]]
   name = "github.com/opencontainers/go-digest"
   packages = ["."]
   revision = "279bed98673dd5bef374d3b6e4b09e2af76183bf"
@@ -119,19 +143,25 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "39efaea5da11abd5e2b90a435b1f338cdb94619c"
+  revision = "3d37316aaa6bd9929127ac9a527abf408178ea7b"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["proxy"]
-  revision = "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec"
+  packages = ["html","html/atom","html/charset","proxy"]
+  revision = "0ed95abb35c445290478a5348a7b38bb154135fd"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix","windows"]
-  revision = "af50095a40f9041b3b38960738837185c26e9419"
+  revision = "03467258950d845cd1877eab69461b98e8c09219"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/text"
+  packages = ["encoding","encoding/charmap","encoding/htmlindex","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/tag","internal/utf8internal","language","runes","transform","unicode/cldr"]
+  revision = "e19ae1496984b1c655b8044a65c0300a3c878dd3"
 
 [[projects]]
   branch = "v2"
@@ -142,6 +172,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5c11bf867dcc80fde49dbf6dc1db1207132cd83f2f9dca413bfa6747d8959cab"
+  inputs-digest = "416a04ad1b6b3c79c5027921d95b8e7e71de228f3f7ea464f5501d93fd639ee4"
   solver-name = "gps-cdcl"
   solver-version = 1

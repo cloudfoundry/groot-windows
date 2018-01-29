@@ -74,12 +74,28 @@ var _ = Describe("Image Puller", func() {
 		Expect(image.Image).To(Equal(expectedImgDesc))
 	})
 
-	It("returns the chain ids", func() {
+	It("returns the chain ids in the order specified by the image", func() {
 		image, err := imagePuller.Pull(logger, imagepuller.ImageSpec{
 			ImageSrc: imageSrcURL,
 		})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(image.ChainIDs).To(ConsistOf("layer-111", "chain-222", "chain-333"))
+		Expect(image.ChainIDs).To(Equal([]string{"layer-111", "chain-222", "chain-333"}))
+	})
+
+	It("passes the correct parentIDs to Unpack", func() {
+		_, err := imagePuller.Pull(logger, imagepuller.ImageSpec{
+			ImageSrc: imageSrcURL,
+		})
+		Expect(err).NotTo(HaveOccurred())
+
+		Expect(fakeVolumeDriver.UnpackCallCount()).To(Equal(3))
+
+		_, _, parentIDs, _ := fakeVolumeDriver.UnpackArgsForCall(0)
+		Expect(parentIDs).To(BeEmpty())
+		_, _, parentIDs, _ = fakeVolumeDriver.UnpackArgsForCall(1)
+		Expect(parentIDs).To(Equal([]string{"layer-111"}))
+		_, _, parentIDs, _ = fakeVolumeDriver.UnpackArgsForCall(2)
+		Expect(parentIDs).To(Equal([]string{"layer-111", "chain-222"}))
 	})
 
 	It("unpacks the layers got from the fetcher", func() {
@@ -253,7 +269,7 @@ var _ = Describe("Image Puller", func() {
 	Context("when unpacking a blob fails", func() {
 		BeforeEach(func() {
 			count := 0
-			fakeVolumeDriver.UnpackStub = func(_ lager.Logger, id, parentID string, stream io.Reader) error {
+			fakeVolumeDriver.UnpackStub = func(_ lager.Logger, id string, parentIDs []string, stream io.Reader) error {
 				count++
 				if count == 3 {
 					return errors.New("failed to unpack the blob")
