@@ -42,7 +42,7 @@ var _ = Describe("Unpack", func() {
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New(layerStore, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(layerStore, "some-volume-store", hcsClientFake, tarStreamerFake, privilegeElevatorFake)
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		layerID = "aaa"
 		buffer = bytes.NewBuffer([]byte("tar ball contents"))

@@ -20,7 +20,10 @@ type TarStreamer interface {
 
 //go:generate counterfeiter -o fakes/hcs_client.go --fake-name HCSClient . HCSClient
 type HCSClient interface {
-	NewLayerWriter(info hcsshim.DriverInfo, layerID string, parentLayerPaths []string) (hcs.LayerWriter, error)
+	NewLayerWriter(hcsshim.DriverInfo, string, []string) (hcs.LayerWriter, error)
+	CreateLayer(hcsshim.DriverInfo, string, string, []string) error
+	LayerExists(hcsshim.DriverInfo, string) (bool, error)
+	GetLayerMountPath(hcsshim.DriverInfo, string) (string, error)
 }
 
 //go:generate counterfeiter -o fakes/privilege_elevator.go --fake-name PrivilegeElevator . PrivilegeElevator
@@ -31,14 +34,16 @@ type PrivilegeElevator interface {
 
 type Driver struct {
 	layerStore        string
+	volumeStore       string
 	hcsClient         HCSClient
 	tarStreamer       TarStreamer
 	privilegeElevator PrivilegeElevator
 }
 
-func New(layerStore string, hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
+func New(layerStore, volumeStore string, hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
 	return &Driver{
 		layerStore:        layerStore,
+		volumeStore:       volumeStore,
 		hcsClient:         hcsClient,
 		tarStreamer:       tarStreamer,
 		privilegeElevator: privilegeElevator,

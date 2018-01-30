@@ -1,28 +1,73 @@
 package hcs
 
 import (
+	"fmt"
+
+	"code.cloudfoundry.org/groot-windows/filelock"
 	winio "github.com/Microsoft/go-winio"
 	"github.com/Microsoft/hcsshim"
 )
 
 //go:generate counterfeiter -o fakes/layer_writer.go --fake-name LayerWriter . LayerWriter
-// LayerWriter is an interface that supports writing a new container image layer.
 type LayerWriter interface {
-	// Add adds a file to the layer with given metadata.
 	Add(name string, fileInfo *winio.FileBasicInfo) error
-	// AddLink adds a hard link to the layer. The target must already have been added.
 	AddLink(name string, target string) error
-	// Remove removes a file that was present in a parent layer from the layer.
 	Remove(name string) error
-	// Write writes data to the current file. The data must be in the format of a Win32
-	// backup stream.
 	Write(b []byte) (int, error)
-	// Close finishes the layer writing process and releases any resources.
 	Close() error
 }
 
-type Client struct{}
+type Client struct {
+	layerCreateLock filelock.FileLocker
+}
 
-func (c *Client) NewLayerWriter(info hcsshim.DriverInfo, layerID string, parentLayerPaths []string) (LayerWriter, error) {
-	return hcsshim.NewLayerWriter(info, layerID, parentLayerPaths)
+func NewClient() *Client {
+	return &Client{
+		layerCreateLock: filelock.NewLocker("C:\\var\\vcap\\data\\groot-windows\\create.lock"),
+	}
+}
+
+func (c *Client) NewLayerWriter(di hcsshim.DriverInfo, layerID string, parentLayerPaths []string) (LayerWriter, error) {
+	return hcsshim.NewLayerWriter(di, layerID, parentLayerPaths)
+}
+
+func (c *Client) GetLayerMountPath(di hcsshim.DriverInfo, id string) (string, error) {
+	return hcsshim.GetLayerMountPath(di, id)
+}
+
+func (c *Client) CreateLayer(di hcsshim.DriverInfo, id string, parentId string, parentLayerPaths []string) error {
+	f, err := c.layerCreateLock.Open()
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	if err := hcsshim.CreateSandboxLayer(di, id, parentId, parentLayerPaths); err != nil {
+		return err
+	}
+
+	if err := hcsshim.ActivateLayer(di, id); err != nil {
+		return err
+	}
+
+	return hcsshim.PrepareLayer(di, id, parentLayerPaths)
+}
+
+func (c *Client) DestroyLayer(di hcsshim.DriverInfo, id string) error {
+	var unprepareErr, deactivateErr, destroyErr error
+
+	for i := 0; i < 3; i++ {
+		unprepareErr = hcsshim.UnprepareLayer(di, id)
+		deactivateErr = hcsshim.DeactivateLayer(di, id)
+		destroyErr = hcsshim.DestroyLayer(di, id)
+		if destroyErr == nil {
+			return nil
+		}
+	}
+
+	return fmt.Errorf("failed to remove layer (unprepare error: %s, deactivate error: %s, destroy error: %s)", unprepareErr.Error(), deactivateErr.Error(), destroyErr.Error())
+}
+
+func (c *Client) LayerExists(di hcsshim.DriverInfo, id string) (bool, error) {
+	return hcsshim.LayerExists(di, id)
 }

@@ -1,8 +1,10 @@
 package integration_test
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"time"
 
 	"code.cloudfoundry.org/windows2016fs/hydrator"
@@ -22,6 +24,7 @@ var (
 		"link",
 	}
 	imageTgzDir string
+	keepDir     bool
 )
 
 func TestGrootWindows(t *testing.T) {
@@ -37,15 +40,26 @@ var _ = BeforeSuite(func() {
 	grootBin, err = gexec.Build("code.cloudfoundry.org/groot-windows")
 	Expect(err).ToNot(HaveOccurred())
 
-	imageTgzDir, err = ioutil.TempDir("", "groot-windows-image-tgzs")
-	Expect(err).ToNot(HaveOccurred())
+	imageTgzDir, keepDir = os.LookupEnv("GROOT_WINDOWS_IMAGE_TGZS")
+
+	if !keepDir {
+		imageTgzDir, err = ioutil.TempDir("", "groot-windows-image-tgzs")
+		Expect(err).ToNot(HaveOccurred())
+	}
 
 	for _, tag := range imageTags {
-		Expect(hydrator.New(imageTgzDir, "pivotalgreenhouse/groot-windows-test", tag).Run()).To(Succeed())
+		_, err := os.Stat(filepath.Join(imageTgzDir, fmt.Sprintf("groot-windows-test-%s.tgz", tag)))
+		if err != nil && os.IsNotExist(err) {
+			Expect(hydrator.New(imageTgzDir, "pivotalgreenhouse/groot-windows-test", tag).Run()).To(Succeed())
+			err = nil
+		}
+		Expect(err).NotTo(HaveOccurred())
 	}
 })
 
 var _ = AfterSuite(func() {
-	Expect(os.RemoveAll(imageTgzDir)).To(Succeed())
+	if !keepDir {
+		Expect(os.RemoveAll(imageTgzDir)).To(Succeed())
+	}
 	gexec.CleanupBuildArtifacts()
 })
