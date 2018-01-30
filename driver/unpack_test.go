@@ -22,7 +22,7 @@ import (
 
 var _ = Describe("Unpack", func() {
 	var (
-		tmpDir                string
+		layerStore            string
 		d                     *driver.Driver
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
@@ -35,14 +35,14 @@ var _ = Describe("Unpack", func() {
 
 	BeforeEach(func() {
 		var err error
-		tmpDir, err = ioutil.TempDir("", "driver")
+		layerStore, err = ioutil.TempDir("", "driver")
 		Expect(err).To(Succeed())
 
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New(tmpDir, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(layerStore, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		layerID = "aaa"
 		buffer = bytes.NewBuffer([]byte("tar ball contents"))
@@ -57,7 +57,7 @@ var _ = Describe("Unpack", func() {
 	It("create an associated layerId path", func() {
 		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
 
-		expectedDir := filepath.Join(tmpDir, layerID)
+		expectedDir := filepath.Join(layerStore, layerID)
 		Expect(expectedDir).To(BeADirectory())
 	})
 
@@ -93,7 +93,7 @@ var _ = Describe("Unpack", func() {
 
 		Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(1))
 		di, actualLayerID, parentIDs := hcsClientFake.NewLayerWriterArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: tmpDir, Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}))
 		Expect(actualLayerID).To(Equal(layerID))
 		Expect(parentIDs).To(BeEmpty())
 	})
@@ -289,12 +289,12 @@ var _ = Describe("Unpack", func() {
 	})
 
 	Context("when the layer being unpacked has parents", func() {
-		It("creates a layer writer with its parent layer paths from newes to oldest", func() {
+		It("creates a layer writer with its parent layer paths from newest to oldest", func() {
 			parentIDs := []string{"oldest-parent-id", "newest-parent-id"}
 			Expect(d.Unpack(logger, layerID, parentIDs, buffer)).To(Succeed())
 
 			_, _, hcsParentIds := hcsClientFake.NewLayerWriterArgsForCall(0)
-			Expect(hcsParentIds).To(Equal([]string{filepath.Join(tmpDir, "newest-parent-id"), filepath.Join(tmpDir, "oldest-parent-id")}))
+			Expect(hcsParentIds).To(Equal([]string{filepath.Join(layerStore, "newest-parent-id"), filepath.Join(layerStore, "oldest-parent-id")}))
 		})
 	})
 
