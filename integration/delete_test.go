@@ -14,12 +14,13 @@ import (
 
 var _ = Describe("Delete", func() {
 	var (
-		layerStore  string
-		volumeStore string
-		ociImageDir string
-		imageURI    string
-		bundleID    string
-		driverInfo  hcsshim.DriverInfo
+		layerStore       string
+		volumeStore      string
+		ociImageDir      string
+		imageURI         string
+		bundleID         string
+		driverInfo       hcsshim.DriverInfo
+		parentLayerPaths []string
 	)
 
 	BeforeEach(func() {
@@ -39,6 +40,12 @@ var _ = Describe("Delete", func() {
 
 		bundleID = randomBundleID()
 		driverInfo = hcsshim.DriverInfo{HomeDir: volumeStore, Flavour: 1}
+
+		parentLayerPaths = []string{}
+		chainIDs := getLayerChainIdsFromOCIImage(ociImageDir)
+		for _, id := range chainIDs {
+			parentLayerPaths = append([]string{filepath.Join(layerStore, id)}, parentLayerPaths...)
+		}
 	})
 
 	AfterEach(func() {
@@ -60,6 +67,14 @@ var _ = Describe("Delete", func() {
 			Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeFalse())
 			Expect(filepath.Join(volumeStore, bundleID)).NotTo(BeADirectory())
 		})
+
+		It("does not delete any of the layer directories", func() {
+			grootDelete(volumeStore, bundleID)
+			for _, dir := range parentLayerPaths {
+				Expect(hcsshim.LayerExists(hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}, filepath.Base(dir))).To(BeTrue())
+				Expect(dir).To(BeADirectory())
+			}
+		})
 	})
 
 	Context("the volume with the given bundle ID does not exist", func() {
@@ -75,14 +90,8 @@ var _ = Describe("Delete", func() {
 	})
 
 	Context("the volume with the given bundle ID has been partially created", func() {
-		var parentLayerPaths []string
-
 		BeforeEach(func() {
-			Skip("these tests require `groot pull`")
-			chainIDs := getLayerChainIdsFromOCIImage(ociImageDir)
-			for _, id := range chainIDs {
-				parentLayerPaths = append(parentLayerPaths, filepath.Join(layerStore, id))
-			}
+			grootPull(layerStore, imageURI)
 		})
 
 		Context("the volume layer has been created but is not activated", func() {

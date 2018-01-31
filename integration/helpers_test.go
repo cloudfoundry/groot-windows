@@ -28,6 +28,13 @@ import (
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
+func grootPull(layerStore, imageURI string) {
+	createCmd := exec.Command(grootBin, "pull", imageURI)
+	createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_LAYER_STORE=%s", layerStore))
+	_, _, err := execute(createCmd)
+	ExpectWithOffset(1, err).ToNot(HaveOccurred())
+}
+
 func grootCreate(layerStore, volumeStore, imageURI, bundleID string) specs.Spec {
 	createCmd := exec.Command(grootBin, "create", imageURI, bundleID)
 	createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_LAYER_STORE=%s", layerStore), fmt.Sprintf("GROOT_VOLUME_STORE=%s", volumeStore))
