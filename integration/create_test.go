@@ -181,7 +181,7 @@ var _ = Describe("Create", func() {
 
 	Context("provided a Docker image URI", func() {
 		BeforeEach(func() {
-			imageURI = "docker:///pivotalgreenhouse/groot-windows-test:regularfile"
+			imageURI = "docker:///cloudfoundry/groot-windows-test:regularfile"
 
 			ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
 			Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())

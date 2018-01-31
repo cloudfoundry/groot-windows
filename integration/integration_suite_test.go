@@ -50,7 +50,7 @@ var _ = BeforeSuite(func() {
 	for _, tag := range imageTags {
 		_, err := os.Stat(filepath.Join(imageTgzDir, fmt.Sprintf("groot-windows-test-%s.tgz", tag)))
 		if err != nil && os.IsNotExist(err) {
-			Expect(hydrator.New(imageTgzDir, "pivotalgreenhouse/groot-windows-test", tag).Run()).To(Succeed())
+			Expect(hydrator.New(imageTgzDir, "cloudfoundry/groot-windows-test", tag).Run()).To(Succeed())
 			err = nil
 		}
 		Expect(err).NotTo(HaveOccurred())
