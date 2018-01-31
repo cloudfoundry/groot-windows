@@ -74,15 +74,21 @@ func Run(driver Driver, argv []string) {
 			},
 		},
 		{
-			Name: "delete",
+			Name: "pull",
 			Action: func(ctx *cli.Context) error {
-				handle := ctx.Args()[0]
-				err := g.Delete(handle)
+				rootfsURI, err := url.Parse(ctx.Args()[0])
 				if err != nil {
 					return err
 				}
 
-				return nil
+				return g.Pull(rootfsURI)
+			},
+		},
+		{
+			Name: "delete",
+			Action: func(ctx *cli.Context) error {
+				handle := ctx.Args()[0]
+				return g.Delete(handle)
 			},
 		},
 	}

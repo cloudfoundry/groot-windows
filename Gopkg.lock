@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  branch = "master"
+  branch = "groot-pull"
   name = "code.cloudfoundry.org/groot"
   packages = [
     ".",
@@ -12,7 +12,7 @@
     "fetcher/layerfetcher/source",
     "imagepuller"
   ]
-  revision = "fa87b59b88690b29e4ce91ad6ec960e2067135af"
+  revision = "0c64007e17e622c7b68e9143026b174efb4f8924"
 
 [[projects]]
   branch = "master"
@@ -297,6 +297,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "40de05b94fee7a8d2896397665930e031478ff7c4a938aacd681d8fb4866a733"
+  inputs-digest = "e1d39235c4506232d9b5674eb2e83a5d744a912918286df8bd66c5b87911a4a0"
   solver-name = "gps-cdcl"
   solver-version = 1

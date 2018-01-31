@@ -27,7 +27,7 @@ required = ["github.com/onsi/ginkgo/ginkgo"]
   go-tests = true
 
 [[constraint]]
-  branch = "master"
+  branch = "groot-pull"
   name = "code.cloudfoundry.org/groot"
 
 [[constraint]]
