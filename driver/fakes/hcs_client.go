@@ -67,6 +67,18 @@ type HCSClient struct {
 		result1 string
 		result2 error
 	}
+	DestroyLayerStub        func(hcsshim.DriverInfo, string) error
+	destroyLayerMutex       sync.RWMutex
+	destroyLayerArgsForCall []struct {
+		arg1 hcsshim.DriverInfo
+		arg2 string
+	}
+	destroyLayerReturns struct {
+		result1 error
+	}
+	destroyLayerReturnsOnCall map[int]struct {
+		result1 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -289,6 +301,55 @@ func (fake *HCSClient) GetLayerMountPathReturnsOnCall(i int, result1 string, res
 	}{result1, result2}
 }
 
+func (fake *HCSClient) DestroyLayer(arg1 hcsshim.DriverInfo, arg2 string) error {
+	fake.destroyLayerMutex.Lock()
+	ret, specificReturn := fake.destroyLayerReturnsOnCall[len(fake.destroyLayerArgsForCall)]
+	fake.destroyLayerArgsForCall = append(fake.destroyLayerArgsForCall, struct {
+		arg1 hcsshim.DriverInfo
+		arg2 string
+	}{arg1, arg2})
+	fake.recordInvocation("DestroyLayer", []interface{}{arg1, arg2})
+	fake.destroyLayerMutex.Unlock()
+	if fake.DestroyLayerStub != nil {
+		return fake.DestroyLayerStub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fake.destroyLayerReturns.result1
+}
+
+func (fake *HCSClient) DestroyLayerCallCount() int {
+	fake.destroyLayerMutex.RLock()
+	defer fake.destroyLayerMutex.RUnlock()
+	return len(fake.destroyLayerArgsForCall)
+}
+
+func (fake *HCSClient) DestroyLayerArgsForCall(i int) (hcsshim.DriverInfo, string) {
+	fake.destroyLayerMutex.RLock()
+	defer fake.destroyLayerMutex.RUnlock()
+	return fake.destroyLayerArgsForCall[i].arg1, fake.destroyLayerArgsForCall[i].arg2
+}
+
+func (fake *HCSClient) DestroyLayerReturns(result1 error) {
+	fake.DestroyLayerStub = nil
+	fake.destroyLayerReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *HCSClient) DestroyLayerReturnsOnCall(i int, result1 error) {
+	fake.DestroyLayerStub = nil
+	if fake.destroyLayerReturnsOnCall == nil {
+		fake.destroyLayerReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.destroyLayerReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *HCSClient) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -300,6 +361,8 @@ func (fake *HCSClient) Invocations() map[string][][]interface{} {
 	defer fake.layerExistsMutex.RUnlock()
 	fake.getLayerMountPathMutex.RLock()
 	defer fake.getLayerMountPathMutex.RUnlock()
+	fake.destroyLayerMutex.RLock()
+	defer fake.destroyLayerMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

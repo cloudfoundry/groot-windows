@@ -20,7 +20,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"code.cloudfoundry.org/groot-windows/hcs"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -39,6 +38,13 @@ func grootCreate(layerStore, volumeStore, imageURI, bundleID string) specs.Spec 
 	ExpectWithOffset(1, json.Unmarshal(stdOut.Bytes(), &outputSpec)).To(Succeed())
 
 	return outputSpec
+}
+
+func grootDelete(volumeStore, bundleID string) {
+	deleteCmd := exec.Command(grootBin, "delete", bundleID)
+	deleteCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_VOLUME_STORE=%s", volumeStore))
+	_, _, err := execute(deleteCmd)
+	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 }
 
 func execute(c *exec.Cmd) (*bytes.Buffer, *bytes.Buffer, error) {
@@ -146,12 +152,9 @@ func destroyVolumeStore(volumeStore string) {
 	files, err := ioutil.ReadDir(volumeStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
-	c := hcs.NewClient()
-	di := hcsshim.DriverInfo{HomeDir: volumeStore, Flavour: 1}
-
 	for _, f := range files {
 		if f.IsDir() {
-			ExpectWithOffset(1, c.DestroyLayer(di, f.Name())).To(Succeed())
+			grootDelete(volumeStore, f.Name())
 		}
 	}
 

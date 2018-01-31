@@ -24,6 +24,7 @@ type HCSClient interface {
 	CreateLayer(hcsshim.DriverInfo, string, string, []string) error
 	LayerExists(hcsshim.DriverInfo, string) (bool, error)
 	GetLayerMountPath(hcsshim.DriverInfo, string) (string, error)
+	DestroyLayer(hcsshim.DriverInfo, string) error
 }
 
 //go:generate counterfeiter -o fakes/privilege_elevator.go --fake-name PrivilegeElevator . PrivilegeElevator
