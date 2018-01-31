@@ -4,24 +4,45 @@
 [[projects]]
   branch = "master"
   name = "code.cloudfoundry.org/groot"
-  packages = [".","fetcher","fetcher/filefetcher","fetcher/layerfetcher","fetcher/layerfetcher/source","imagepuller"]
-  revision = "867c2bb3d7c7447ee30f208e6c625152703fa72a"
+  packages = [
+    ".",
+    "fetcher",
+    "fetcher/filefetcher",
+    "fetcher/layerfetcher",
+    "fetcher/layerfetcher/source",
+    "imagepuller"
+  ]
+  revision = "fa87b59b88690b29e4ce91ad6ec960e2067135af"
 
 [[projects]]
   branch = "master"
   name = "code.cloudfoundry.org/lager"
-  packages = [".","lagerctx","lagertest"]
+  packages = [
+    ".",
+    "lagerctx",
+    "lagertest"
+  ]
   revision = "0bfa98e49e7a976af91e918d47978f07c00b081f"
 
 [[projects]]
   branch = "master"
   name = "code.cloudfoundry.org/windows2016fs"
-  packages = ["compress","downloader","hydrator","oci-metadata","registry"]
+  packages = [
+    "compress",
+    "downloader",
+    "hydrator",
+    "oci-metadata",
+    "registry"
+  ]
   revision = "a2497906dd1ec1208d0552d1a665c1d553bb11e2"
 
 [[projects]]
   name = "github.com/Microsoft/go-winio"
-  packages = [".","archive/tar","backuptar"]
+  packages = [
+    ".",
+    "archive/tar",
+    "backuptar"
+  ]
   revision = "7da180ee92d8bd8bb8c37fc560e673e6557c392f"
   version = "v0.4.7"
 
@@ -34,30 +55,64 @@
 [[projects]]
   branch = "master"
   name = "github.com/containers/image"
-  packages = ["directory/explicitfilepath","docker","docker/policyconfiguration","docker/reference","image","manifest","oci/internal","oci/layout","pkg/docker/config","pkg/strslice","pkg/tlsclientconfig","transports","types"]
-  revision = "495da41bd26c50be62fa07ae903ea2ee54c00283"
+  packages = [
+    "directory/explicitfilepath",
+    "docker",
+    "docker/policyconfiguration",
+    "docker/reference",
+    "image",
+    "manifest",
+    "oci/internal",
+    "oci/layout",
+    "pkg/docker/config",
+    "pkg/strslice",
+    "pkg/tlsclientconfig",
+    "transports",
+    "types"
+  ]
+  revision = "7a4a9acea22d7e4cd35e05bbf893c4618eb3b8a9"
 
 [[projects]]
   branch = "master"
   name = "github.com/docker/distribution"
-  packages = [".","digestset","reference","registry/api/errcode","registry/api/v2","registry/client","registry/client/auth/challenge","registry/client/transport","registry/storage/cache","registry/storage/cache/memory"]
+  packages = [
+    ".",
+    "digestset",
+    "reference",
+    "registry/api/errcode",
+    "registry/api/v2",
+    "registry/client",
+    "registry/client/auth/challenge",
+    "registry/client/transport",
+    "registry/storage/cache",
+    "registry/storage/cache/memory"
+  ]
   revision = "5cb406d511b7b9163bff9b6439072e4892e5ae3b"
 
 [[projects]]
   name = "github.com/docker/docker"
-  packages = ["api/types/versions","pkg/homedir"]
+  packages = [
+    "api/types/versions",
+    "pkg/homedir"
+  ]
   revision = "092cba3727bb9b4a2f0e922cd6c0f93ea270e363"
   version = "v1.13.1"
 
 [[projects]]
   name = "github.com/docker/docker-credential-helpers"
-  packages = ["client","credentials"]
+  packages = [
+    "client",
+    "credentials"
+  ]
   revision = "d68f9aeca33f5fd3f08eeae5e9d175edf4e731d1"
   version = "v0.6.0"
 
 [[projects]]
   name = "github.com/docker/go-connections"
-  packages = ["sockets","tlsconfig"]
+  packages = [
+    "sockets",
+    "tlsconfig"
+  ]
   revision = "3ede32e2033de7505e6500d6c868c2b9ed9f169d"
   version = "v0.3.0"
 
@@ -87,13 +142,47 @@
 
 [[projects]]
   name = "github.com/onsi/ginkgo"
-  packages = [".","config","internal/codelocation","internal/containernode","internal/failer","internal/leafnodes","internal/remote","internal/spec","internal/spec_iterator","internal/specrunner","internal/suite","internal/testingtproxy","internal/writer","reporters","reporters/stenographer","reporters/stenographer/support/go-colorable","reporters/stenographer/support/go-isatty","types"]
+  packages = [
+    ".",
+    "config",
+    "internal/codelocation",
+    "internal/containernode",
+    "internal/failer",
+    "internal/leafnodes",
+    "internal/remote",
+    "internal/spec",
+    "internal/spec_iterator",
+    "internal/specrunner",
+    "internal/suite",
+    "internal/testingtproxy",
+    "internal/writer",
+    "reporters",
+    "reporters/stenographer",
+    "reporters/stenographer/support/go-colorable",
+    "reporters/stenographer/support/go-isatty",
+    "types"
+  ]
   revision = "9eda700730cba42af70d53180f9dcce9266bc2bc"
   version = "v1.4.0"
 
 [[projects]]
   name = "github.com/onsi/gomega"
-  packages = [".","format","gbytes","gexec","internal/assertion","internal/asyncassertion","internal/oraclematcher","internal/testingtsupport","matchers","matchers/support/goraph/bipartitegraph","matchers/support/goraph/edge","matchers/support/goraph/node","matchers/support/goraph/util","types"]
+  packages = [
+    ".",
+    "format",
+    "gbytes",
+    "gexec",
+    "internal/assertion",
+    "internal/asyncassertion",
+    "internal/oraclematcher",
+    "internal/testingtsupport",
+    "matchers",
+    "matchers/support/goraph/bipartitegraph",
+    "matchers/support/goraph/edge",
+    "matchers/support/goraph/node",
+    "matchers/support/goraph/util",
+    "types"
+  ]
   revision = "003f63b7f4cff3fc95357005358af2de0f5fe152"
   version = "v1.3.0"
 
@@ -105,7 +194,10 @@
 
 [[projects]]
   name = "github.com/opencontainers/image-spec"
-  packages = ["specs-go","specs-go/v1"]
+  packages = [
+    "specs-go",
+    "specs-go/v1"
+  ]
   revision = "d60099175f88c47cd379c4738d158884749ed235"
   version = "v1.0.1"
 
@@ -143,24 +235,50 @@
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  revision = "3d37316aaa6bd9929127ac9a527abf408178ea7b"
+  revision = "1875d0a70c90e57f11972aefd42276df65e895b9"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["html","html/atom","html/charset","proxy"]
+  packages = [
+    "html",
+    "html/atom",
+    "html/charset",
+    "proxy"
+  ]
   revision = "0ed95abb35c445290478a5348a7b38bb154135fd"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix","windows"]
-  revision = "03467258950d845cd1877eab69461b98e8c09219"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "3dbebcf8efb6a5011a60c2b4591c1022a759af8a"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
-  packages = ["encoding","encoding/charmap","encoding/htmlindex","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/tag","internal/utf8internal","language","runes","transform","unicode/cldr"]
+  packages = [
+    "encoding",
+    "encoding/charmap",
+    "encoding/htmlindex",
+    "encoding/internal",
+    "encoding/internal/identifier",
+    "encoding/japanese",
+    "encoding/korean",
+    "encoding/simplifiedchinese",
+    "encoding/traditionalchinese",
+    "encoding/unicode",
+    "internal/gen",
+    "internal/tag",
+    "internal/utf8internal",
+    "language",
+    "runes",
+    "transform",
+    "unicode/cldr"
+  ]
   revision = "e19ae1496984b1c655b8044a65c0300a3c878dd3"
 
 [[projects]]
@@ -172,6 +290,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "416a04ad1b6b3c79c5027921d95b8e7e71de228f3f7ea464f5501d93fd639ee4"
+  inputs-digest = "4985ba4af8c0d833283676aeab7cbcbf5abfffea1a81758b74d66c9b8200651f"
   solver-name = "gps-cdcl"
   solver-version = 1

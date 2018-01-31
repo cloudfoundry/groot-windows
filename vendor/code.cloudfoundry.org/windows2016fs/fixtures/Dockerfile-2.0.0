@@ -1,5 +1,0 @@
-FROM microsoft/nanoserver:1709
-
-RUN cmd.exe /C echo hello > C:\ProgramData\out.txt
-RUN cmd.exe /C echo goodbye > C:\ProgramData\out1.txt
-

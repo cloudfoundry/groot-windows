@@ -94,9 +94,19 @@ func (s *LayerSource) Blob(logger lager.Logger, imageURL *url.URL, layerInfo ima
 	if err != nil {
 		return "", 0, err
 	}
+	defer blob.Close()
 	logger.Debug("got-blob-stream", lager.Data{"digest": layerInfo.BlobID, "size": size, "mediaType": layerInfo.MediaType})
 
-	blobTempFile, err := ioutil.TempFile("", fmt.Sprintf("blob-%s", layerInfo.BlobID))
+	blobTempFile, err := ioutil.TempFile("", "blob-"+layerInfo.BlobID)
+	if err != nil {
+		return "", 0, err
+	}
+	defer func() {
+		blobTempFile.Close()
+		if err != nil {
+			os.Remove(blobTempFile.Name())
+		}
+	}()
 
 	blobIDHash := sha256.New()
 	digestReader := ioutil.NopCloser(io.TeeReader(blob, blobIDHash))
@@ -105,23 +115,11 @@ func (s *LayerSource) Blob(logger lager.Logger, imageURL *url.URL, layerInfo ima
 
 		digestReader, err = gzip.NewReader(digestReader)
 		if err != nil {
+
 			return "", 0, errors.Wrapf(err, "expected blob to be of type %s", layerInfo.MediaType)
 		}
 		defer digestReader.Close()
 	}
-
-	if err != nil {
-		return "", 0, err
-	}
-
-	defer func() {
-		blob.Close()
-		blobTempFile.Close()
-
-		if err != nil {
-			os.Remove(blobTempFile.Name())
-		}
-	}()
 
 	diffIDHash := sha256.New()
 	digestReader = ioutil.NopCloser(io.TeeReader(digestReader, diffIDHash))
