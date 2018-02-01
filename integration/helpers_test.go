@@ -20,6 +20,7 @@ import (
 	"syscall"
 	"unsafe"
 
+	"code.cloudfoundry.org/groot-windows/driver"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -28,16 +29,16 @@ import (
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
-func grootPull(layerStore, imageURI string) {
-	createCmd := exec.Command(grootBin, "pull", imageURI)
-	createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_LAYER_STORE=%s", layerStore))
-	_, _, err := execute(createCmd)
+func grootPull(storeDir, imageURI string) {
+	pullCmd := exec.Command(grootBin, "pull", imageURI)
+	pullCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_STORE_DIR=%s", storeDir))
+	_, _, err := execute(pullCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 }
 
-func grootCreate(layerStore, volumeStore, imageURI, bundleID string) specs.Spec {
+func grootCreate(storeDir, imageURI, bundleID string) specs.Spec {
 	createCmd := exec.Command(grootBin, "create", imageURI, bundleID)
-	createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_LAYER_STORE=%s", layerStore), fmt.Sprintf("GROOT_VOLUME_STORE=%s", volumeStore))
+	createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_STORE_DIR=%s", storeDir))
 	stdOut, _, err := execute(createCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
@@ -47,9 +48,9 @@ func grootCreate(layerStore, volumeStore, imageURI, bundleID string) specs.Spec 
 	return outputSpec
 }
 
-func grootDelete(volumeStore, bundleID string) {
+func grootDelete(storeDir, bundleID string) {
 	deleteCmd := exec.Command(grootBin, "delete", bundleID)
-	deleteCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_VOLUME_STORE=%s", volumeStore))
+	deleteCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_STORE_DIR=%s", storeDir))
 	_, _, err := execute(deleteCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 }
@@ -141,7 +142,14 @@ func getLayerChainIdsFromOCIImage(imagePath string) []string {
 	return chainIDs
 }
 
-func destroyLayerStore(layerStore string) {
+func destroyLayerStore(storeDir string) {
+	layerStore := filepath.Join(storeDir, driver.LayerDir)
+	_, err := os.Stat(layerStore)
+	if err != nil && os.IsNotExist(err) {
+		return
+	}
+	Expect(err).To(BeNil())
+
 	files, err := ioutil.ReadDir(layerStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
@@ -155,13 +163,19 @@ func destroyLayerStore(layerStore string) {
 	ExpectWithOffset(1, os.RemoveAll(layerStore)).To(Succeed())
 }
 
-func destroyVolumeStore(volumeStore string) {
+func destroyVolumeStore(storeDir string) {
+	volumeStore := filepath.Join(storeDir, driver.VolumeDir)
+	_, err := os.Stat(volumeStore)
+	if err != nil && os.IsNotExist(err) {
+		return
+	}
+	Expect(err).To(BeNil())
 	files, err := ioutil.ReadDir(volumeStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
 	for _, f := range files {
 		if f.IsDir() {
-			grootDelete(volumeStore, f.Name())
+			grootDelete(storeDir, f.Name())
 		}
 	}
 

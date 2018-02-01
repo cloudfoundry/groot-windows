@@ -5,12 +5,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"code.cloudfoundry.org/groot-windows/driver"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Pull", func() {
 	var (
+		storeDir    string
 		layerStore  string
 		ociImageDir string
 		imageURI    string
@@ -19,8 +21,9 @@ var _ = Describe("Pull", func() {
 
 	BeforeEach(func() {
 		var err error
-		layerStore, err = ioutil.TempDir("", "layer-store")
+		storeDir, err = ioutil.TempDir("", "pull.store")
 		Expect(err).ToNot(HaveOccurred())
+		layerStore = filepath.Join(storeDir, driver.LayerDir)
 
 		ociImageDir, err = ioutil.TempDir("", "oci-image")
 		Expect(err).ToNot(HaveOccurred())
@@ -34,13 +37,14 @@ var _ = Describe("Pull", func() {
 	})
 
 	AfterEach(func() {
-		destroyLayerStore(layerStore)
+		destroyLayerStore(storeDir)
 		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
+		Expect(os.RemoveAll(storeDir)).To(Succeed())
 	})
 
 	Context("provided an OCI image URI", func() {
 		It("unpacks the layer to disk", func() {
-			grootPull(layerStore, imageURI)
+			grootPull(storeDir, imageURI)
 
 			for _, chainID := range chainIDs {
 				Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -49,7 +53,7 @@ var _ = Describe("Pull", func() {
 
 		Context("when the image has already been unpacked", func() {
 			BeforeEach(func() {
-				grootPull(layerStore, imageURI)
+				grootPull(storeDir, imageURI)
 			})
 
 			It("creates a volume without updating the unpacked layers", func() {
@@ -58,7 +62,7 @@ var _ = Describe("Pull", func() {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
 				}
 
-				grootPull(layerStore, imageURI)
+				grootPull(storeDir, imageURI)
 
 				for i, chainID := range chainIDs {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))
@@ -73,7 +77,7 @@ var _ = Describe("Pull", func() {
 		})
 
 		It("unpacks the layer to disk", func() {
-			grootPull(layerStore, imageURI)
+			grootPull(storeDir, imageURI)
 
 			for _, chainID := range chainIDs {
 				Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -82,7 +86,7 @@ var _ = Describe("Pull", func() {
 
 		Context("when the image has already been unpacked", func() {
 			BeforeEach(func() {
-				grootPull(layerStore, imageURI)
+				grootPull(storeDir, imageURI)
 			})
 
 			It("creates a volume without updating the unpacked layers", func() {
@@ -91,7 +95,7 @@ var _ = Describe("Pull", func() {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
 				}
 
-				grootPull(layerStore, imageURI)
+				grootPull(storeDir, imageURI)
 
 				for i, chainID := range chainIDs {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))

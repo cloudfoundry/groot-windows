@@ -2,6 +2,7 @@ package driver_test
 
 import (
 	"errors"
+	"path/filepath"
 
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
@@ -26,7 +27,7 @@ var _ = Describe("Delete", func() {
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New("some-layer-store", "some-volume-store", hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New("some-store-dir", hcsClientFake, tarStreamerFake, privilegeElevatorFake)
 		logger = lagertest.NewTestLogger("driver-delete-test")
 		bundleID = "some-bundle-id"
 
@@ -38,12 +39,12 @@ var _ = Describe("Delete", func() {
 
 		Expect(hcsClientFake.LayerExistsCallCount()).To(Equal(1))
 		di, id := hcsClientFake.LayerExistsArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: "some-volume-store", Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: filepath.Join("some-store-dir", driver.VolumeDir), Flavour: 1}))
 		Expect(id).To(Equal("some-bundle-id"))
 
 		Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
 		di, id = hcsClientFake.DestroyLayerArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: "some-volume-store", Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: filepath.Join("some-store-dir", driver.VolumeDir), Flavour: 1}))
 		Expect(id).To(Equal("some-bundle-id"))
 	})
 

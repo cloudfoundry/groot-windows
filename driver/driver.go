@@ -2,6 +2,7 @@ package driver
 
 import (
 	"io"
+	"path/filepath"
 
 	"code.cloudfoundry.org/groot-windows/hcs"
 	"github.com/Microsoft/go-winio/archive/tar"
@@ -33,6 +34,11 @@ type PrivilegeElevator interface {
 	DisableProcessPrivileges([]string) error
 }
 
+const (
+	LayerDir  = "layers"
+	VolumeDir = "volumes"
+)
+
 type Driver struct {
 	layerStore        string
 	volumeStore       string
@@ -41,10 +47,10 @@ type Driver struct {
 	privilegeElevator PrivilegeElevator
 }
 
-func New(layerStore, volumeStore string, hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
+func New(storeDir string, hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
 	return &Driver{
-		layerStore:        layerStore,
-		volumeStore:       volumeStore,
+		layerStore:        filepath.Join(storeDir, LayerDir),
+		volumeStore:       filepath.Join(storeDir, VolumeDir),
 		hcsClient:         hcsClient,
 		tarStreamer:       tarStreamer,
 		privilegeElevator: privilegeElevator,

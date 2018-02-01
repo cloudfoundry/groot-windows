@@ -11,6 +11,6 @@ import (
 )
 
 func main() {
-	driver := driver.New(os.Getenv("GROOT_LAYER_STORE"), os.Getenv("GROOT_VOLUME_STORE"), hcs.NewClient(), tarstream.New(), &privilege.Elevator{})
+	driver := driver.New(os.Getenv("GROOT_STORE_DIR"), hcs.NewClient(), tarstream.New(), &privilege.Elevator{})
 	groot.Run(driver, os.Args)
 }

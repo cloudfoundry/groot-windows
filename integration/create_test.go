@@ -9,6 +9,7 @@ import (
 	"strings"
 	"syscall"
 
+	"code.cloudfoundry.org/groot-windows/driver"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
@@ -16,8 +17,9 @@ import (
 
 var _ = Describe("Create", func() {
 	var (
-		layerStore     string
+		storeDir       string
 		volumeStore    string
+		layerStore     string
 		volumeMountDir string
 		ociImageDir    string
 		imageURI       string
@@ -27,11 +29,10 @@ var _ = Describe("Create", func() {
 
 	BeforeEach(func() {
 		var err error
-		layerStore, err = ioutil.TempDir("", "layer-store")
+		storeDir, err = ioutil.TempDir("", "create.store")
 		Expect(err).ToNot(HaveOccurred())
-
-		volumeStore, err = ioutil.TempDir("", "volume-store")
-		Expect(err).ToNot(HaveOccurred())
+		layerStore = filepath.Join(storeDir, driver.LayerDir)
+		volumeStore = filepath.Join(storeDir, driver.VolumeDir)
 
 		volumeMountDir, err = ioutil.TempDir("", "mounted-volume")
 		Expect(err).ToNot(HaveOccurred())
@@ -46,10 +47,11 @@ var _ = Describe("Create", func() {
 
 	AfterEach(func() {
 		unmountVolume(volumeMountDir)
-		destroyVolumeStore(volumeStore)
-		destroyLayerStore(layerStore)
+		destroyVolumeStore(storeDir)
+		destroyLayerStore(storeDir)
 		Expect(os.RemoveAll(volumeMountDir)).To(Succeed())
 		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
+		Expect(os.RemoveAll(storeDir)).To(Succeed())
 	})
 
 	Context("provided an OCI image URI", func() {
@@ -61,7 +63,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("unpacks the layer to disk", func() {
-				grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				grootCreate(storeDir, imageURI, bundleID)
 
 				for _, chainID := range chainIDs {
 					Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -69,7 +71,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("returns a runtime spec on stdout", func() {
-				outputSpec := grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				outputSpec := grootCreate(storeDir, imageURI, bundleID)
 
 				Expect(outputSpec.Root.Path).ToNot(BeEmpty())
 				Expect(outputSpec.Version).To(Equal(specs.Version))
@@ -82,7 +84,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume contains the correct files", func() {
-				outputSpec := grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				outputSpec := grootCreate(storeDir, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")
@@ -97,7 +99,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume has the correct files removed", func() {
-				outputSpec := grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				outputSpec := grootCreate(storeDir, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				Expect(filepath.Join(volumeMountDir, "temp", "test", "hello2")).To(BeAnExistingFile())
@@ -113,7 +115,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume has the correct symlinks, hardlinks, and junctions", func() {
-				outputSpec := grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				outputSpec := grootCreate(storeDir, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				dest, err := os.Readlink(filepath.Join(volumeMountDir, "temp", "symlinkfile"))
@@ -142,7 +144,7 @@ var _ = Describe("Create", func() {
 				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
 				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
 
-				grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				grootCreate(storeDir, imageURI, bundleID)
 			})
 
 			It("creates a volume without updating the unpacked layers", func() {
@@ -153,7 +155,7 @@ var _ = Describe("Create", func() {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
 				}
 
-				grootCreate(layerStore, volumeStore, imageURI, newBundleID)
+				grootCreate(storeDir, imageURI, newBundleID)
 
 				for i, chainID := range chainIDs {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))
@@ -166,12 +168,12 @@ var _ = Describe("Create", func() {
 				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
 				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
 
-				grootCreate(layerStore, volumeStore, imageURI, bundleID)
+				grootCreate(storeDir, imageURI, bundleID)
 			})
 
 			It("returns a helpful error", func() {
 				createCmd := exec.Command(grootBin, "create", imageURI, bundleID)
-				createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_LAYER_STORE=%s", layerStore), fmt.Sprintf("GROOT_VOLUME_STORE=%s", volumeStore))
+				createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_STORE_DIR=%s", storeDir))
 				stdOut, _, err := execute(createCmd)
 				Expect(err).To(HaveOccurred())
 				Expect(stdOut.String()).To(ContainSubstring(fmt.Sprintf("layer already exists: %s", bundleID)))
@@ -189,7 +191,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("unpacks the layer to disk", func() {
-			grootCreate(layerStore, volumeStore, imageURI, bundleID)
+			grootCreate(storeDir, imageURI, bundleID)
 
 			for _, chainID := range chainIDs {
 				Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -197,7 +199,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("returns a runtime spec on stdout", func() {
-			outputSpec := grootCreate(layerStore, volumeStore, imageURI, bundleID)
+			outputSpec := grootCreate(storeDir, imageURI, bundleID)
 
 			Expect(outputSpec.Root.Path).ToNot(BeEmpty())
 			Expect(outputSpec.Version).To(Equal(specs.Version))
@@ -210,7 +212,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("the resulting volume contains the correct files", func() {
-			outputSpec := grootCreate(layerStore, volumeStore, imageURI, bundleID)
+			outputSpec := grootCreate(storeDir, imageURI, bundleID)
 			mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 			knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")

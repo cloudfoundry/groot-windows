@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"code.cloudfoundry.org/groot-windows/driver"
@@ -22,6 +23,7 @@ import (
 
 var _ = Describe("Unpack", func() {
 	var (
+		storeDir              string
 		layerStore            string
 		d                     *driver.Driver
 		hcsClientFake         *fakes.HCSClient
@@ -35,14 +37,15 @@ var _ = Describe("Unpack", func() {
 
 	BeforeEach(func() {
 		var err error
-		layerStore, err = ioutil.TempDir("", "driver")
+		storeDir, err = ioutil.TempDir("", "driver")
 		Expect(err).To(Succeed())
+		layerStore = filepath.Join(storeDir, driver.LayerDir)
 
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New(layerStore, "some-volume-store", hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(storeDir, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		layerID = "aaa"
 		buffer = bytes.NewBuffer([]byte("tar ball contents"))
@@ -52,6 +55,10 @@ var _ = Describe("Unpack", func() {
 
 		layerWriterFake = &hcsfakes.LayerWriter{}
 		hcsClientFake.NewLayerWriterReturns(layerWriterFake, nil)
+	})
+
+	AfterEach(func() {
+		Expect(os.RemoveAll(storeDir)).To(Succeed())
 	})
 
 	It("create an associated layerId path", func() {

@@ -22,8 +22,9 @@ var _ = Describe("Bundle", func() {
 	)
 
 	var (
-		tmpDir                string
+		storeDir              string
 		volumeStore           string
+		layerStore            string
 		d                     *driver.Driver
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
@@ -35,22 +36,23 @@ var _ = Describe("Bundle", func() {
 	BeforeEach(func() {
 		var err error
 
-		tmpDir, err = ioutil.TempDir("", "bundle-volume")
+		storeDir, err = ioutil.TempDir("", "bundle-store")
 		Expect(err).NotTo(HaveOccurred())
-		volumeStore = filepath.Join(tmpDir, "vhd")
+		volumeStore = filepath.Join(storeDir, driver.VolumeDir)
+		layerStore = filepath.Join(storeDir, driver.LayerDir)
 
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New("some-layer-store", volumeStore, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(storeDir, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 
 		hcsClientFake.GetLayerMountPathReturnsOnCall(0, volumeGUID, nil)
 	})
 
 	AfterEach(func() {
-		Expect(os.RemoveAll(tmpDir)).To(Succeed())
+		Expect(os.RemoveAll(storeDir)).To(Succeed())
 	})
 
 	It("returns a valid runtime spec", func() {
@@ -60,9 +62,9 @@ var _ = Describe("Bundle", func() {
 		Expect(spec.Root.Path).To(Equal(volumeGUID))
 
 		expectedLayerDirs := []string{
-			filepath.Join("some-layer-store", "newest-layer"),
-			filepath.Join("some-layer-store", "middle-layer"),
-			filepath.Join("some-layer-store", "oldest-layer"),
+			filepath.Join(layerStore, "newest-layer"),
+			filepath.Join(layerStore, "middle-layer"),
+			filepath.Join(layerStore, "oldest-layer"),
 		}
 		Expect(spec.Windows.LayerFolders).To(Equal(expectedLayerDirs))
 	})
@@ -82,9 +84,9 @@ var _ = Describe("Bundle", func() {
 		Expect(id).To(Equal(bundleID))
 
 		expectedLayerDirs := []string{
-			filepath.Join("some-layer-store", "newest-layer"),
-			filepath.Join("some-layer-store", "middle-layer"),
-			filepath.Join("some-layer-store", "oldest-layer"),
+			filepath.Join(layerStore, "newest-layer"),
+			filepath.Join(layerStore, "middle-layer"),
+			filepath.Join(layerStore, "oldest-layer"),
 		}
 		Expect(parentDir).To(Equal(expectedLayerDirs[0]))
 		Expect(allDirs).To(Equal(expectedLayerDirs))
