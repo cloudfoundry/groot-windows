@@ -18,6 +18,12 @@ import (
 	"github.com/urfave/cli"
 )
 
+// Creator should use the config object to create a driver
+//go:generate counterfeiter . Creator
+type Creator interface {
+	NewDriver(config Config) (Driver, error)
+}
+
 // Driver should implement the filesystem interaction
 //go:generate counterfeiter . Driver
 type Driver interface {
@@ -41,7 +47,7 @@ type Groot struct {
 	ImagePuller ImagePuller
 }
 
-func Run(driver Driver, argv []string) {
+func Run(creator Creator, argv []string) {
 	// The `Before` closure sets this. This is ugly, but we don't know the log
 	// level until the CLI framework has parsed the flags.
 	var g *Groot
@@ -97,7 +103,7 @@ func Run(driver Driver, argv []string) {
 		if err != nil {
 			return silentError(err)
 		}
-		g, err = newGroot(driver, conf)
+		g, err = newGroot(creator, conf)
 		if err != nil {
 			return silentError(err)
 		}
@@ -112,8 +118,13 @@ func Run(driver Driver, argv []string) {
 	}
 }
 
-func newGroot(driver Driver, conf config) (*Groot, error) {
+func newGroot(creator Creator, conf Config) (*Groot, error) {
 	logger, err := newLogger(conf.LogLevel)
+	if err != nil {
+		return nil, err
+	}
+
+	driver, err := creator.NewDriver(conf)
 	if err != nil {
 		return nil, err
 	}
