@@ -25,6 +25,7 @@ var _ = Describe("Create", func() {
 		imageURI       string
 		bundleID       string
 		chainIDs       []string
+		confFile       string
 	)
 
 	BeforeEach(func() {
@@ -43,15 +44,18 @@ var _ = Describe("Create", func() {
 		imageURI = pathToOCIURI(ociImageDir)
 
 		bundleID = randomBundleID()
+
+		confFile = writeConfig(storeDir)
 	})
 
 	AfterEach(func() {
 		unmountVolume(volumeMountDir)
-		destroyVolumeStore(storeDir)
-		destroyLayerStore(storeDir)
+		destroyVolumeStore(confFile)
+		destroyLayerStore(confFile)
 		Expect(os.RemoveAll(volumeMountDir)).To(Succeed())
 		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
 		Expect(os.RemoveAll(storeDir)).To(Succeed())
+		Expect(os.RemoveAll(confFile)).To(Succeed())
 	})
 
 	Context("provided an OCI image URI", func() {
@@ -63,7 +67,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("unpacks the layer to disk", func() {
-				grootCreate(storeDir, imageURI, bundleID)
+				grootCreate(confFile, imageURI, bundleID)
 
 				for _, chainID := range chainIDs {
 					Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -71,7 +75,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("returns a runtime spec on stdout", func() {
-				outputSpec := grootCreate(storeDir, imageURI, bundleID)
+				outputSpec := grootCreate(confFile, imageURI, bundleID)
 
 				Expect(outputSpec.Root.Path).ToNot(BeEmpty())
 				Expect(outputSpec.Version).To(Equal(specs.Version))
@@ -84,11 +88,18 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume contains the correct files", func() {
-				outputSpec := grootCreate(storeDir, imageURI, bundleID)
+				outputSpec := grootCreate(confFile, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")
 				Expect(knownFilePath).To(BeAnExistingFile())
+			})
+
+			It("creates the volume vhdx in the proper location", func() {
+				grootCreate(confFile, imageURI, bundleID)
+
+				vhdxPath := filepath.Join(volumeStore, bundleID, "Sandbox.vhdx")
+				Expect(vhdxPath).To(BeAnExistingFile())
 			})
 		})
 
@@ -99,7 +110,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume has the correct files removed", func() {
-				outputSpec := grootCreate(storeDir, imageURI, bundleID)
+				outputSpec := grootCreate(confFile, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				Expect(filepath.Join(volumeMountDir, "temp", "test", "hello2")).To(BeAnExistingFile())
@@ -115,7 +126,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume has the correct symlinks, hardlinks, and junctions", func() {
-				outputSpec := grootCreate(storeDir, imageURI, bundleID)
+				outputSpec := grootCreate(confFile, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				dest, err := os.Readlink(filepath.Join(volumeMountDir, "temp", "symlinkfile"))
@@ -144,7 +155,7 @@ var _ = Describe("Create", func() {
 				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
 				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
 
-				grootCreate(storeDir, imageURI, bundleID)
+				grootCreate(confFile, imageURI, bundleID)
 			})
 
 			It("creates a volume without updating the unpacked layers", func() {
@@ -155,7 +166,7 @@ var _ = Describe("Create", func() {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
 				}
 
-				grootCreate(storeDir, imageURI, newBundleID)
+				grootCreate(confFile, imageURI, newBundleID)
 
 				for i, chainID := range chainIDs {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))
@@ -168,12 +179,11 @@ var _ = Describe("Create", func() {
 				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
 				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
 
-				grootCreate(storeDir, imageURI, bundleID)
+				grootCreate(confFile, imageURI, bundleID)
 			})
 
 			It("returns a helpful error", func() {
-				createCmd := exec.Command(grootBin, "create", imageURI, bundleID)
-				createCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_STORE_DIR=%s", storeDir))
+				createCmd := exec.Command(grootBin, "--config", confFile, "create", imageURI, bundleID)
 				stdOut, _, err := execute(createCmd)
 				Expect(err).To(HaveOccurred())
 				Expect(stdOut.String()).To(ContainSubstring(fmt.Sprintf("layer already exists: %s", bundleID)))
@@ -191,7 +201,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("unpacks the layer to disk", func() {
-			grootCreate(storeDir, imageURI, bundleID)
+			grootCreate(confFile, imageURI, bundleID)
 
 			for _, chainID := range chainIDs {
 				Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -199,7 +209,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("returns a runtime spec on stdout", func() {
-			outputSpec := grootCreate(storeDir, imageURI, bundleID)
+			outputSpec := grootCreate(confFile, imageURI, bundleID)
 
 			Expect(outputSpec.Root.Path).ToNot(BeEmpty())
 			Expect(outputSpec.Version).To(Equal(specs.Version))
@@ -212,7 +222,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("the resulting volume contains the correct files", func() {
-			outputSpec := grootCreate(storeDir, imageURI, bundleID)
+			outputSpec := grootCreate(confFile, imageURI, bundleID)
 			mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 			knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")

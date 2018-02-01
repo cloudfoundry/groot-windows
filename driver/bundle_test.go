@@ -23,8 +23,6 @@ var _ = Describe("Bundle", func() {
 
 	var (
 		storeDir              string
-		volumeStore           string
-		layerStore            string
 		d                     *driver.Driver
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
@@ -38,16 +36,16 @@ var _ = Describe("Bundle", func() {
 
 		storeDir, err = ioutil.TempDir("", "bundle-store")
 		Expect(err).NotTo(HaveOccurred())
-		volumeStore = filepath.Join(storeDir, driver.VolumeDir)
-		layerStore = filepath.Join(storeDir, driver.LayerDir)
 
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New(storeDir, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
-		logger = lagertest.NewTestLogger("driver-unpack-test")
+		d = driver.New(filepath.Join(storeDir, driver.LayerDir),
+			filepath.Join(storeDir, driver.VolumeDir),
+			hcsClientFake, tarStreamerFake, privilegeElevatorFake)
 
+		logger = lagertest.NewTestLogger("driver-unpack-test")
 		hcsClientFake.GetLayerMountPathReturnsOnCall(0, volumeGUID, nil)
 	})
 
@@ -62,9 +60,9 @@ var _ = Describe("Bundle", func() {
 		Expect(spec.Root.Path).To(Equal(volumeGUID))
 
 		expectedLayerDirs := []string{
-			filepath.Join(layerStore, "newest-layer"),
-			filepath.Join(layerStore, "middle-layer"),
-			filepath.Join(layerStore, "oldest-layer"),
+			filepath.Join(d.LayerStore(), "newest-layer"),
+			filepath.Join(d.LayerStore(), "middle-layer"),
+			filepath.Join(d.LayerStore(), "oldest-layer"),
 		}
 		Expect(spec.Windows.LayerFolders).To(Equal(expectedLayerDirs))
 	})
@@ -72,7 +70,7 @@ var _ = Describe("Bundle", func() {
 	It("creates the volume store if it doesn't exist", func() {
 		_, err := d.Bundle(logger, bundleID, layerIDs)
 		Expect(err).ToNot(HaveOccurred())
-		Expect(volumeStore).To(BeADirectory())
+		Expect(d.VolumeStore()).To(BeADirectory())
 	})
 
 	It("uses hcs to create the volume", func() {
@@ -80,13 +78,13 @@ var _ = Describe("Bundle", func() {
 		Expect(err).ToNot(HaveOccurred())
 
 		di, id, parentDir, allDirs := hcsClientFake.CreateLayerArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: volumeStore, Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}))
 		Expect(id).To(Equal(bundleID))
 
 		expectedLayerDirs := []string{
-			filepath.Join(layerStore, "newest-layer"),
-			filepath.Join(layerStore, "middle-layer"),
-			filepath.Join(layerStore, "oldest-layer"),
+			filepath.Join(d.LayerStore(), "newest-layer"),
+			filepath.Join(d.LayerStore(), "middle-layer"),
+			filepath.Join(d.LayerStore(), "oldest-layer"),
 		}
 		Expect(parentDir).To(Equal(expectedLayerDirs[0]))
 		Expect(allDirs).To(Equal(expectedLayerDirs))

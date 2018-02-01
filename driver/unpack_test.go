@@ -24,7 +24,6 @@ import (
 var _ = Describe("Unpack", func() {
 	var (
 		storeDir              string
-		layerStore            string
 		d                     *driver.Driver
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
@@ -39,13 +38,15 @@ var _ = Describe("Unpack", func() {
 		var err error
 		storeDir, err = ioutil.TempDir("", "driver")
 		Expect(err).To(Succeed())
-		layerStore = filepath.Join(storeDir, driver.LayerDir)
 
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New(storeDir, hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(filepath.Join(storeDir, driver.LayerDir),
+			filepath.Join(storeDir, driver.VolumeDir),
+			hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		layerID = "aaa"
 		buffer = bytes.NewBuffer([]byte("tar ball contents"))
@@ -64,7 +65,7 @@ var _ = Describe("Unpack", func() {
 	It("create an associated layerId path", func() {
 		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
 
-		expectedDir := filepath.Join(layerStore, layerID)
+		expectedDir := filepath.Join(d.LayerStore(), layerID)
 		Expect(expectedDir).To(BeADirectory())
 	})
 
@@ -100,7 +101,7 @@ var _ = Describe("Unpack", func() {
 
 		Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(1))
 		di, actualLayerID, parentIDs := hcsClientFake.NewLayerWriterArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}))
 		Expect(actualLayerID).To(Equal(layerID))
 		Expect(parentIDs).To(BeEmpty())
 	})
@@ -301,7 +302,7 @@ var _ = Describe("Unpack", func() {
 			Expect(d.Unpack(logger, layerID, parentIDs, buffer)).To(Succeed())
 
 			_, _, hcsParentIds := hcsClientFake.NewLayerWriterArgsForCall(0)
-			Expect(hcsParentIds).To(Equal([]string{filepath.Join(layerStore, "newest-parent-id"), filepath.Join(layerStore, "oldest-parent-id")}))
+			Expect(hcsParentIds).To(Equal([]string{filepath.Join(d.LayerStore(), "newest-parent-id"), filepath.Join(d.LayerStore(), "oldest-parent-id")}))
 		})
 	})
 

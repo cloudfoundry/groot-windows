@@ -23,6 +23,7 @@ var _ = Describe("Delete", func() {
 		bundleID         string
 		driverInfo       hcsshim.DriverInfo
 		parentLayerPaths []string
+		confFile         string
 	)
 
 	BeforeEach(func() {
@@ -47,31 +48,34 @@ var _ = Describe("Delete", func() {
 		for _, id := range chainIDs {
 			parentLayerPaths = append([]string{filepath.Join(layerStore, id)}, parentLayerPaths...)
 		}
+
+		confFile = writeConfig(storeDir)
 	})
 
 	AfterEach(func() {
 		Expect(os.RemoveAll(volumeStore)).To(Succeed())
-		destroyLayerStore(storeDir)
+		destroyLayerStore(confFile)
 		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
 		Expect(os.RemoveAll(storeDir)).To(Succeed())
+		Expect(os.RemoveAll(confFile)).To(Succeed())
 	})
 
 	Context("the volume with the given bundle ID exists", func() {
 		BeforeEach(func() {
-			grootCreate(storeDir, imageURI, bundleID)
+			grootCreate(confFile, imageURI, bundleID)
 		})
 
 		It("deletes the volume", func() {
 			Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeTrue())
 
-			grootDelete(storeDir, bundleID)
+			grootDelete(confFile, bundleID)
 
 			Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeFalse())
 			Expect(filepath.Join(volumeStore, bundleID)).NotTo(BeADirectory())
 		})
 
 		It("does not delete any of the layer directories", func() {
-			grootDelete(storeDir, bundleID)
+			grootDelete(confFile, bundleID)
 			for _, dir := range parentLayerPaths {
 				Expect(hcsshim.LayerExists(hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}, filepath.Base(dir))).To(BeTrue())
 				Expect(dir).To(BeADirectory())
@@ -81,8 +85,7 @@ var _ = Describe("Delete", func() {
 
 	Context("the volume with the given bundle ID does not exist", func() {
 		It("returns success, writing a message to the log", func() {
-			deleteCmd := exec.Command(grootBin, "delete", bundleID)
-			deleteCmd.Env = append(os.Environ(), fmt.Sprintf("GROOT_STORE_DIR=%s", storeDir))
+			deleteCmd := exec.Command(grootBin, "--config", confFile, "delete", bundleID)
 			_, stderr, err := execute(deleteCmd)
 			Expect(err).ToNot(HaveOccurred())
 
@@ -93,7 +96,7 @@ var _ = Describe("Delete", func() {
 
 	Context("the volume with the given bundle ID has been partially created", func() {
 		BeforeEach(func() {
-			grootPull(storeDir, imageURI)
+			grootPull(confFile, imageURI)
 		})
 
 		Context("the volume layer has been created but is not activated", func() {
@@ -102,7 +105,7 @@ var _ = Describe("Delete", func() {
 			})
 
 			It("deletes the volume", func() {
-				grootDelete(storeDir, bundleID)
+				grootDelete(confFile, bundleID)
 
 				Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeFalse())
 				Expect(filepath.Join(volumeStore, bundleID)).NotTo(BeADirectory())
@@ -116,7 +119,7 @@ var _ = Describe("Delete", func() {
 			})
 
 			It("deletes the volume", func() {
-				grootDelete(storeDir, bundleID)
+				grootDelete(confFile, bundleID)
 
 				Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeFalse())
 				Expect(filepath.Join(volumeStore, bundleID)).NotTo(BeADirectory())

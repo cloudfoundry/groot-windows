@@ -27,7 +27,10 @@ var _ = Describe("Delete", func() {
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New("some-store-dir", hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(filepath.Join("some-store-dir", driver.LayerDir),
+			filepath.Join("some-store-dir", driver.VolumeDir),
+			hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+
 		logger = lagertest.NewTestLogger("driver-delete-test")
 		bundleID = "some-bundle-id"
 

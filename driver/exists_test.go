@@ -2,6 +2,7 @@ package driver_test
 
 import (
 	"errors"
+	"path/filepath"
 
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
@@ -25,7 +26,10 @@ var _ = Describe("Exists", func() {
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New("some-store-dir", hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(filepath.Join("some-store-dir", driver.LayerDir),
+			filepath.Join("some-store-dir", driver.VolumeDir),
+			hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		layerID = "some-layer-id"
 	})
