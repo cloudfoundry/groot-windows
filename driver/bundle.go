@@ -13,6 +13,9 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string)
 	logger.Info("bundle-start")
 	defer logger.Info("bundle-finished")
 
+	if d.Store == "" {
+		return specs.Spec{}, &EmptyDriverStoreError{}
+	}
 	if err := os.MkdirAll(d.VolumeStore(), 0755); err != nil {
 		return specs.Spec{}, err
 	}

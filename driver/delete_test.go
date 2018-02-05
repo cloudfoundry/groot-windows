@@ -80,4 +80,16 @@ var _ = Describe("Delete", func() {
 			Expect(d.Delete(logger, bundleID)).To(MatchError("Layer exists failed"))
 		})
 	})
+
+	Context("the driver store is unset", func() {
+		BeforeEach(func() {
+			d.Store = ""
+		})
+
+		It("return an error", func() {
+			err := d.Delete(logger, bundleID)
+			Expect(err).To(HaveOccurred())
+			Expect(err).To(MatchError("driver store must be set"))
+		})
+	})
 })

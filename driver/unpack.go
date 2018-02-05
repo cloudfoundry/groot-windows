@@ -19,6 +19,10 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 	logger.Info("unpack-start")
 	defer logger.Info("unpack-finished")
 
+	if d.Store == "" {
+		return &EmptyDriverStoreError{}
+	}
+
 	outputDir := filepath.Join(d.LayerStore(), layerID)
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return err

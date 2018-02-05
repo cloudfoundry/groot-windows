@@ -111,6 +111,18 @@ var _ = Describe("Bundle", func() {
 		})
 	})
 
+	Context("the driver store is unset", func() {
+		BeforeEach(func() {
+			d.Store = ""
+		})
+
+		It("return an error", func() {
+			_, err := d.Bundle(logger, bundleID, layerIDs)
+			Expect(err).To(HaveOccurred())
+			Expect(err).To(MatchError("driver store must be set"))
+		})
+	})
+
 	Context("creating the volume fails in hcs", func() {
 		BeforeEach(func() {
 			hcsClientFake.CreateLayerReturnsOnCall(0, errors.New("CreateLayer failed"))

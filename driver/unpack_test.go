@@ -137,6 +137,18 @@ var _ = Describe("Unpack", func() {
 			regularFileHeader = &tar.Header{Name: "regular/file/name"}
 		})
 
+		Context("the driver store is unset", func() {
+			BeforeEach(func() {
+				d.Store = ""
+			})
+
+			It("return an error", func() {
+				err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError("driver store must be set"))
+			})
+		})
+
 		Context("when there are multiple files", func() {
 			BeforeEach(func() {
 				tarStreamerFake.NextReturnsOnCall(0, whiteoutFileHeader, nil)
