@@ -2,19 +2,6 @@
 
 
 [[projects]]
-  branch = "garden-windows-prs"
-  name = "code.cloudfoundry.org/groot"
-  packages = [
-    ".",
-    "fetcher",
-    "fetcher/filefetcher",
-    "fetcher/layerfetcher",
-    "fetcher/layerfetcher/source",
-    "imagepuller"
-  ]
-  revision = "2e2a68f7836d17f3472ea3c8f971a493bd85c75b"
-
-[[projects]]
   name = "code.cloudfoundry.org/lager"
   packages = [
     ".",
@@ -25,32 +12,10 @@
   version = "v1.0.0"
 
 [[projects]]
-  branch = "master"
-  name = "code.cloudfoundry.org/windows2016fs"
-  packages = [
-    "compress",
-    "downloader",
-    "hydrator",
-    "oci-metadata",
-    "registry"
-  ]
-  revision = "0e9421356838c3384177a73ec75ee6208c3c9f58"
-
-[[projects]]
   name = "github.com/Microsoft/go-winio"
-  packages = [
-    ".",
-    "archive/tar",
-    "backuptar"
-  ]
+  packages = ["."]
   revision = "7da180ee92d8bd8bb8c37fc560e673e6557c392f"
   version = "v0.4.7"
-
-[[projects]]
-  name = "github.com/Microsoft/hcsshim"
-  packages = ["."]
-  revision = "45ef15484298b76abeb9513ea0ea0abd2b5b84b3"
-  version = "v0.6.8"
 
 [[projects]]
   branch = "master"
@@ -129,6 +94,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/gorilla/context"
   packages = ["."]
   revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
@@ -145,13 +116,6 @@
   packages = [
     ".",
     "config",
-    "ginkgo",
-    "ginkgo/convert",
-    "ginkgo/interrupthandler",
-    "ginkgo/nodot",
-    "ginkgo/testrunner",
-    "ginkgo/testsuite",
-    "ginkgo/watch",
     "internal/codelocation",
     "internal/containernode",
     "internal/failer",
@@ -179,6 +143,7 @@
     "format",
     "gbytes",
     "gexec",
+    "ghttp",
     "internal/assertion",
     "internal/asyncassertion",
     "internal/oraclematcher",
@@ -297,6 +262,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "031216e0f65542a9211525e43ccbddc3745565f35fa6890a2f6ff309aa72ddec"
+  inputs-digest = "66c5474b77bc292b59d9ce9cb83fce689fc276a285f3db1c18b0d2f594b53640"
   solver-name = "gps-cdcl"
   solver-version = 1

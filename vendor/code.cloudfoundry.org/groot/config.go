@@ -7,12 +7,11 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-type Config struct {
+type config struct {
 	LogLevel string `yaml:"log_level"`
-	Store    string `yaml:"store"`
 }
 
-func parseConfig(configFilePath string) (conf Config, err error) {
+func parseConfig(configFilePath string) (conf config, err error) {
 	defer func() {
 		if err == nil {
 			conf = applyDefaults(conf)
@@ -25,17 +24,17 @@ func parseConfig(configFilePath string) (conf Config, err error) {
 
 	contents, err := ioutil.ReadFile(configFilePath)
 	if err != nil {
-		return Config{}, errors.Wrap(err, "reading config file")
+		return config{}, errors.Wrap(err, "reading config file")
 	}
 
 	if err := yaml.Unmarshal(contents, &conf); err != nil {
-		return Config{}, errors.Wrap(err, "parsing config file")
+		return config{}, errors.Wrap(err, "parsing config file")
 	}
 
 	return conf, nil
 }
 
-func applyDefaults(conf Config) Config {
+func applyDefaults(conf config) config {
 	if conf.LogLevel == "" {
 		conf.LogLevel = "info"
 	}
