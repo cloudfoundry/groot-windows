@@ -1,16 +1,10 @@
 package driver
 
 import (
-	"errors"
-	"fmt"
 	"io"
-	"os"
 	"path/filepath"
 
-	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/groot-windows/hcs"
-	"code.cloudfoundry.org/groot-windows/privilege"
-	"code.cloudfoundry.org/groot-windows/tarstream"
 	"github.com/Microsoft/go-winio/archive/tar"
 
 	winio "github.com/Microsoft/go-winio"
@@ -41,42 +35,19 @@ type PrivilegeElevator interface {
 }
 
 const (
-	LayerDir  = "layers"
-	VolumeDir = "volumes"
+	layerDir  = "layers"
+	volumeDir = "volumes"
 )
 
-type Creator struct{}
-
-func (c *Creator) NewDriver(conf groot.Config) (groot.Driver, error) {
-	if conf.Store == "" {
-		return nil, errors.New("must set store")
-	}
-
-	layerStore := filepath.Join(conf.Store, LayerDir)
-	if err := os.MkdirAll(layerStore, 0755); err != nil {
-		return nil, fmt.Errorf("couldn't create layer store: %s", err.Error())
-	}
-
-	volumeStore := filepath.Join(conf.Store, VolumeDir)
-	if err := os.MkdirAll(volumeStore, 0755); err != nil {
-		return nil, fmt.Errorf("couldn't create volume store: %s", err.Error())
-	}
-
-	return New(layerStore, volumeStore, hcs.NewClient(), tarstream.New(), &privilege.Elevator{}), nil
-}
-
 type Driver struct {
-	layerStore        string
-	volumeStore       string
+	Store             string
 	hcsClient         HCSClient
 	tarStreamer       TarStreamer
 	privilegeElevator PrivilegeElevator
 }
 
-func New(layerStore, volumeStore string, hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
+func New(hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
 	return &Driver{
-		layerStore:        layerStore,
-		volumeStore:       volumeStore,
 		hcsClient:         hcsClient,
 		tarStreamer:       tarStreamer,
 		privilegeElevator: privilegeElevator,
@@ -84,9 +55,9 @@ func New(layerStore, volumeStore string, hcsClient HCSClient, tarStreamer TarStr
 }
 
 func (d *Driver) LayerStore() string {
-	return d.layerStore
+	return filepath.Join(d.Store, layerDir)
 }
 
 func (d *Driver) VolumeStore() string {
-	return d.volumeStore
+	return filepath.Join(d.Store, volumeDir)
 }

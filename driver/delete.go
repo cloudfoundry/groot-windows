@@ -9,7 +9,7 @@ func (d *Driver) Delete(logger lager.Logger, bundleID string) error {
 	logger.Info("delete-start")
 	defer logger.Info("delete-finished")
 
-	di := hcsshim.DriverInfo{HomeDir: d.volumeStore, Flavour: 1}
+	di := hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}
 	exists, err := d.hcsClient.LayerExists(di, bundleID)
 	if err != nil {
 		return err

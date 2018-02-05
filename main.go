@@ -5,9 +5,21 @@ import (
 
 	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/groot-windows/driver"
+	"code.cloudfoundry.org/groot-windows/hcs"
+	"code.cloudfoundry.org/groot-windows/privilege"
+	"code.cloudfoundry.org/groot-windows/tarstream"
+	"github.com/urfave/cli"
 )
 
 func main() {
-	creator := &driver.Creator{}
-	groot.Run(creator, os.Args)
+	driver := driver.New(hcs.NewClient(), tarstream.New(), &privilege.Elevator{})
+
+	driverFlags := []cli.Flag{
+		cli.StringFlag{
+			Name:        "driver-store",
+			Value:       "",
+			Usage:       "driver store path",
+			Destination: &driver.Store,
+		}}
+	groot.Run(driver, os.Args, driverFlags)
 }

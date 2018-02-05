@@ -9,7 +9,6 @@ import (
 	"strings"
 	"syscall"
 
-	"code.cloudfoundry.org/groot-windows/driver"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
@@ -17,7 +16,7 @@ import (
 
 var _ = Describe("Create", func() {
 	var (
-		storeDir       string
+		driverStore    string
 		volumeStore    string
 		layerStore     string
 		volumeMountDir string
@@ -25,15 +24,14 @@ var _ = Describe("Create", func() {
 		imageURI       string
 		bundleID       string
 		chainIDs       []string
-		confFile       string
 	)
 
 	BeforeEach(func() {
 		var err error
-		storeDir, err = ioutil.TempDir("", "create.store")
+		driverStore, err = ioutil.TempDir("", "create.store")
 		Expect(err).ToNot(HaveOccurred())
-		layerStore = filepath.Join(storeDir, driver.LayerDir)
-		volumeStore = filepath.Join(storeDir, driver.VolumeDir)
+		layerStore = filepath.Join(driverStore, "layers")
+		volumeStore = filepath.Join(driverStore, "volumes")
 
 		volumeMountDir, err = ioutil.TempDir("", "mounted-volume")
 		Expect(err).ToNot(HaveOccurred())
@@ -44,18 +42,15 @@ var _ = Describe("Create", func() {
 		imageURI = pathToOCIURI(ociImageDir)
 
 		bundleID = randomBundleID()
-
-		confFile = writeConfig(storeDir)
 	})
 
 	AfterEach(func() {
 		unmountVolume(volumeMountDir)
-		destroyVolumeStore(confFile)
-		destroyLayerStore(confFile)
+		destroyVolumeStore(driverStore)
+		destroyLayerStore(driverStore)
 		Expect(os.RemoveAll(volumeMountDir)).To(Succeed())
 		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
-		Expect(os.RemoveAll(storeDir)).To(Succeed())
-		Expect(os.RemoveAll(confFile)).To(Succeed())
+		Expect(os.RemoveAll(driverStore)).To(Succeed())
 	})
 
 	Context("provided an OCI image URI", func() {
@@ -67,7 +62,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("unpacks the layer to disk", func() {
-				grootCreate(confFile, imageURI, bundleID)
+				grootCreate(driverStore, imageURI, bundleID)
 
 				for _, chainID := range chainIDs {
 					Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -75,7 +70,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("returns a runtime spec on stdout", func() {
-				outputSpec := grootCreate(confFile, imageURI, bundleID)
+				outputSpec := grootCreate(driverStore, imageURI, bundleID)
 
 				Expect(outputSpec.Root.Path).ToNot(BeEmpty())
 				Expect(outputSpec.Version).To(Equal(specs.Version))
@@ -88,7 +83,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume contains the correct files", func() {
-				outputSpec := grootCreate(confFile, imageURI, bundleID)
+				outputSpec := grootCreate(driverStore, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")
@@ -96,7 +91,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("creates the volume vhdx in the proper location", func() {
-				grootCreate(confFile, imageURI, bundleID)
+				grootCreate(driverStore, imageURI, bundleID)
 
 				vhdxPath := filepath.Join(volumeStore, bundleID, "Sandbox.vhdx")
 				Expect(vhdxPath).To(BeAnExistingFile())
@@ -110,7 +105,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume has the correct files removed", func() {
-				outputSpec := grootCreate(confFile, imageURI, bundleID)
+				outputSpec := grootCreate(driverStore, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				Expect(filepath.Join(volumeMountDir, "temp", "test", "hello2")).To(BeAnExistingFile())
@@ -126,7 +121,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("the resulting volume has the correct symlinks, hardlinks, and junctions", func() {
-				outputSpec := grootCreate(confFile, imageURI, bundleID)
+				outputSpec := grootCreate(driverStore, imageURI, bundleID)
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				dest, err := os.Readlink(filepath.Join(volumeMountDir, "temp", "symlinkfile"))
@@ -155,7 +150,7 @@ var _ = Describe("Create", func() {
 				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
 				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
 
-				grootCreate(confFile, imageURI, bundleID)
+				grootCreate(driverStore, imageURI, bundleID)
 			})
 
 			It("creates a volume without updating the unpacked layers", func() {
@@ -166,7 +161,7 @@ var _ = Describe("Create", func() {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
 				}
 
-				grootCreate(confFile, imageURI, newBundleID)
+				grootCreate(driverStore, imageURI, newBundleID)
 
 				for i, chainID := range chainIDs {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))
@@ -179,11 +174,11 @@ var _ = Describe("Create", func() {
 				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
 				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
 
-				grootCreate(confFile, imageURI, bundleID)
+				grootCreate(driverStore, imageURI, bundleID)
 			})
 
 			It("returns a helpful error", func() {
-				createCmd := exec.Command(grootBin, "--config", confFile, "create", imageURI, bundleID)
+				createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", imageURI, bundleID)
 				stdOut, _, err := execute(createCmd)
 				Expect(err).To(HaveOccurred())
 				Expect(stdOut.String()).To(ContainSubstring(fmt.Sprintf("layer already exists: %s", bundleID)))
@@ -201,7 +196,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("unpacks the layer to disk", func() {
-			grootCreate(confFile, imageURI, bundleID)
+			grootCreate(driverStore, imageURI, bundleID)
 
 			for _, chainID := range chainIDs {
 				Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
@@ -209,7 +204,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("returns a runtime spec on stdout", func() {
-			outputSpec := grootCreate(confFile, imageURI, bundleID)
+			outputSpec := grootCreate(driverStore, imageURI, bundleID)
 
 			Expect(outputSpec.Root.Path).ToNot(BeEmpty())
 			Expect(outputSpec.Version).To(Equal(specs.Version))
@@ -222,7 +217,7 @@ var _ = Describe("Create", func() {
 		})
 
 		It("the resulting volume contains the correct files", func() {
-			outputSpec := grootCreate(confFile, imageURI, bundleID)
+			outputSpec := grootCreate(driverStore, imageURI, bundleID)
 			mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 			knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")

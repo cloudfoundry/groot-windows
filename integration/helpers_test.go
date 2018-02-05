@@ -20,25 +20,22 @@ import (
 	"syscall"
 	"unsafe"
 
-	"code.cloudfoundry.org/groot"
-	"code.cloudfoundry.org/groot-windows/driver"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	yaml "gopkg.in/yaml.v2"
 
 	"github.com/Microsoft/hcsshim"
 	"github.com/opencontainers/image-spec/specs-go/v1"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
-func grootPull(configFile, imageURI string) {
-	pullCmd := exec.Command(grootBin, "--config", configFile, "pull", imageURI)
+func grootPull(driverStore, imageURI string) {
+	pullCmd := exec.Command(grootBin, "--driver-store", driverStore, "pull", imageURI)
 	_, _, err := execute(pullCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 }
 
-func grootCreate(configFile, imageURI, bundleID string) specs.Spec {
-	createCmd := exec.Command(grootBin, "--config", configFile, "create", imageURI, bundleID)
+func grootCreate(driverStore, imageURI, bundleID string) specs.Spec {
+	createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", imageURI, bundleID)
 	stdOut, _, err := execute(createCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
@@ -48,20 +45,10 @@ func grootCreate(configFile, imageURI, bundleID string) specs.Spec {
 	return outputSpec
 }
 
-func grootDelete(configFile, bundleID string) {
-	deleteCmd := exec.Command(grootBin, "--config", configFile, "delete", bundleID)
+func grootDelete(driverStore, bundleID string) {
+	deleteCmd := exec.Command(grootBin, "--driver-store", driverStore, "delete", bundleID)
 	_, _, err := execute(deleteCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
-}
-
-func writeConfig(storeDir string) string {
-	f, err := ioutil.TempFile("", "create.config")
-	ExpectWithOffset(1, err).NotTo(HaveOccurred())
-	confFile := f.Name()
-	_, err = f.Write([]byte(fmt.Sprintf("store: %s", storeDir)))
-	ExpectWithOffset(1, err).NotTo(HaveOccurred())
-	ExpectWithOffset(1, f.Close()).To(Succeed())
-	return confFile
 }
 
 func execute(c *exec.Cmd) (*bytes.Buffer, *bytes.Buffer, error) {
@@ -151,8 +138,13 @@ func getLayerChainIdsFromOCIImage(imagePath string) []string {
 	return chainIDs
 }
 
-func destroyLayerStore(configFile string) {
-	layerStore := layerStoreFromConfig(configFile)
+func destroyLayerStore(driverStore string) {
+	layerStore := filepath.Join(driverStore, "layers")
+	_, err := os.Stat(layerStore)
+	if err != nil && os.IsNotExist(err) {
+		return
+	}
+	Expect(err).NotTo(HaveOccurred())
 
 	files, err := ioutil.ReadDir(layerStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
@@ -167,37 +159,19 @@ func destroyLayerStore(configFile string) {
 	ExpectWithOffset(1, os.RemoveAll(layerStore)).To(Succeed())
 }
 
-func layerStoreFromConfig(configFile string) string {
-	var conf groot.Config
-
-	contents, err := ioutil.ReadFile(configFile)
-	Expect(err).NotTo(HaveOccurred())
-	Expect(yaml.Unmarshal(contents, &conf)).To(Succeed())
-	return filepath.Join(conf.Store, driver.LayerDir)
-}
-
-func destroyVolumeStore(configFile string) {
-	volumeStore := volumeStoreFromConfig(configFile)
+func destroyVolumeStore(driverStore string) {
+	volumeStore := filepath.Join(driverStore, "volumes")
 
 	files, err := ioutil.ReadDir(volumeStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
 	for _, f := range files {
 		if f.IsDir() {
-			grootDelete(configFile, f.Name())
+			grootDelete(driverStore, f.Name())
 		}
 	}
 
 	ExpectWithOffset(1, os.RemoveAll(volumeStore)).To(Succeed())
-}
-
-func volumeStoreFromConfig(configFile string) string {
-	var conf groot.Config
-
-	contents, err := ioutil.ReadFile(configFile)
-	Expect(err).NotTo(HaveOccurred())
-	Expect(yaml.Unmarshal(contents, &conf)).To(Succeed())
-	return filepath.Join(conf.Store, driver.VolumeDir)
 }
 
 func extractTarGz(tarfile, destDir string) error {

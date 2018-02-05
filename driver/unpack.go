@@ -19,7 +19,7 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 	logger.Info("unpack-start")
 	defer logger.Info("unpack-finished")
 
-	outputDir := filepath.Join(d.layerStore, layerID)
+	outputDir := filepath.Join(d.LayerStore(), layerID)
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return err
 	}
@@ -31,10 +31,10 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 
 	parentLayerPaths := []string{}
 	for _, id := range parentIDs {
-		parentLayerPaths = append([]string{filepath.Join(d.layerStore, id)}, parentLayerPaths...)
+		parentLayerPaths = append([]string{filepath.Join(d.LayerStore(), id)}, parentLayerPaths...)
 	}
 
-	di := hcsshim.DriverInfo{HomeDir: d.layerStore, Flavour: 1}
+	di := hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}
 	layerWriter, err := d.hcsClient.NewLayerWriter(di, layerID, parentLayerPaths)
 	if err != nil {
 		return err

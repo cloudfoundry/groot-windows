@@ -2,11 +2,11 @@ package driver_test
 
 import (
 	"errors"
-	"path/filepath"
 
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
 	"code.cloudfoundry.org/lager/lagertest"
+	"github.com/Microsoft/hcsshim"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,12 +26,19 @@ var _ = Describe("Exists", func() {
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 
-		d = driver.New(filepath.Join("some-store-dir", driver.LayerDir),
-			filepath.Join("some-store-dir", driver.VolumeDir),
-			hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d.Store = "some-store-dir"
 
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		layerID = "some-layer-id"
+	})
+
+	It("passes the correct DriverInfo to LayerExists", func() {
+		d.Exists(logger, layerID)
+		Expect(hcsClientFake.LayerExistsCallCount()).To(Equal(1))
+		di, id := hcsClientFake.LayerExistsArgsForCall(0)
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}))
+		Expect(id).To(Equal(layerID))
 	})
 
 	Context("the layer has already been unpacked", func() {

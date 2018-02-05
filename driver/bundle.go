@@ -13,10 +13,10 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string)
 	logger.Info("bundle-start")
 	defer logger.Info("bundle-finished")
 
-	if err := os.MkdirAll(d.volumeStore, 0755); err != nil {
+	if err := os.MkdirAll(d.VolumeStore(), 0755); err != nil {
 		return specs.Spec{}, err
 	}
-	di := hcsshim.DriverInfo{HomeDir: d.volumeStore, Flavour: 1}
+	di := hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}
 
 	exists, err := d.hcsClient.LayerExists(di, bundleID)
 	if err != nil {
@@ -28,7 +28,7 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string)
 
 	layerFolders := []string{}
 	for _, layerID := range layerIDs {
-		layerFolders = append([]string{filepath.Join(d.layerStore, layerID)}, layerFolders...)
+		layerFolders = append([]string{filepath.Join(d.LayerStore(), layerID)}, layerFolders...)
 	}
 
 	if err := d.hcsClient.CreateLayer(di, bundleID, layerFolders[0], layerFolders); err != nil {
