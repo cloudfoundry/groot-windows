@@ -34,8 +34,10 @@ func grootPull(driverStore, imageURI string) {
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 }
 
-func grootCreate(driverStore, imageURI, bundleID string) specs.Spec {
-	createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", imageURI, bundleID)
+func grootCreate(driverStore, imageURI, bundleID string, createArgs ...string) specs.Spec {
+	createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create")
+	createCmd.Args = append(createCmd.Args, createArgs...)
+	createCmd.Args = append(createCmd.Args, imageURI, bundleID)
 	stdOut, _, err := execute(createCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 

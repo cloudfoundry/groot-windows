@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"syscall"
 
@@ -182,6 +183,63 @@ var _ = Describe("Create", func() {
 				stdOut, _, err := execute(createCmd)
 				Expect(err).To(HaveOccurred())
 				Expect(stdOut.String()).To(ContainSubstring(fmt.Sprintf("layer already exists: %s", bundleID)))
+			})
+		})
+
+		Context("when provided a disk limit", func() {
+			var (
+				// note: this is the size of all the gzipped layers which is what libgroot
+				// reports as the image size. We'll need to fix this whenever that bug is fixed
+				baseImageSizeBytes = 81039739 + 42470724 + 70745
+				diskLimitSizeBytes = baseImageSizeBytes + 50*1024*1024
+			)
+
+			BeforeEach(func() {
+				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
+				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+			})
+
+			Context("the disk limit is greater than 0", func() {
+				FIt("includes the base image size in the limit", func() {
+					outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes))
+					mountVolume(outputSpec.Root.Path, volumeMountDir)
+
+					output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
+					Expect(err).NotTo(HaveOccurred(), string(output))
+					Expect(string(output)).To(ContainSubstring("don't know, maybe a regex"))
+				})
+
+				It("doesn't allow files larger than the limit to be created", func() {
+				})
+
+				It("allows files at the limit to be created", func() {
+				})
+			})
+
+			Context("--exclude-image-from-quota is passed", func() {
+				It("includes the base image size in the limit", func() {
+				})
+
+				It("doesn't allow files larger than the limit to be created", func() {
+				})
+
+				It("allows files at the limit to be created", func() {
+				})
+
+				Context("the image size is larger than the disk limit", func() {
+					It("errors", func() {
+					})
+				})
+			})
+
+			Context("the disk limit is equal to 0", func() {
+				It("does not set a limit", func() {
+				})
+			})
+
+			Context("the disk limit is less then 0", func() {
+				It("errors", func() {
+				})
 			})
 		})
 	})

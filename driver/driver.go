@@ -34,6 +34,11 @@ type PrivilegeElevator interface {
 	DisableProcessPrivileges([]string) error
 }
 
+//go:generate counterfeiter -o fakes/limiter.go --fake-name Limiter . Limiter
+type Limiter interface {
+	SetLimit(string, uint64) error
+}
+
 const (
 	layerDir  = "layers"
 	volumeDir = "volumes"

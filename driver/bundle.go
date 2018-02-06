@@ -4,12 +4,13 @@ import (
 	"os"
 	"path/filepath"
 
+	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/lager"
 	"github.com/Microsoft/hcsshim"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
-func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string) (specs.Spec, error) {
+func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string, bundleSpec groot.BundleSpec) (specs.Spec, error) {
 	logger.Info("bundle-start")
 	defer logger.Info("bundle-finished")
 
