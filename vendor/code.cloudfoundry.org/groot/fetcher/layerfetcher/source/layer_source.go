@@ -97,7 +97,9 @@ func (s *LayerSource) Blob(logger lager.Logger, imageURL *url.URL, layerInfo ima
 	defer blob.Close()
 	logger.Debug("got-blob-stream", lager.Data{"digest": layerInfo.BlobID, "size": size, "mediaType": layerInfo.MediaType})
 
-	blobTempFile, err := ioutil.TempFile("", "blob-"+layerInfo.BlobID)
+	// Make the blob path suitable for Windows
+	fileName := "blob-" + strings.Replace(layerInfo.BlobID, ":", "-", -1)
+	blobTempFile, err := ioutil.TempFile("", fileName)
 	if err != nil {
 		return "", 0, err
 	}

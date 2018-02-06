@@ -22,7 +22,7 @@ import (
 //go:generate counterfeiter . Driver
 type Driver interface {
 	Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error
-	Bundle(logger lager.Logger, bundleID string, layerIDs []string) (runspec.Spec, error)
+	Bundle(logger lager.Logger, bundleID string, layerIDs []string, spec BundleSpec) (runspec.Spec, error)
 	Exists(logger lager.Logger, layerID string) bool
 	Delete(logger lager.Logger, bundleID string) error
 }
@@ -58,6 +58,16 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 	app.Commands = []cli.Command{
 		{
 			Name: "create",
+			Flags: []cli.Flag{
+				cli.Int64Flag{
+					Name:  "disk-limit-size-bytes",
+					Usage: "Inclusive disk limit (i.e: includes all layers in the filesystem)",
+				},
+				cli.BoolFlag{
+					Name:  "exclude-image-from-quota",
+					Usage: "Set disk limit to be exclusive (i.e.: excluding image layers)",
+				},
+			},
 			Action: func(ctx *cli.Context) error {
 				rootfsURI, err := url.Parse(ctx.Args()[0])
 				if err != nil {
@@ -65,7 +75,7 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 				}
 
 				handle := ctx.Args()[1]
-				runtimeSpec, err := g.Create(handle, rootfsURI)
+				runtimeSpec, err := g.Create(handle, rootfsURI, ctx.Int64("disk-limit-size-bytes"), ctx.Bool("exclude-image-from-quota"))
 				if err != nil {
 					return err
 				}

@@ -64,6 +64,7 @@ func (l *FileFetcher) ImageInfo(logger lager.Logger, imageURL *url.URL) (imagepu
 				BlobID:        imageURL.String(),
 				ParentChainID: "",
 				ChainID:       l.generateChainID(imageURL.String(), stat.ModTime().UnixNano()),
+				Size:          stat.Size(),
 			},
 		},
 	}, nil
