@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  branch = "disk-limit"
+  branch = "garden-windows-prs"
   name = "code.cloudfoundry.org/groot"
   packages = [
     ".",
@@ -12,7 +12,7 @@
     "fetcher/layerfetcher/source",
     "imagepuller"
   ]
-  revision = "e3c845acb13547d421496b545a8801367c6a9fb8"
+  revision = "87b50bb2fb8064ee9eb0ab350774f7ce94ec27b1"
 
 [[projects]]
   name = "code.cloudfoundry.org/lager"
