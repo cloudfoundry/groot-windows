@@ -8,11 +8,12 @@ import (
 	"code.cloudfoundry.org/groot-windows/hcs"
 	"code.cloudfoundry.org/groot-windows/privilege"
 	"code.cloudfoundry.org/groot-windows/tarstream"
+	"code.cloudfoundry.org/groot-windows/volume"
 	"github.com/urfave/cli"
 )
 
 func main() {
-	driver := driver.New(hcs.NewClient(), tarstream.New(), &privilege.Elevator{})
+	driver := driver.New(hcs.NewClient(), tarstream.New(), &privilege.Elevator{}, &volume.Limiter{})
 
 	driverFlags := []cli.Flag{
 		cli.StringFlag{

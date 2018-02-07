@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -39,6 +40,18 @@ var _ = BeforeSuite(func() {
 
 	grootBin, err = gexec.Build("code.cloudfoundry.org/groot-windows")
 	Expect(err).ToNot(HaveOccurred())
+
+	grootDir := filepath.Dir(grootBin)
+
+	o, err := exec.Command("gcc.exe", "-c", "..\\volume\\quota\\quota.c", "-o", filepath.Join(grootDir, "quota.o")).CombinedOutput()
+	Expect(err).NotTo(HaveOccurred(), string(o))
+
+	o, err = exec.Command("gcc.exe",
+		"-shared",
+		"-o", filepath.Join(grootDir, "quota.dll"),
+		filepath.Join(grootDir, "quota.o"),
+		"-lole32", "-loleaut32").CombinedOutput()
+	Expect(err).NotTo(HaveOccurred(), string(o))
 
 	imageTgzDir, keepDir = os.LookupEnv("GROOT_WINDOWS_IMAGE_TGZS")
 

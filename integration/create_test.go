@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"syscall"
 
@@ -95,6 +96,15 @@ var _ = Describe("Create", func() {
 
 				vhdxPath := filepath.Join(volumeStore, bundleID, "Sandbox.vhdx")
 				Expect(vhdxPath).To(BeAnExistingFile())
+			})
+
+			It("does not set a disk limit", func() {
+				outputSpec := grootCreate(driverStore, imageURI, bundleID)
+				mountVolume(outputSpec.Root.Path, volumeMountDir)
+
+				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
+				Expect(err).To(HaveOccurred(), string(output))
+				Expect(string(output)).To(ContainSubstring("The requested object was not found."))
 			})
 		})
 
@@ -186,6 +196,108 @@ var _ = Describe("Create", func() {
 		})
 	})
 
+	Context("when provided a disk limit", func() {
+		var (
+			// note: this is the size of all the gzipped layers which is what libgroot
+			// reports as the image size. We'll need to fix this whenever that bug is fixed
+			baseImageSizeBytes = 81039739 + 42470724 + 70745
+			diskLimitSizeBytes = baseImageSizeBytes + 50*1024*1024
+			remainingQuota     = diskLimitSizeBytes - baseImageSizeBytes
+		)
+
+		BeforeEach(func() {
+			ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
+			Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+		})
+
+		Context("--exclude-image-from-quota is not passed", func() {
+			BeforeEach(func() {
+				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes))
+				mountVolume(outputSpec.Root.Path, volumeMountDir)
+			})
+
+			Context("the disk limit is greater than 0", func() {
+				It("counts the base image size gainst the limit", func() {
+					output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
+					Expect(err).NotTo(HaveOccurred(), string(output))
+					Expect(string(output)).To(MatchRegexp(`Limit:\s*50.01 MB \(Hard\)`))
+				})
+
+				It("doesn't allow files larger than remaining quota to be created", func() {
+					largeFilePath := filepath.Join(volumeMountDir, "file.txt")
+					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+6*1024)).CombinedOutput()
+					Expect(err).To(HaveOccurred(), string(o))
+					Expect(largeFilePath).ToNot(BeAnExistingFile())
+				})
+
+				It("allows files up to the remaining quota to be created", func() {
+					largeFilePath := filepath.Join(volumeMountDir, "file.txt")
+					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota)).CombinedOutput()
+					Expect(err).NotTo(HaveOccurred(), string(o))
+					Expect(largeFilePath).To(BeAnExistingFile())
+				})
+			})
+		})
+
+		Context("--exclude-image-from-quota is passed", func() {
+			BeforeEach(func() {
+				remainingQuota = diskLimitSizeBytes
+
+				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes), "--exclude-image-from-quota")
+				mountVolume(outputSpec.Root.Path, volumeMountDir)
+			})
+
+			It("does not count the base image size against the limit", func() {
+				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
+				Expect(err).NotTo(HaveOccurred(), string(output))
+				Expect(string(output)).To(MatchRegexp(`Limit:\s*167.87 MB \(Hard\)`))
+			})
+
+			It("doesn't allow files larger than remaining quota to be created", func() {
+				largeFilePath := filepath.Join(volumeMountDir, "file.txt")
+				o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+6*1024)).CombinedOutput()
+				Expect(err).To(HaveOccurred(), string(o))
+				Expect(largeFilePath).ToNot(BeAnExistingFile())
+			})
+
+			It("allows files up to the remaining quota to be created", func() {
+				largeFilePath := filepath.Join(volumeMountDir, "file.txt")
+				o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota)).CombinedOutput()
+				Expect(err).NotTo(HaveOccurred(), string(o))
+				Expect(largeFilePath).To(BeAnExistingFile())
+			})
+
+		})
+
+		Context("the disk limit is equal to 0", func() {
+			BeforeEach(func() {
+				diskLimitSizeBytes = 0
+			})
+
+			It("does not set a limit", func() {
+				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes))
+				mountVolume(outputSpec.Root.Path, volumeMountDir)
+
+				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
+				Expect(err).To(HaveOccurred(), string(output))
+				Expect(string(output)).To(ContainSubstring("The requested object was not found."))
+			})
+		})
+
+		Context("the disk limit is less then 0", func() {
+			BeforeEach(func() {
+				diskLimitSizeBytes = -44
+			})
+
+			It("errors", func() {
+				createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes), "--exclude-image-from-quota", imageURI, bundleID)
+				stdout, _, err := execute(createCmd)
+				Expect(err).To(HaveOccurred())
+				Expect(stdout.String()).To(ContainSubstring(fmt.Sprintf("creating bundle: invalid disk limit: %d", diskLimitSizeBytes)))
+			})
+		})
+	})
+
 	Context("provided a Docker image URI", func() {
 		BeforeEach(func() {
 			imageURI = "docker:///cloudfoundry/groot-windows-test:regularfile"
@@ -222,6 +334,15 @@ var _ = Describe("Create", func() {
 
 			knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")
 			Expect(knownFilePath).To(BeAnExistingFile())
+		})
+
+		It("does not set a disk limit", func() {
+			outputSpec := grootCreate(driverStore, imageURI, bundleID)
+			mountVolume(outputSpec.Root.Path, volumeMountDir)
+
+			output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
+			Expect(err).To(HaveOccurred(), string(output))
+			Expect(string(output)).To(ContainSubstring("The requested object was not found."))
 		})
 	})
 })

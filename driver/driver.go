@@ -34,6 +34,11 @@ type PrivilegeElevator interface {
 	DisableProcessPrivileges([]string) error
 }
 
+//go:generate counterfeiter -o fakes/limiter.go --fake-name Limiter . Limiter
+type Limiter interface {
+	SetQuota(string, uint64) error
+}
+
 const (
 	layerDir  = "layers"
 	volumeDir = "volumes"
@@ -44,13 +49,15 @@ type Driver struct {
 	hcsClient         HCSClient
 	tarStreamer       TarStreamer
 	privilegeElevator PrivilegeElevator
+	limiter           Limiter
 }
 
-func New(hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator) *Driver {
+func New(hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator PrivilegeElevator, limiter Limiter) *Driver {
 	return &Driver{
 		hcsClient:         hcsClient,
 		tarStreamer:       tarStreamer,
 		privilegeElevator: privilegeElevator,
+		limiter:           limiter,
 	}
 }
 

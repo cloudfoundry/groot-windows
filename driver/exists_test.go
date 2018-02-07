@@ -17,6 +17,7 @@ var _ = Describe("Exists", func() {
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
 		privilegeElevatorFake *fakes.PrivilegeElevator
+		limiterFake           *fakes.Limiter
 		logger                *lagertest.TestLogger
 		layerID               string
 	)
@@ -25,8 +26,9 @@ var _ = Describe("Exists", func() {
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
+		limiterFake = &fakes.Limiter{}
 
-		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
 		d.Store = "some-store-dir"
 
 		logger = lagertest.NewTestLogger("driver-unpack-test")

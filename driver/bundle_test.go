@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
 	"code.cloudfoundry.org/lager/lagertest"
@@ -27,8 +28,10 @@ var _ = Describe("Bundle", func() {
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
 		privilegeElevatorFake *fakes.PrivilegeElevator
+		limiterFake           *fakes.Limiter
 		logger                *lagertest.TestLogger
 		layerIDs              = []string{"oldest-layer", "middle-layer", "newest-layer"}
+		bundleSpec            groot.BundleSpec
 	)
 
 	BeforeEach(func() {
@@ -40,12 +43,15 @@ var _ = Describe("Bundle", func() {
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
+		limiterFake = &fakes.Limiter{}
 
-		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
 		d.Store = storeDir
 
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		hcsClientFake.GetLayerMountPathReturnsOnCall(0, volumeGUID, nil)
+
+		bundleSpec = groot.BundleSpec{}
 	})
 
 	AfterEach(func() {
@@ -53,7 +59,7 @@ var _ = Describe("Bundle", func() {
 	})
 
 	It("returns a valid runtime spec", func() {
-		spec, err := d.Bundle(logger, bundleID, layerIDs)
+		spec, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(spec.Version).To(Equal(specs.Version))
 		Expect(spec.Root.Path).To(Equal(volumeGUID))
@@ -67,13 +73,13 @@ var _ = Describe("Bundle", func() {
 	})
 
 	It("creates the volume store if it doesn't exist", func() {
-		_, err := d.Bundle(logger, bundleID, layerIDs)
+		_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 		Expect(err).ToNot(HaveOccurred())
 		Expect(d.VolumeStore()).To(BeADirectory())
 	})
 
 	It("uses hcs to create the volume", func() {
-		_, err := d.Bundle(logger, bundleID, layerIDs)
+		_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 		Expect(err).ToNot(HaveOccurred())
 
 		di, id, parentDir, allDirs := hcsClientFake.CreateLayerArgsForCall(0)
@@ -89,13 +95,88 @@ var _ = Describe("Bundle", func() {
 		Expect(allDirs).To(Equal(expectedLayerDirs))
 	})
 
+	Context("no disk limit is given", func() {
+		It("does not set a quota on the volume", func() {
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(limiterFake.SetQuotaCallCount()).To(Equal(0))
+		})
+	})
+
+	Context("a disk limit is given", func() {
+		BeforeEach(func() {
+			bundleSpec.DiskLimit = 1234
+			bundleSpec.BaseImageSize = 234
+		})
+
+		It("sets the quota on the volume to the difference between the limit and the base size", func() {
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+			Expect(err).ToNot(HaveOccurred())
+			Expect(limiterFake.SetQuotaCallCount()).To(Equal(1))
+			vg, l := limiterFake.SetQuotaArgsForCall(0)
+			Expect(vg).To(Equal(volumeGUID))
+			Expect(l).To(Equal(uint64(1000)))
+		})
+
+		Context("the disk limit is less than the base image size", func() {
+			BeforeEach(func() {
+				bundleSpec.BaseImageSize = 2340
+			})
+
+			It("returns an error", func() {
+				_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError(&driver.DiskLimitTooSmallError{Limit: 1234, Base: 2340}))
+			})
+		})
+
+		Context("the disk limit is equal to the base image size", func() {
+			BeforeEach(func() {
+				bundleSpec.BaseImageSize = 1234
+			})
+
+			It("returns an error", func() {
+				_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError(&driver.DiskLimitTooSmallError{Limit: 1234, Base: 1234}))
+			})
+		})
+
+		Context("the limit is negative", func() {
+			BeforeEach(func() {
+				bundleSpec.DiskLimit = -1234
+			})
+
+			It("returns an error", func() {
+				_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+				Expect(err).To(HaveOccurred())
+				Expect(err).To(MatchError(&driver.InvalidDiskLimitError{Limit: -1234}))
+			})
+		})
+
+		Context("ExcludeImageFromQuota is set", func() {
+			BeforeEach(func() {
+				bundleSpec.ExcludeImageFromQuota = true
+			})
+
+			It("sets the quota on the volume to the limit", func() {
+				_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+				Expect(err).ToNot(HaveOccurred())
+				Expect(limiterFake.SetQuotaCallCount()).To(Equal(1))
+				vg, l := limiterFake.SetQuotaArgsForCall(0)
+				Expect(vg).To(Equal(volumeGUID))
+				Expect(l).To(Equal(uint64(1234)))
+			})
+		})
+	})
+
 	Context("a volume with the same id has already been created", func() {
 		BeforeEach(func() {
 			hcsClientFake.LayerExistsReturnsOnCall(0, true, nil)
 		})
 
 		It("returns a helpful error", func() {
-			_, err := d.Bundle(logger, bundleID, layerIDs)
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 			Expect(err).To(MatchError(&driver.LayerExistsError{Id: bundleID}))
 		})
 	})
@@ -106,7 +187,7 @@ var _ = Describe("Bundle", func() {
 		})
 
 		It("returns the error", func() {
-			_, err := d.Bundle(logger, bundleID, layerIDs)
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 			Expect(err).To(MatchError("LayerExists failed"))
 		})
 	})
@@ -117,7 +198,7 @@ var _ = Describe("Bundle", func() {
 		})
 
 		It("return an error", func() {
-			_, err := d.Bundle(logger, bundleID, layerIDs)
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 			Expect(err).To(HaveOccurred())
 			Expect(err).To(MatchError("driver store must be set"))
 		})
@@ -129,7 +210,7 @@ var _ = Describe("Bundle", func() {
 		})
 
 		It("returns the error", func() {
-			_, err := d.Bundle(logger, bundleID, layerIDs)
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 			Expect(err).To(MatchError("CreateLayer failed"))
 		})
 	})
@@ -140,7 +221,7 @@ var _ = Describe("Bundle", func() {
 		})
 
 		It("returns the error", func() {
-			_, err := d.Bundle(logger, bundleID, layerIDs)
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 			Expect(err).To(MatchError("GetLayerMountPath failed"))
 		})
 	})
@@ -151,7 +232,7 @@ var _ = Describe("Bundle", func() {
 		})
 
 		It("returns a helpful error", func() {
-			_, err := d.Bundle(logger, bundleID, layerIDs)
+			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
 			Expect(err).To(MatchError(&driver.MissingVolumePathError{Id: bundleID}))
 		})
 	})

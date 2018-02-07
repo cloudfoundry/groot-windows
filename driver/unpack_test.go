@@ -28,6 +28,7 @@ var _ = Describe("Unpack", func() {
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
 		privilegeElevatorFake *fakes.PrivilegeElevator
+		limiterFake           *fakes.Limiter
 		logger                lager.Logger
 		layerID               string
 		buffer                *bytes.Buffer
@@ -42,8 +43,9 @@ var _ = Describe("Unpack", func() {
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
+		limiterFake = &fakes.Limiter{}
 
-		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake)
+		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
 		d.Store = storeDir
 
 		logger = lagertest.NewTestLogger("driver-unpack-test")
