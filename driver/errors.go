@@ -15,7 +15,7 @@ type MissingVolumePathError struct {
 }
 
 func (e *MissingVolumePathError) Error() string {
-	return fmt.Sprintf("could not get volume path from layer: %s", e.Id)
+	return fmt.Sprintf("could not get volume path for bundle ID: %s", e.Id)
 }
 
 type EmptyDriverStoreError struct{}

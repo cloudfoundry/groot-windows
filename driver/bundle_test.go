@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/groot-windows/driver"
@@ -51,7 +52,12 @@ var _ = Describe("Bundle", func() {
 		logger = lagertest.NewTestLogger("driver-unpack-test")
 		hcsClientFake.GetLayerMountPathReturnsOnCall(0, volumeGUID, nil)
 
-		bundleSpec = groot.BundleSpec{}
+		bundleSpec = groot.BundleSpec{BaseImageSize: 234}
+
+		hcsClientFake.CreateLayerStub = func(di hcsshim.DriverInfo, id string, _ string, _ []string) error {
+			Expect(os.MkdirAll(filepath.Join(di.HomeDir, id), 0755)).To(Succeed())
+			return nil
+		}
 	})
 
 	AfterEach(func() {
@@ -95,6 +101,20 @@ var _ = Describe("Bundle", func() {
 		Expect(allDirs).To(Equal(expectedLayerDirs))
 	})
 
+	It("writes a base_image_size file", func() {
+		_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
+		Expect(err).ToNot(HaveOccurred())
+
+		file := filepath.Join(d.VolumeStore(), bundleID, "base_image_size")
+		contents, err := ioutil.ReadFile(file)
+		Expect(err).ToNot(HaveOccurred())
+
+		size, err := strconv.ParseInt(string(contents), 10, 64)
+		Expect(err).ToNot(HaveOccurred())
+
+		Expect(size).To(Equal(bundleSpec.BaseImageSize))
+	})
+
 	Context("no disk limit is given", func() {
 		It("does not set a quota on the volume", func() {
 			_, err := d.Bundle(logger, bundleID, layerIDs, bundleSpec)
@@ -106,7 +126,6 @@ var _ = Describe("Bundle", func() {
 	Context("a disk limit is given", func() {
 		BeforeEach(func() {
 			bundleSpec.DiskLimit = 1234
-			bundleSpec.BaseImageSize = 234
 		})
 
 		It("sets the quota on the volume to the difference between the limit and the base size", func() {

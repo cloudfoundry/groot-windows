@@ -20,6 +20,19 @@ type Limiter struct {
 	setQuotaReturnsOnCall map[int]struct {
 		result1 error
 	}
+	GetQuotaUsedStub        func(string) (uint64, error)
+	getQuotaUsedMutex       sync.RWMutex
+	getQuotaUsedArgsForCall []struct {
+		arg1 string
+	}
+	getQuotaUsedReturns struct {
+		result1 uint64
+		result2 error
+	}
+	getQuotaUsedReturnsOnCall map[int]struct {
+		result1 uint64
+		result2 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -73,11 +86,64 @@ func (fake *Limiter) SetQuotaReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
+func (fake *Limiter) GetQuotaUsed(arg1 string) (uint64, error) {
+	fake.getQuotaUsedMutex.Lock()
+	ret, specificReturn := fake.getQuotaUsedReturnsOnCall[len(fake.getQuotaUsedArgsForCall)]
+	fake.getQuotaUsedArgsForCall = append(fake.getQuotaUsedArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	fake.recordInvocation("GetQuotaUsed", []interface{}{arg1})
+	fake.getQuotaUsedMutex.Unlock()
+	if fake.GetQuotaUsedStub != nil {
+		return fake.GetQuotaUsedStub(arg1)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fake.getQuotaUsedReturns.result1, fake.getQuotaUsedReturns.result2
+}
+
+func (fake *Limiter) GetQuotaUsedCallCount() int {
+	fake.getQuotaUsedMutex.RLock()
+	defer fake.getQuotaUsedMutex.RUnlock()
+	return len(fake.getQuotaUsedArgsForCall)
+}
+
+func (fake *Limiter) GetQuotaUsedArgsForCall(i int) string {
+	fake.getQuotaUsedMutex.RLock()
+	defer fake.getQuotaUsedMutex.RUnlock()
+	return fake.getQuotaUsedArgsForCall[i].arg1
+}
+
+func (fake *Limiter) GetQuotaUsedReturns(result1 uint64, result2 error) {
+	fake.GetQuotaUsedStub = nil
+	fake.getQuotaUsedReturns = struct {
+		result1 uint64
+		result2 error
+	}{result1, result2}
+}
+
+func (fake *Limiter) GetQuotaUsedReturnsOnCall(i int, result1 uint64, result2 error) {
+	fake.GetQuotaUsedStub = nil
+	if fake.getQuotaUsedReturnsOnCall == nil {
+		fake.getQuotaUsedReturnsOnCall = make(map[int]struct {
+			result1 uint64
+			result2 error
+		})
+	}
+	fake.getQuotaUsedReturnsOnCall[i] = struct {
+		result1 uint64
+		result2 error
+	}{result1, result2}
+}
+
 func (fake *Limiter) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.setQuotaMutex.RLock()
 	defer fake.setQuotaMutex.RUnlock()
+	fake.getQuotaUsedMutex.RLock()
+	defer fake.getQuotaUsedMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

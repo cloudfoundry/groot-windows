@@ -20,6 +20,7 @@ import (
 	"syscall"
 	"unsafe"
 
+	"code.cloudfoundry.org/groot"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 
@@ -51,6 +52,16 @@ func grootDelete(driverStore, bundleID string) {
 	deleteCmd := exec.Command(grootBin, "--driver-store", driverStore, "delete", bundleID)
 	_, _, err := execute(deleteCmd)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
+}
+
+func grootStats(driverStore, bundleID string) groot.VolumeStats {
+	statsCmd := exec.Command(grootBin, "--driver-store", driverStore, "stats", bundleID)
+	stdout, _, err := execute(statsCmd)
+	ExpectWithOffset(1, err).ToNot(HaveOccurred())
+
+	var stats groot.VolumeStats
+	ExpectWithOffset(1, json.Unmarshal(stdout.Bytes(), &stats)).To(Succeed())
+	return stats
 }
 
 func execute(c *exec.Cmd) (*bytes.Buffer, *bytes.Buffer, error) {
@@ -163,6 +174,11 @@ func destroyLayerStore(driverStore string) {
 
 func destroyVolumeStore(driverStore string) {
 	volumeStore := filepath.Join(driverStore, "volumes")
+	_, err := os.Stat(volumeStore)
+	if err != nil && os.IsNotExist(err) {
+		return
+	}
+	Expect(err).NotTo(HaveOccurred())
 
 	files, err := ioutil.ReadDir(volumeStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())

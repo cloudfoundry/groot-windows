@@ -1,8 +1,10 @@
 package driver
 
 import (
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/lager"
@@ -47,6 +49,11 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string,
 	}
 
 	if err := d.setQuota(volumePath, bundleSpec); err != nil {
+		return specs.Spec{}, err
+	}
+
+	file := filepath.Join(d.VolumeStore(), bundleID, "base_image_size")
+	if err := ioutil.WriteFile(file, []byte(strconv.FormatInt(bundleSpec.BaseImageSize, 10)), 0644); err != nil {
 		return specs.Spec{}, err
 	}
 

@@ -37,6 +37,7 @@ type PrivilegeElevator interface {
 //go:generate counterfeiter -o fakes/limiter.go --fake-name Limiter . Limiter
 type Limiter interface {
 	SetQuota(string, uint64) error
+	GetQuotaUsed(string) (uint64, error)
 }
 
 const (
