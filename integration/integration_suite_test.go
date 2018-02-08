@@ -1,6 +1,7 @@
 package integration_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -35,7 +36,7 @@ func TestGrootWindows(t *testing.T) {
 	RunSpecs(t, "GrootWindows Suite")
 }
 
-var _ = BeforeSuite(func() {
+var _ = SynchronizedBeforeSuite(func() []byte {
 	var err error
 
 	grootBin, err = gexec.Build("code.cloudfoundry.org/groot-windows")
@@ -68,9 +69,23 @@ var _ = BeforeSuite(func() {
 		}
 		Expect(err).NotTo(HaveOccurred())
 	}
+
+	testData := make(map[string]string)
+	testData["groot_bin"] = grootBin
+	testData["image_tgz_dir"] = imageTgzDir
+	json, err := json.Marshal(testData)
+	Expect(err).NotTo(HaveOccurred())
+
+	return json
+}, func(jsonBytes []byte) {
+	testData := make(map[string]string)
+	Expect(json.Unmarshal(jsonBytes, &testData)).To(Succeed())
+
+	grootBin = testData["groot_bin"]
+	imageTgzDir = testData["image_tgz_dir"]
 })
 
-var _ = AfterSuite(func() {
+var _ = SynchronizedAfterSuite(func() {}, func() {
 	if !keepDir {
 		Expect(os.RemoveAll(imageTgzDir)).To(Succeed())
 	}
