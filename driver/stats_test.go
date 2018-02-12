@@ -1,12 +1,13 @@
 package driver_test
 
 import (
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strconv"
 
+	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
 	"code.cloudfoundry.org/lager/lagertest"
@@ -25,7 +26,7 @@ var _ = Describe("Stats", func() {
 		logger                *lagertest.TestLogger
 		bundleID              string
 		storeDir              string
-		baseImageFile         string
+		metadataFile          string
 		baseImageSize         int64
 		quotaUsed             int64
 		volumeGUID            string
@@ -44,15 +45,17 @@ var _ = Describe("Stats", func() {
 		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
 		d.Store = storeDir
 
-		logger = lagertest.NewTestLogger("driver-delete-test")
+		logger = lagertest.NewTestLogger("driver-stats-test")
 		bundleID = "some-bundle-id"
 
 		bundleVolumeDir := filepath.Join(storeDir, "volumes", bundleID)
 		Expect(os.MkdirAll(bundleVolumeDir, 0755)).To(Succeed())
 
 		baseImageSize = 12345
-		baseImageFile = filepath.Join(bundleVolumeDir, "base_image_size")
-		Expect(ioutil.WriteFile(baseImageFile, []byte(strconv.FormatInt(baseImageSize, 10)), 0644)).To(Succeed())
+		metadataFile = filepath.Join(bundleVolumeDir, "metadata.json")
+		data, err := json.Marshal(groot.VolumeMetadata{BaseImageSize: baseImageSize})
+		Expect(err).NotTo(HaveOccurred())
+		Expect(ioutil.WriteFile(metadataFile, data, 0644)).To(Succeed())
 
 		quotaUsed = 6789
 		limiterFake.GetQuotaUsedReturnsOnCall(0, uint64(quotaUsed), nil)
@@ -80,7 +83,7 @@ var _ = Describe("Stats", func() {
 		Expect(limiterFake.GetQuotaUsedArgsForCall(0)).To(Equal(volumeGUID))
 	})
 
-	Context("base_image_size file can't be read", func() {
+	Context("metadata.json file can't be read", func() {
 		BeforeEach(func() {
 			d.Store = "not-exist"
 		})
@@ -92,15 +95,15 @@ var _ = Describe("Stats", func() {
 		})
 	})
 
-	Context("base_image_size file contains bad data", func() {
+	Context("metadata.json file contains bad data", func() {
 		BeforeEach(func() {
-			Expect(ioutil.WriteFile(baseImageFile, []byte("not a num"), 0644)).To(Succeed())
+			Expect(ioutil.WriteFile(metadataFile, []byte("not json"), 0644)).To(Succeed())
 		})
 
 		It("errors", func() {
 			_, err := d.Stats(logger, bundleID)
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring("couldn't parse base_image_size"))
+			Expect(err.Error()).To(ContainSubstring("couldn't parse metadata.json"))
 		})
 	})
 

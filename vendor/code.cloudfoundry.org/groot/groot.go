@@ -27,14 +27,19 @@ type VolumeStats struct {
 	DiskUsage DiskUsage `json:"disk_usage"`
 }
 
+type VolumeMetadata struct {
+	BaseImageSize int64 `json:"base_image_size"`
+}
+
 // Driver should implement the filesystem interaction
 //go:generate counterfeiter . Driver
 type Driver interface {
 	Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error
-	Bundle(logger lager.Logger, bundleID string, layerIDs []string, spec BundleSpec) (runspec.Spec, error)
+	Bundle(logger lager.Logger, bundleID string, layerIDs []string, diskLimit int64) (runspec.Spec, error)
 	Exists(logger lager.Logger, layerID string) bool
 	Delete(logger lager.Logger, bundleID string) error
 	Stats(logger lager.Logger, bundleID string) (VolumeStats, error)
+	WriteMetadata(logger lager.Logger, bundleID string, volumeData VolumeMetadata) error
 }
 
 // ImagePuller should be able to download and store a remote (or local) image

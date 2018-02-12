@@ -1,6 +1,7 @@
 package groot
 
 import (
+	"fmt"
 	"net/url"
 
 	"code.cloudfoundry.org/groot/imagepuller"
@@ -8,16 +9,14 @@ import (
 	"github.com/pkg/errors"
 )
 
-type BundleSpec struct {
-	DiskLimit             int64
-	ExcludeImageFromQuota bool
-	BaseImageSize         int64
-}
-
 func (g *Groot) Create(handle string, rootfsURI *url.URL, diskLimit int64, excludeImageFromQuota bool) (runspec.Spec, error) {
 	g.Logger = g.Logger.Session("create")
 	g.Logger.Debug("starting")
 	defer g.Logger.Debug("ending")
+
+	if diskLimit < 0 {
+		return runspec.Spec{}, fmt.Errorf("invalid disk limit: %d", diskLimit)
+	}
 
 	imageSpec := imagepuller.ImageSpec{
 		ImageSrc:              rootfsURI,
@@ -30,16 +29,22 @@ func (g *Groot) Create(handle string, rootfsURI *url.URL, diskLimit int64, exclu
 		return runspec.Spec{}, errors.Wrap(err, "pulling image")
 	}
 
-	bundleSpec := BundleSpec{
-		DiskLimit:             diskLimit,
-		ExcludeImageFromQuota: excludeImageFromQuota,
-		BaseImageSize:         image.BaseImageSize,
+	quota := diskLimit
+
+	if diskLimit != 0 && !excludeImageFromQuota {
+		quota = quota - image.BaseImageSize
+		if quota <= 0 {
+			return runspec.Spec{}, fmt.Errorf("disk limit %d must be larger than image size %d", diskLimit, image.BaseImageSize)
+		}
 	}
 
-	bundle, err := g.Driver.Bundle(g.Logger.Session("bundle"), handle, image.ChainIDs, bundleSpec)
+	bundle, err := g.Driver.Bundle(g.Logger.Session("bundle"), handle, image.ChainIDs, quota)
 	if err != nil {
 		return runspec.Spec{}, errors.Wrap(err, "creating bundle")
 	}
 
-	return bundle, nil
+	metadata := VolumeMetadata{BaseImageSize: image.BaseImageSize}
+	err = g.Driver.WriteMetadata(g.Logger.Session("write-metadata"), handle, metadata)
+
+	return bundle, err
 }

@@ -293,7 +293,7 @@ var _ = Describe("Create", func() {
 				createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes), "--exclude-image-from-quota", imageURI, bundleID)
 				stdout, _, err := execute(createCmd)
 				Expect(err).To(HaveOccurred())
-				Expect(stdout.String()).To(ContainSubstring(fmt.Sprintf("creating bundle: invalid disk limit: %d", diskLimitSizeBytes)))
+				Expect(stdout.String()).To(ContainSubstring(fmt.Sprintf("invalid disk limit: %d", diskLimitSizeBytes)))
 			})
 		})
 	})

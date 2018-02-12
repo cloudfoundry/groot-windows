@@ -23,20 +23,3 @@ type EmptyDriverStoreError struct{}
 func (e *EmptyDriverStoreError) Error() string {
 	return fmt.Sprintf("driver store must be set")
 }
-
-type InvalidDiskLimitError struct {
-	Limit int64
-}
-
-func (e *InvalidDiskLimitError) Error() string {
-	return fmt.Sprintf("invalid disk limit: %d", e.Limit)
-}
-
-type DiskLimitTooSmallError struct {
-	Limit int64
-	Base  int64
-}
-
-func (e *DiskLimitTooSmallError) Error() string {
-	return fmt.Sprintf("disk limit %d smaller than image size: %d", e.Limit, e.Base)
-}

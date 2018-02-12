@@ -31,7 +31,7 @@ var _ = Describe("Exists", func() {
 		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
 		d.Store = "some-store-dir"
 
-		logger = lagertest.NewTestLogger("driver-unpack-test")
+		logger = lagertest.NewTestLogger("driver-exists-test")
 		layerID = "some-layer-id"
 	})
 
@@ -70,7 +70,7 @@ var _ = Describe("Exists", func() {
 
 		It("returns false + logs an error", func() {
 			Expect(d.Exists(logger, layerID)).To(BeFalse())
-			Expect(logger.LogMessages()).To(ContainElement("driver-unpack-test.error-checking-layer"))
+			Expect(logger.LogMessages()).To(ContainElement("driver-exists-test.error-checking-layer"))
 		})
 	})
 })

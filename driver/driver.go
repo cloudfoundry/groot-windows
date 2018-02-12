@@ -69,3 +69,7 @@ func (d *Driver) LayerStore() string {
 func (d *Driver) VolumeStore() string {
 	return filepath.Join(d.Store, volumeDir)
 }
+
+func (d *Driver) metadataFile(bundleId string) string {
+	return filepath.Join(d.VolumeStore(), bundleId, "metadata.json")
+}

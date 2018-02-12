@@ -1,18 +1,15 @@
 package driver
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strconv"
 
-	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/lager"
 	"github.com/Microsoft/hcsshim"
 	specs "github.com/opencontainers/runtime-spec/specs-go"
 )
 
-func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string, bundleSpec groot.BundleSpec) (specs.Spec, error) {
+func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string, diskLimit int64) (specs.Spec, error) {
 	logger.Info("bundle-start")
 	defer logger.Info("bundle-finished")
 
@@ -48,12 +45,7 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string,
 		return specs.Spec{}, &MissingVolumePathError{Id: bundleID}
 	}
 
-	if err := d.setQuota(volumePath, bundleSpec); err != nil {
-		return specs.Spec{}, err
-	}
-
-	file := filepath.Join(d.VolumeStore(), bundleID, "base_image_size")
-	if err := ioutil.WriteFile(file, []byte(strconv.FormatInt(bundleSpec.BaseImageSize, 10)), 0644); err != nil {
+	if err := d.limiter.SetQuota(volumePath, uint64(diskLimit)); err != nil {
 		return specs.Spec{}, err
 	}
 
@@ -66,24 +58,4 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string,
 			LayerFolders: layerFolders,
 		},
 	}, nil
-}
-
-func (d *Driver) setQuota(volumePath string, bundleSpec groot.BundleSpec) error {
-	if bundleSpec.DiskLimit == 0 {
-		return nil
-	}
-
-	if bundleSpec.DiskLimit < 0 {
-		return &InvalidDiskLimitError{Limit: bundleSpec.DiskLimit}
-	}
-
-	quota := uint64(bundleSpec.DiskLimit)
-	if !bundleSpec.ExcludeImageFromQuota {
-		if bundleSpec.DiskLimit <= bundleSpec.BaseImageSize {
-			return &DiskLimitTooSmallError{Limit: bundleSpec.DiskLimit, Base: bundleSpec.BaseImageSize}
-		}
-		quota = quota - uint64(bundleSpec.BaseImageSize)
-	}
-
-	return d.limiter.SetQuota(volumePath, quota)
 }

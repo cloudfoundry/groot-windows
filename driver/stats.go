@@ -1,10 +1,9 @@
 package driver
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"path/filepath"
-	"strconv"
 
 	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/lager"
@@ -28,19 +27,18 @@ func (d *Driver) Stats(logger lager.Logger, bundleID string) (groot.VolumeStats,
 		return groot.VolumeStats{}, err
 	}
 
-	file := filepath.Join(d.VolumeStore(), bundleID, "base_image_size")
-	base, err := ioutil.ReadFile(file)
+	data, err := ioutil.ReadFile(d.metadataFile(bundleID))
 	if err != nil {
 		return groot.VolumeStats{}, err
 	}
 
-	baseImageSize, err := strconv.ParseInt(string(base), 10, 64)
-	if err != nil {
-		return groot.VolumeStats{}, fmt.Errorf("couldn't parse base_image_size: %s", err.Error())
+	var volumeData groot.VolumeMetadata
+	if err := json.Unmarshal(data, &volumeData); err != nil {
+		return groot.VolumeStats{}, fmt.Errorf("couldn't parse metadata.json: %s", err.Error())
 	}
 
 	return groot.VolumeStats{DiskUsage: groot.DiskUsage{
-		TotalBytesUsed:     baseImageSize + int64(quotaUsed),
+		TotalBytesUsed:     volumeData.BaseImageSize + int64(quotaUsed),
 		ExclusiveBytesUsed: int64(quotaUsed),
 	}}, nil
 }

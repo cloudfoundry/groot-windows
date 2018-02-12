@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"strings"
 
+	"code.cloudfoundry.org/groot/fetcher/layerfetcher"
 	"code.cloudfoundry.org/groot/imagepuller"
 	"code.cloudfoundry.org/lager"
 	_ "github.com/containers/image/docker"
@@ -29,14 +30,14 @@ import (
 const MAX_DOCKER_RETRIES = 3
 
 type LayerSource struct {
-	skipOCIChecksumValidation bool
-	systemContext             types.SystemContext
+	skipOCILayerValidation bool
+	systemContext          types.SystemContext
 }
 
-func NewLayerSource(systemContext types.SystemContext, skipOCIChecksumValidation bool) LayerSource {
+func NewLayerSource(systemContext types.SystemContext, skipOCILayerValidation bool) LayerSource {
 	return LayerSource{
-		systemContext:             systemContext,
-		skipOCIChecksumValidation: skipOCIChecksumValidation,
+		systemContext:          systemContext,
+		skipOCILayerValidation: skipOCILayerValidation,
 	}
 }
 
@@ -97,6 +98,15 @@ func (s *LayerSource) Blob(logger lager.Logger, imageURL *url.URL, layerInfo ima
 	defer blob.Close()
 	logger.Debug("got-blob-stream", lager.Data{"digest": layerInfo.BlobID, "size": size, "mediaType": layerInfo.MediaType})
 
+	quotaedReader := &layerfetcher.QuotaedReader{
+		DelegateReader: blob,
+		QuotaLeft:      layerInfo.Size,
+		SkipValidation: s.skipOCILayerValidation,
+		QuotaExceededErrorHandler: func() error {
+			return fmt.Errorf("layer size is greater than the value in the manifest")
+		},
+	}
+
 	// Make the blob path suitable for Windows
 	fileName := "blob-" + strings.Replace(layerInfo.BlobID, ":", "-", -1)
 	blobTempFile, err := ioutil.TempFile("", fileName)
@@ -111,7 +121,7 @@ func (s *LayerSource) Blob(logger lager.Logger, imageURL *url.URL, layerInfo ima
 	}()
 
 	blobIDHash := sha256.New()
-	digestReader := ioutil.NopCloser(io.TeeReader(blob, blobIDHash))
+	digestReader := ioutil.NopCloser(io.TeeReader(quotaedReader, blobIDHash))
 	if layerInfo.MediaType == "" || strings.Contains(layerInfo.MediaType, "gzip") {
 		logger.Debug("uncompressing-blob")
 
@@ -140,6 +150,10 @@ func (s *LayerSource) Blob(logger lager.Logger, imageURL *url.URL, layerInfo ima
 		return "", 0, errors.Wrap(err, "diffID digest mismatch")
 	}
 
+	if quotaedReader.AnyQuotaLeft() {
+		return "", 0, fmt.Errorf("layer size is less than the value in the manifest")
+	}
+
 	return blobTempFile.Name(), size, nil
 }
 
@@ -160,7 +174,7 @@ func (s *LayerSource) getBlobWithRetries(logger lager.Logger, imgSrc types.Image
 }
 
 func (s *LayerSource) checkCheckSum(logger lager.Logger, hash hash.Hash, digest string, scheme string) error {
-	if s.skipOCIChecksumValidation && scheme == "oci" {
+	if s.skipOCILayerValidation && scheme == "oci" {
 		return nil
 	}
 
@@ -269,6 +283,7 @@ func (s *LayerSource) convertImage(logger lager.Logger, originalImage types.Imag
 		ManifestMIMEType: manifestpkg.DockerV2Schema2MediaType,
 		InformationOnly: types.ManifestUpdateInformation{
 			LayerDiffIDs: diffIDs,
+			LayerInfos:   originalImage.LayerInfos(),
 		},
 	}
 
