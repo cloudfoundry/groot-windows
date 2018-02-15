@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  branch = "garden-windows-prs"
+  branch = "master"
   name = "code.cloudfoundry.org/groot"
   packages = [
     ".",
@@ -12,7 +12,7 @@
     "fetcher/layerfetcher/source",
     "imagepuller"
   ]
-  revision = "150e2292ad1046ff1235288cc048e08ec61de2dc"
+  revision = "1fc8a150c6f4368708597d8168651c04bc13d675"
 
 [[projects]]
   name = "code.cloudfoundry.org/lager"
@@ -297,6 +297,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "157bbd5e8674b65d3de822176a29ae6969b8357965ca94e1bcbd1e296dbf841e"
+  inputs-digest = "e6f8d9ea181c11f473d43d2f1e55c6cc80f0fc12905d0f972171c9c989c0a9ba"
   solver-name = "gps-cdcl"
   solver-version = 1
