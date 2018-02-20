@@ -16,5 +16,9 @@ func (d *Driver) Exists(logger lager.Logger, layerID string) bool {
 		return false
 	}
 
+	if exists {
+		logger.Info("layer-id-exists", lager.Data{"layerID": layerID})
+	}
+
 	return exists
 }
