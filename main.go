@@ -21,6 +21,12 @@ func main() {
 			Value:       "",
 			Usage:       "driver store path",
 			Destination: &driver.Store,
+		},
+
+		cli.StringFlag{
+			Name:  "store",
+			Value: "",
+			Usage: "ignored for backward compatibility with Guardian",
 		}}
 	groot.Run(driver, os.Args, driverFlags)
 }
