@@ -108,6 +108,23 @@ var _ = Describe("Create", func() {
 			})
 		})
 
+		Context("the driver store is a Unix-style path", func() {
+			var unixStyleDriverStore string
+			BeforeEach(func() {
+				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
+				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+
+				unixStyleDriverStore = strings.Replace(strings.TrimPrefix(driverStore, filepath.VolumeName(driverStore)), "\\", "/", -1)
+			})
+
+			It("creates the volume vhdx in the proper location", func() {
+				grootCreate(unixStyleDriverStore, imageURI, bundleID)
+
+				vhdxPath := filepath.Join(volumeStore, bundleID, "Sandbox.vhdx")
+				Expect(vhdxPath).To(BeAnExistingFile())
+			})
+		})
+
 		Context("when the image contains a layer with a whiteout file", func() {
 			BeforeEach(func() {
 				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-whiteout.tgz")
