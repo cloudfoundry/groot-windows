@@ -34,18 +34,29 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string,
 		layerFolders = append([]string{filepath.Join(d.LayerStore(), layerID)}, layerFolders...)
 	}
 
+	cleanupLayer := func() {
+		destroyErr := d.hcsClient.DestroyLayer(di, bundleID)
+		if destroyErr != nil {
+			logger.Error("destroy-failed", destroyErr)
+		}
+	}
+
 	if err := d.hcsClient.CreateLayer(di, bundleID, layerFolders[0], layerFolders); err != nil {
+		cleanupLayer()
 		return specs.Spec{}, err
 	}
 
 	volumePath, err := d.hcsClient.GetLayerMountPath(di, bundleID)
 	if err != nil {
+		cleanupLayer()
 		return specs.Spec{}, err
 	} else if volumePath == "" {
+		cleanupLayer()
 		return specs.Spec{}, &MissingVolumePathError{Id: bundleID}
 	}
 
 	if err := d.limiter.SetQuota(volumePath, uint64(diskLimit)); err != nil {
+		cleanupLayer()
 		return specs.Spec{}, err
 	}
 

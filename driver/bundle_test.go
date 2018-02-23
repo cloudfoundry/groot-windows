@@ -147,9 +147,13 @@ var _ = Describe("Bundle", func() {
 			hcsClientFake.CreateLayerReturnsOnCall(0, errors.New("CreateLayer failed"))
 		})
 
-		It("returns the error", func() {
+		It("calls DestroyLayer and returns the error", func() {
 			_, err := d.Bundle(logger, bundleID, layerIDs, diskLimit)
 			Expect(err).To(MatchError("CreateLayer failed"))
+			Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
+			di, id := hcsClientFake.DestroyLayerArgsForCall(0)
+			Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}))
+			Expect(id).To(Equal(bundleID))
 		})
 	})
 
@@ -158,9 +162,13 @@ var _ = Describe("Bundle", func() {
 			hcsClientFake.GetLayerMountPathReturnsOnCall(0, "", errors.New("GetLayerMountPath failed"))
 		})
 
-		It("returns the error", func() {
+		It("calls DestroyLayer and returns the error", func() {
 			_, err := d.Bundle(logger, bundleID, layerIDs, diskLimit)
 			Expect(err).To(MatchError("GetLayerMountPath failed"))
+			Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
+			di, id := hcsClientFake.DestroyLayerArgsForCall(0)
+			Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}))
+			Expect(id).To(Equal(bundleID))
 		})
 	})
 
@@ -169,9 +177,30 @@ var _ = Describe("Bundle", func() {
 			hcsClientFake.GetLayerMountPathReturnsOnCall(0, "", nil)
 		})
 
-		It("returns a helpful error", func() {
+		It("calls DestroyLayer and returns a helpful error", func() {
 			_, err := d.Bundle(logger, bundleID, layerIDs, diskLimit)
 			Expect(err).To(MatchError(&driver.MissingVolumePathError{Id: bundleID}))
+
+			Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
+			di, id := hcsClientFake.DestroyLayerArgsForCall(0)
+			Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}))
+			Expect(id).To(Equal(bundleID))
+		})
+	})
+
+	Context("setting disk quota fails", func() {
+		BeforeEach(func() {
+			limiterFake.SetQuotaReturnsOnCall(0, errors.New("setting quota failed"))
+		})
+
+		It("calls DestroyLayer and returns the error", func() {
+			_, err := d.Bundle(logger, bundleID, layerIDs, diskLimit)
+			Expect(err).To(MatchError(errors.New("setting quota failed")))
+
+			Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
+			di, id := hcsClientFake.DestroyLayerArgsForCall(0)
+			Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}))
+			Expect(id).To(Equal(bundleID))
 		})
 	})
 })
