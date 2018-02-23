@@ -2,14 +2,13 @@ package groot
 
 import (
 	"fmt"
-	"net/url"
 
 	"code.cloudfoundry.org/groot/imagepuller"
 	runspec "github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/pkg/errors"
 )
 
-func (g *Groot) Create(handle string, rootfsURI *url.URL, diskLimit int64, excludeImageFromQuota bool) (runspec.Spec, error) {
+func (g *Groot) Create(handle string, diskLimit int64, excludeImageFromQuota bool) (runspec.Spec, error) {
 	g.Logger = g.Logger.Session("create")
 	g.Logger.Debug("starting")
 	defer g.Logger.Debug("ending")
@@ -19,7 +18,6 @@ func (g *Groot) Create(handle string, rootfsURI *url.URL, diskLimit int64, exclu
 	}
 
 	imageSpec := imagepuller.ImageSpec{
-		ImageSrc:              rootfsURI,
 		DiskLimit:             diskLimit,
 		ExcludeImageFromQuota: excludeImageFromQuota,
 	}

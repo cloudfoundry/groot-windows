@@ -2,7 +2,6 @@ package imagepuller // import "code.cloudfoundry.org/groot/imagepuller"
 
 import (
 	"io"
-	"net/url"
 
 	"code.cloudfoundry.org/lager"
 	imgspec "github.com/opencontainers/image-spec/specs-go/v1"
@@ -32,8 +31,9 @@ type VolumeMeta struct {
 }
 
 type Fetcher interface {
-	ImageInfo(logger lager.Logger, imageURL *url.URL) (ImageInfo, error)
-	StreamBlob(logger lager.Logger, imageURL *url.URL, layerInfo LayerInfo) (io.ReadCloser, int64, error)
+	ImageInfo(logger lager.Logger) (ImageInfo, error)
+	StreamBlob(logger lager.Logger, layerInfo LayerInfo) (io.ReadCloser, int64, error)
+	Close() error
 }
 
 type VolumeDriver interface {
@@ -50,7 +50,6 @@ type Image struct {
 type ImageSpec struct {
 	DiskLimit             int64
 	ExcludeImageFromQuota bool
-	ImageSrc              *url.URL
 }
 
 type ImagePuller struct {
@@ -70,7 +69,7 @@ func (p *ImagePuller) Pull(logger lager.Logger, spec ImageSpec) (Image, error) {
 	logger.Info("starting")
 	defer logger.Info("ending")
 
-	imageInfo, err := p.fetcher.ImageInfo(logger, spec.ImageSrc)
+	imageInfo, err := p.fetcher.ImageInfo(logger)
 	if err != nil {
 		return Image{}, errors.Wrap(err, "fetching list of layer infos")
 	}
@@ -174,7 +173,7 @@ func (p *ImagePuller) downloadLayer(logger lager.Logger, spec ImageSpec, layerIn
 	logger.Debug("starting")
 	defer logger.Debug("ending")
 
-	stream, size, err := p.fetcher.StreamBlob(logger, spec.ImageSrc, layerInfo)
+	stream, size, err := p.fetcher.StreamBlob(logger, layerInfo)
 	if err != nil {
 		err = errors.Wrapf(err, "streaming blob `%s`", layerInfo.BlobID)
 	}

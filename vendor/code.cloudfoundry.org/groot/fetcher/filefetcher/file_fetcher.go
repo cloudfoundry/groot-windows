@@ -14,32 +14,30 @@ import (
 )
 
 type FileFetcher struct {
+	imagePath string
 }
 
-func NewFileFetcher() *FileFetcher {
-	return &FileFetcher{}
+func NewFileFetcher(imageURL *url.URL) *FileFetcher {
+	return &FileFetcher{imagePath: imageURL.String()}
 }
 
-func (l *FileFetcher) StreamBlob(logger lager.Logger, imageURL *url.URL,
-	layerInfo imagepuller.LayerInfo) (io.ReadCloser, int64, error) {
-	logger = logger.Session("stream-blob")
+func (l *FileFetcher) StreamBlob(logger lager.Logger, layerInfo imagepuller.LayerInfo) (io.ReadCloser, int64, error) {
+	logger = logger.Session("stream-blob", lager.Data{"imagePath": l.imagePath})
 	logger.Info("starting", lager.Data{
-		"imageURL": imageURL.String(),
-		"source":   layerInfo.BlobID,
+		"source": layerInfo.BlobID,
 	})
 	defer logger.Info("ending")
 
-	imagePath := imageURL.String()
-	if _, err := os.Stat(imagePath); err != nil {
-		return nil, 0, errors.Wrapf(err, "local image not found in `%s`", imagePath)
+	if _, err := os.Stat(l.imagePath); err != nil {
+		return nil, 0, errors.Wrapf(err, "local image not found in `%s`", l.imagePath)
 	}
 
-	if err := l.validateImage(imagePath); err != nil {
+	if err := l.validateImage(); err != nil {
 		return nil, 0, errors.Wrap(err, "invalid base image")
 	}
 
-	logger.Debug("opening-tar", lager.Data{"imagePath": imagePath})
-	stream, err := os.Open(imagePath)
+	logger.Debug("opening-tar", lager.Data{"imagePath": l.imagePath})
+	stream, err := os.Open(l.imagePath)
 	if err != nil {
 		return nil, 0, errors.Wrap(err, "reading local image")
 	}
@@ -47,12 +45,13 @@ func (l *FileFetcher) StreamBlob(logger lager.Logger, imageURL *url.URL,
 	return stream, 0, nil
 }
 
-func (l *FileFetcher) ImageInfo(logger lager.Logger, imageURL *url.URL) (imagepuller.ImageInfo, error) {
-	logger = logger.Session("layers-digest", lager.Data{"imageURL": imageURL.String()})
+func (l *FileFetcher) ImageInfo(logger lager.Logger) (imagepuller.ImageInfo, error) {
+	logger = logger.Session("layers-digest", lager.Data{"imagePath": l.imagePath})
+
 	logger.Info("starting")
 	defer logger.Info("ending")
 
-	stat, err := os.Stat(imageURL.String())
+	stat, err := os.Stat(l.imagePath)
 	if err != nil {
 		return imagepuller.ImageInfo{},
 			errors.Wrap(err, "fetching image timestamp")
@@ -61,22 +60,26 @@ func (l *FileFetcher) ImageInfo(logger lager.Logger, imageURL *url.URL) (imagepu
 	return imagepuller.ImageInfo{
 		LayerInfos: []imagepuller.LayerInfo{
 			imagepuller.LayerInfo{
-				BlobID:        imageURL.String(),
+				BlobID:        l.imagePath,
 				ParentChainID: "",
-				ChainID:       l.generateChainID(imageURL.String(), stat.ModTime().UnixNano()),
+				ChainID:       l.generateChainID(stat.ModTime().UnixNano()),
 				Size:          stat.Size(),
 			},
 		},
 	}, nil
 }
 
-func (l *FileFetcher) generateChainID(imagePath string, timestamp int64) string {
-	imagePathSha := sha256.Sum256([]byte(fmt.Sprintf("%s-%d", imagePath, timestamp)))
+func (l *FileFetcher) Close() error {
+	return nil
+}
+
+func (l *FileFetcher) generateChainID(timestamp int64) string {
+	imagePathSha := sha256.Sum256([]byte(fmt.Sprintf("%s-%d", l.imagePath, timestamp)))
 	return hex.EncodeToString(imagePathSha[:])
 }
 
-func (l *FileFetcher) validateImage(imagePath string) error {
-	stat, err := os.Stat(imagePath)
+func (l *FileFetcher) validateImage() error {
+	stat, err := os.Stat(l.imagePath)
 	if err != nil {
 		return err
 	}

@@ -6,13 +6,12 @@
   name = "code.cloudfoundry.org/groot"
   packages = [
     ".",
-    "fetcher",
     "fetcher/filefetcher",
     "fetcher/layerfetcher",
     "fetcher/layerfetcher/source",
     "imagepuller"
   ]
-  revision = "1fc8a150c6f4368708597d8168651c04bc13d675"
+  revision = "a75895b3d9c006055a0be4a984e423796e2fc15b"
 
 [[projects]]
   name = "code.cloudfoundry.org/lager"
