@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/Microsoft/hcsshim"
 	. "github.com/onsi/ginkgo"
@@ -75,6 +76,24 @@ var _ = Describe("Delete", func() {
 				Expect(hcsshim.LayerExists(hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}, filepath.Base(dir))).To(BeTrue())
 				Expect(dir).To(BeADirectory())
 			}
+		})
+	})
+
+	Context("the driver store is a Unix-style path", func() {
+		var unixStyleDriverStore string
+
+		BeforeEach(func() {
+			unixStyleDriverStore = strings.Replace(strings.TrimPrefix(driverStore, filepath.VolumeName(driverStore)), "\\", "/", -1)
+			grootCreate(unixStyleDriverStore, imageURI, bundleID)
+		})
+
+		It("deletes the volume", func() {
+			Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeTrue())
+
+			grootDelete(unixStyleDriverStore, bundleID)
+
+			Expect(hcsshim.LayerExists(driverInfo, bundleID)).To(BeFalse())
+			Expect(filepath.Join(volumeStore, bundleID)).NotTo(BeADirectory())
 		})
 	})
 

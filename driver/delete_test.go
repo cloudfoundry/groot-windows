@@ -43,12 +43,12 @@ var _ = Describe("Delete", func() {
 
 		Expect(hcsClientFake.LayerExistsCallCount()).To(Equal(1))
 		di, id := hcsClientFake.LayerExistsArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: filepath.Join("some-store-dir", "volumes"), Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: filepath.Join("C:\\some-store-dir", "volumes"), Flavour: 1}))
 		Expect(id).To(Equal("some-bundle-id"))
 
 		Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
 		di, id = hcsClientFake.DestroyLayerArgsForCall(0)
-		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: filepath.Join("some-store-dir", "volumes"), Flavour: 1}))
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: filepath.Join("C:\\some-store-dir", "volumes"), Flavour: 1}))
 		Expect(id).To(Equal("some-bundle-id"))
 	})
 

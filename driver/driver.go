@@ -63,13 +63,21 @@ func New(hcsClient HCSClient, tarStreamer TarStreamer, privilegeElevator Privile
 }
 
 func (d *Driver) LayerStore() string {
-	return filepath.Join(d.Store, layerDir)
+	return toWindowsPath(filepath.Join(d.Store, layerDir))
 }
 
 func (d *Driver) VolumeStore() string {
-	return filepath.Join(d.Store, volumeDir)
+	return toWindowsPath(filepath.Join(d.Store, volumeDir))
 }
 
 func (d *Driver) metadataFile(bundleId string) string {
 	return filepath.Join(d.VolumeStore(), bundleId, "metadata.json")
+}
+
+func toWindowsPath(input string) string {
+	vol := filepath.VolumeName(input)
+	if vol == "" {
+		input = filepath.Join("C:\\", input)
+	}
+	return filepath.Clean(input)
 }
