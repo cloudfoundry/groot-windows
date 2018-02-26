@@ -50,7 +50,7 @@ var _ = Describe("Bundle", func() {
 		logger = lagertest.NewTestLogger("driver-bundle-test")
 		hcsClientFake.GetLayerMountPathReturnsOnCall(0, volumeGUID, nil)
 
-		hcsClientFake.CreateLayerStub = func(di hcsshim.DriverInfo, id string, _ string, _ []string) error {
+		hcsClientFake.CreateLayerStub = func(di hcsshim.DriverInfo, id string, _ []string) error {
 			Expect(os.MkdirAll(filepath.Join(di.HomeDir, id), 0755)).To(Succeed())
 			return nil
 		}
@@ -86,7 +86,7 @@ var _ = Describe("Bundle", func() {
 		_, err := d.Bundle(logger, bundleID, layerIDs, diskLimit)
 		Expect(err).ToNot(HaveOccurred())
 
-		di, id, parentDir, allDirs := hcsClientFake.CreateLayerArgsForCall(0)
+		di, id, allDirs := hcsClientFake.CreateLayerArgsForCall(0)
 		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.VolumeStore(), Flavour: 1}))
 		Expect(id).To(Equal(bundleID))
 
@@ -95,7 +95,6 @@ var _ = Describe("Bundle", func() {
 			filepath.Join(d.LayerStore(), "middle-layer"),
 			filepath.Join(d.LayerStore(), "oldest-layer"),
 		}
-		Expect(parentDir).To(Equal(expectedLayerDirs[0]))
 		Expect(allDirs).To(Equal(expectedLayerDirs))
 	})
 

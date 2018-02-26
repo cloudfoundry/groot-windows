@@ -25,13 +25,12 @@ type HCSClient struct {
 		result1 hcs.LayerWriter
 		result2 error
 	}
-	CreateLayerStub        func(hcsshim.DriverInfo, string, string, []string) error
+	CreateLayerStub        func(hcsshim.DriverInfo, string, []string) error
 	createLayerMutex       sync.RWMutex
 	createLayerArgsForCall []struct {
 		arg1 hcsshim.DriverInfo
 		arg2 string
-		arg3 string
-		arg4 []string
+		arg3 []string
 	}
 	createLayerReturns struct {
 		result1 error
@@ -141,24 +140,23 @@ func (fake *HCSClient) NewLayerWriterReturnsOnCall(i int, result1 hcs.LayerWrite
 	}{result1, result2}
 }
 
-func (fake *HCSClient) CreateLayer(arg1 hcsshim.DriverInfo, arg2 string, arg3 string, arg4 []string) error {
-	var arg4Copy []string
-	if arg4 != nil {
-		arg4Copy = make([]string, len(arg4))
-		copy(arg4Copy, arg4)
+func (fake *HCSClient) CreateLayer(arg1 hcsshim.DriverInfo, arg2 string, arg3 []string) error {
+	var arg3Copy []string
+	if arg3 != nil {
+		arg3Copy = make([]string, len(arg3))
+		copy(arg3Copy, arg3)
 	}
 	fake.createLayerMutex.Lock()
 	ret, specificReturn := fake.createLayerReturnsOnCall[len(fake.createLayerArgsForCall)]
 	fake.createLayerArgsForCall = append(fake.createLayerArgsForCall, struct {
 		arg1 hcsshim.DriverInfo
 		arg2 string
-		arg3 string
-		arg4 []string
-	}{arg1, arg2, arg3, arg4Copy})
-	fake.recordInvocation("CreateLayer", []interface{}{arg1, arg2, arg3, arg4Copy})
+		arg3 []string
+	}{arg1, arg2, arg3Copy})
+	fake.recordInvocation("CreateLayer", []interface{}{arg1, arg2, arg3Copy})
 	fake.createLayerMutex.Unlock()
 	if fake.CreateLayerStub != nil {
-		return fake.CreateLayerStub(arg1, arg2, arg3, arg4)
+		return fake.CreateLayerStub(arg1, arg2, arg3)
 	}
 	if specificReturn {
 		return ret.result1
@@ -172,10 +170,10 @@ func (fake *HCSClient) CreateLayerCallCount() int {
 	return len(fake.createLayerArgsForCall)
 }
 
-func (fake *HCSClient) CreateLayerArgsForCall(i int) (hcsshim.DriverInfo, string, string, []string) {
+func (fake *HCSClient) CreateLayerArgsForCall(i int) (hcsshim.DriverInfo, string, []string) {
 	fake.createLayerMutex.RLock()
 	defer fake.createLayerMutex.RUnlock()
-	return fake.createLayerArgsForCall[i].arg1, fake.createLayerArgsForCall[i].arg2, fake.createLayerArgsForCall[i].arg3, fake.createLayerArgsForCall[i].arg4
+	return fake.createLayerArgsForCall[i].arg1, fake.createLayerArgsForCall[i].arg2, fake.createLayerArgsForCall[i].arg3
 }
 
 func (fake *HCSClient) CreateLayerReturns(result1 error) {

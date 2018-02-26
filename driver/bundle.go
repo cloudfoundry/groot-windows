@@ -41,7 +41,7 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string,
 		}
 	}
 
-	if err := d.hcsClient.CreateLayer(di, bundleID, layerFolders[0], layerFolders); err != nil {
+	if err := d.hcsClient.CreateLayer(di, bundleID, layerFolders); err != nil {
 		cleanupLayer()
 		return specs.Spec{}, err
 	}

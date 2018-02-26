@@ -35,14 +35,14 @@ func (c *Client) GetLayerMountPath(di hcsshim.DriverInfo, id string) (string, er
 	return hcsshim.GetLayerMountPath(di, id)
 }
 
-func (c *Client) CreateLayer(di hcsshim.DriverInfo, id string, parentId string, parentLayerPaths []string) error {
+func (c *Client) CreateLayer(di hcsshim.DriverInfo, id string, parentLayerPaths []string) error {
 	f, err := c.layerCreateLock.Open()
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	if err := hcsshim.CreateSandboxLayer(di, id, parentId, parentLayerPaths); err != nil {
+	if err := hcsshim.CreateSandboxLayer(di, id, "", parentLayerPaths); err != nil {
 		return err
 	}
 

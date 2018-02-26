@@ -22,7 +22,7 @@ type TarStreamer interface {
 //go:generate counterfeiter -o fakes/hcs_client.go --fake-name HCSClient . HCSClient
 type HCSClient interface {
 	NewLayerWriter(hcsshim.DriverInfo, string, []string) (hcs.LayerWriter, error)
-	CreateLayer(hcsshim.DriverInfo, string, string, []string) error
+	CreateLayer(hcsshim.DriverInfo, string, []string) error
 	LayerExists(hcsshim.DriverInfo, string) (bool, error)
 	GetLayerMountPath(hcsshim.DriverInfo, string) (string, error)
 	DestroyLayer(hcsshim.DriverInfo, string) error
