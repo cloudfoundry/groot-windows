@@ -11,7 +11,7 @@
     "fetcher/layerfetcher/source",
     "imagepuller"
   ]
-  revision = "a75895b3d9c006055a0be4a984e423796e2fc15b"
+  revision = "de3d06aec56604852b592318be668ce9209a0f69"
 
 [[projects]]
   name = "code.cloudfoundry.org/lager"
