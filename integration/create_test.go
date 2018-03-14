@@ -21,7 +21,6 @@ var _ = Describe("Create", func() {
 		volumeStore    string
 		layerStore     string
 		volumeMountDir string
-		ociImageDir    string
 		imageURI       string
 		bundleID       string
 		chainIDs       []string
@@ -37,11 +36,6 @@ var _ = Describe("Create", func() {
 		volumeMountDir, err = ioutil.TempDir("", "mounted-volume")
 		Expect(err).ToNot(HaveOccurred())
 
-		ociImageDir, err = ioutil.TempDir("", "oci-image")
-		Expect(err).ToNot(HaveOccurred())
-
-		imageURI = pathToOCIURI(ociImageDir)
-
 		bundleID = randomBundleID()
 	})
 
@@ -50,16 +44,15 @@ var _ = Describe("Create", func() {
 		destroyVolumeStore(driverStore)
 		destroyLayerStore(driverStore)
 		Expect(os.RemoveAll(volumeMountDir)).To(Succeed())
-		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
 		Expect(os.RemoveAll(driverStore)).To(Succeed())
 	})
 
 	Context("provided an OCI image URI", func() {
 		Context("when the image contains a layer with a regular file", func() {
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
+				imagePath := filepath.Join(ociImagesDir, "regularfile")
+				imageURI = pathToOCIURI(imagePath)
+				chainIDs = getLayerChainIdsFromOCIImage(imagePath)
 			})
 
 			It("unpacks the layer to disk", func() {
@@ -108,12 +101,25 @@ var _ = Describe("Create", func() {
 			})
 		})
 
+		Context("when the image is based on windowsservercore", func() {
+			BeforeEach(func() {
+				imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "servercore"))
+			})
+
+			It("the resulting volume contains the correct files", func() {
+				outputSpec := grootCreate(driverStore, imageURI, bundleID)
+				mountVolume(outputSpec.Root.Path, volumeMountDir)
+
+				knownFilePath := filepath.Join(volumeMountDir, "temp", "test", "hello")
+				Expect(knownFilePath).To(BeAnExistingFile())
+			})
+		})
+
 		Context("the driver store is a Unix-style path", func() {
 			var unixStyleDriverStore string
 
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+				imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
 
 				unixStyleDriverStore = strings.Replace(strings.TrimPrefix(driverStore, filepath.VolumeName(driverStore)), "\\", "/", -1)
 			})
@@ -135,8 +141,7 @@ var _ = Describe("Create", func() {
 
 		Context("when the image contains a layer with a whiteout file", func() {
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-whiteout.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+				imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "whiteout"))
 			})
 
 			It("the resulting volume has the correct files removed", func() {
@@ -150,9 +155,9 @@ var _ = Describe("Create", func() {
 
 		Context("when the image contains a layer with symlinks and hardlinks", func() {
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-link.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
+				imagePath := filepath.Join(ociImagesDir, "link")
+				imageURI = pathToOCIURI(imagePath)
+				chainIDs = getLayerChainIdsFromOCIImage(imagePath)
 			})
 
 			It("the resulting volume has the correct symlinks, hardlinks, and junctions", func() {
@@ -181,9 +186,9 @@ var _ = Describe("Create", func() {
 
 		Context("when the image has already been unpacked", func() {
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
+				imagePath := filepath.Join(ociImagesDir, "regularfile")
+				imageURI = pathToOCIURI(imagePath)
+				chainIDs = getLayerChainIdsFromOCIImage(imagePath)
 
 				grootCreate(driverStore, imageURI, bundleID)
 			})
@@ -206,8 +211,7 @@ var _ = Describe("Create", func() {
 
 		Context("when the requested bundle ID is already in use", func() {
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+				imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
 
 				grootCreate(driverStore, imageURI, bundleID)
 			})
@@ -231,8 +235,7 @@ var _ = Describe("Create", func() {
 		)
 
 		BeforeEach(func() {
-			ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-			Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
+			imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
 		})
 
 		Context("--exclude-image-from-quota is not passed", func() {
@@ -325,11 +328,8 @@ var _ = Describe("Create", func() {
 
 	Context("provided a Docker image URI", func() {
 		BeforeEach(func() {
+			chainIDs = getLayerChainIdsFromOCIImage(filepath.Join(ociImagesDir, "regularfile"))
 			imageURI = "docker:///cloudfoundry/groot-windows-test:regularfile"
-
-			ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-			Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-			chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
 		})
 
 		It("unpacks the layer to disk", func() {

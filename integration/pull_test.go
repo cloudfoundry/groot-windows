@@ -13,7 +13,6 @@ var _ = Describe("Pull", func() {
 	var (
 		driverStore string
 		layerStore  string
-		ociImageDir string
 		imageURI    string
 		chainIDs    []string
 	)
@@ -24,20 +23,14 @@ var _ = Describe("Pull", func() {
 		Expect(err).ToNot(HaveOccurred())
 		layerStore = filepath.Join(driverStore, "layers")
 
-		ociImageDir, err = ioutil.TempDir("", "oci-image")
-		Expect(err).ToNot(HaveOccurred())
+		imagePath := filepath.Join(ociImagesDir, "regularfile")
+		chainIDs = getLayerChainIdsFromOCIImage(imagePath)
 
-		ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-		Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-
-		chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
-
-		imageURI = pathToOCIURI(ociImageDir)
+		imageURI = pathToOCIURI(imagePath)
 	})
 
 	AfterEach(func() {
 		destroyLayerStore(driverStore)
-		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
 		Expect(os.RemoveAll(driverStore)).To(Succeed())
 	})
 

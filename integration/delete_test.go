@@ -18,7 +18,6 @@ var _ = Describe("Delete", func() {
 		driverStore      string
 		layerStore       string
 		volumeStore      string
-		ociImageDir      string
 		imageURI         string
 		bundleID         string
 		driverInfo       hcsshim.DriverInfo
@@ -32,18 +31,14 @@ var _ = Describe("Delete", func() {
 		layerStore = filepath.Join(driverStore, "layers")
 		volumeStore = filepath.Join(driverStore, "volumes")
 
-		ociImageDir, err = ioutil.TempDir("", "oci-image")
-		Expect(err).ToNot(HaveOccurred())
-
-		ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-		Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-		imageURI = pathToOCIURI(ociImageDir)
+		imagePath := filepath.Join(ociImagesDir, "regularfile")
+		imageURI = pathToOCIURI(imagePath)
 
 		bundleID = randomBundleID()
 		driverInfo = hcsshim.DriverInfo{HomeDir: volumeStore, Flavour: 1}
 
 		parentLayerPaths = []string{}
-		chainIDs := getLayerChainIdsFromOCIImage(ociImageDir)
+		chainIDs := getLayerChainIdsFromOCIImage(imagePath)
 		for _, id := range chainIDs {
 			parentLayerPaths = append([]string{filepath.Join(layerStore, id)}, parentLayerPaths...)
 		}
@@ -52,7 +47,6 @@ var _ = Describe("Delete", func() {
 	AfterEach(func() {
 		Expect(os.RemoveAll(volumeStore)).To(Succeed())
 		destroyLayerStore(driverStore)
-		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
 		Expect(os.RemoveAll(driverStore)).To(Succeed())
 	})
 

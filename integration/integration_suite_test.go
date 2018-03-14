@@ -2,7 +2,6 @@ package integration_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -24,9 +23,10 @@ var (
 		"regularfile",
 		"whiteout",
 		"link",
+		"servercore",
 	}
-	imageTgzDir string
-	keepDir     bool
+	ociImagesDir string
+	keepDir      bool
 )
 
 func TestGrootWindows(t *testing.T) {
@@ -54,17 +54,17 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		"-lole32", "-loleaut32").CombinedOutput()
 	Expect(err).NotTo(HaveOccurred(), string(o))
 
-	imageTgzDir, keepDir = os.LookupEnv("GROOT_WINDOWS_IMAGE_TGZS")
+	ociImagesDir, keepDir = os.LookupEnv("GROOT_WINDOWS_IMAGES")
 
 	if !keepDir {
-		imageTgzDir, err = ioutil.TempDir("", "groot-windows-image-tgzs")
+		ociImagesDir, err = ioutil.TempDir("", "groot-windows-test-images")
 		Expect(err).ToNot(HaveOccurred())
 	}
 
 	for _, tag := range imageTags {
-		_, err := os.Stat(filepath.Join(imageTgzDir, fmt.Sprintf("groot-windows-test-%s.tgz", tag)))
+		_, err := os.Stat(filepath.Join(ociImagesDir, tag))
 		if err != nil && os.IsNotExist(err) {
-			Expect(hydrator.New(imageTgzDir, "cloudfoundry/groot-windows-test", tag, false).Run()).To(Succeed())
+			Expect(hydrator.New(filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, true).Run()).To(Succeed())
 			err = nil
 		}
 		Expect(err).NotTo(HaveOccurred())
@@ -72,7 +72,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 
 	testData := make(map[string]string)
 	testData["groot_bin"] = grootBin
-	testData["image_tgz_dir"] = imageTgzDir
+	testData["oci_image_dir"] = ociImagesDir
 	json, err := json.Marshal(testData)
 	Expect(err).NotTo(HaveOccurred())
 
@@ -82,12 +82,12 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	Expect(json.Unmarshal(jsonBytes, &testData)).To(Succeed())
 
 	grootBin = testData["groot_bin"]
-	imageTgzDir = testData["image_tgz_dir"]
+	ociImagesDir = testData["oci_image_dir"]
 })
 
 var _ = SynchronizedAfterSuite(func() {}, func() {
 	if !keepDir {
-		Expect(os.RemoveAll(imageTgzDir)).To(Succeed())
+		Expect(os.RemoveAll(ociImagesDir)).To(Succeed())
 	}
 	gexec.CleanupBuildArtifacts()
 })

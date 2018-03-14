@@ -24,7 +24,6 @@ var _ = Describe("Stats", func() {
 	var (
 		driverStore    string
 		volumeMountDir string
-		ociImageDir    string
 		imageURI       string
 		bundleID       string
 	)
@@ -37,12 +36,7 @@ var _ = Describe("Stats", func() {
 		volumeMountDir, err = ioutil.TempDir("", "mounted-volume")
 		Expect(err).ToNot(HaveOccurred())
 
-		ociImageDir, err = ioutil.TempDir("", "oci-image")
-		Expect(err).ToNot(HaveOccurred())
-
-		ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-		Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-		imageURI = pathToOCIURI(ociImageDir)
+		imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
 
 		bundleID = randomBundleID()
 	})
@@ -52,7 +46,6 @@ var _ = Describe("Stats", func() {
 		destroyVolumeStore(driverStore)
 		destroyLayerStore(driverStore)
 		Expect(os.RemoveAll(volumeMountDir)).To(Succeed())
-		Expect(os.RemoveAll(ociImageDir)).To(Succeed())
 		Expect(os.RemoveAll(driverStore)).To(Succeed())
 	})
 
