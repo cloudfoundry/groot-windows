@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"code.cloudfoundry.org/windows2016fs/hydrator"
+	"code.cloudfoundry.org/hydrator/hydrator"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
@@ -64,7 +64,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	for _, tag := range imageTags {
 		_, err := os.Stat(filepath.Join(imageTgzDir, fmt.Sprintf("groot-windows-test-%s.tgz", tag)))
 		if err != nil && os.IsNotExist(err) {
-			Expect(hydrator.New(imageTgzDir, "cloudfoundry/groot-windows-test", tag).Run()).To(Succeed())
+			Expect(hydrator.New(imageTgzDir, "cloudfoundry/groot-windows-test", tag, false).Run()).To(Succeed())
 			err = nil
 		}
 		Expect(err).NotTo(HaveOccurred())

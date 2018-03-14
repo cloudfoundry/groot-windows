@@ -14,6 +14,18 @@
   revision = "de3d06aec56604852b592318be668ce9209a0f69"
 
 [[projects]]
+  branch = "master"
+  name = "code.cloudfoundry.org/hydrator"
+  packages = [
+    "compress",
+    "downloader",
+    "hydrator",
+    "oci-metadata",
+    "registry"
+  ]
+  revision = "9f79a1a2ed8b4d5f4ea071a52fa3e1d309ea4d81"
+
+[[projects]]
   name = "code.cloudfoundry.org/lager"
   packages = [
     ".",
@@ -22,18 +34,6 @@
   ]
   revision = "0bfa98e49e7a976af91e918d47978f07c00b081f"
   version = "v1.0.0"
-
-[[projects]]
-  branch = "master"
-  name = "code.cloudfoundry.org/windows2016fs"
-  packages = [
-    "compress",
-    "downloader",
-    "hydrator",
-    "oci-metadata",
-    "registry"
-  ]
-  revision = "0e9421356838c3384177a73ec75ee6208c3c9f58"
 
 [[projects]]
   name = "github.com/Microsoft/go-winio"
@@ -296,6 +296,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e6f8d9ea181c11f473d43d2f1e55c6cc80f0fc12905d0f972171c9c989c0a9ba"
+  inputs-digest = "854be456128e1376af79218662de50c277380847748fee346758ac361d02a363"
   solver-name = "gps-cdcl"
   solver-version = 1

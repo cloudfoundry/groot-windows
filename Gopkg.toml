@@ -52,4 +52,4 @@ required = ["github.com/onsi/ginkgo/ginkgo"]
 
 [[constraint]]
   branch = "master"
-  name = "code.cloudfoundry.org/windows2016fs"
+  name = "code.cloudfoundry.org/hydrator"
