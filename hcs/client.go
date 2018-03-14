@@ -3,7 +3,7 @@ package hcs
 import (
 	"fmt"
 
-	"code.cloudfoundry.org/groot-windows/filelock"
+	"code.cloudfoundry.org/filelock"
 	winio "github.com/Microsoft/go-winio"
 	"github.com/Microsoft/hcsshim"
 )
