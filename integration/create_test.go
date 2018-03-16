@@ -141,13 +141,12 @@ var _ = Describe("Create", func() {
 
 		PContext("the OCI URI is a Unix-style path", func() {
 			BeforeEach(func() {
-				ociImageTgz := filepath.Join(imageTgzDir, "groot-windows-test-regularfile.tgz")
-				Expect(extractTarGz(ociImageTgz, ociImageDir)).To(Succeed())
-				chainIDs = getLayerChainIdsFromOCIImage(ociImageDir)
+				imagePath := filepath.Join(ociImagesDir, "regularfile")
+				imageURI = pathToUnixURI(imagePath)
+				chainIDs = getLayerChainIdsFromOCIImage(imagePath)
 			})
 
 			It("unpacks the layer to disk", func() {
-				imageURI = pathToUnixURI(ociImageDir)
 				grootCreate(driverStore, imageURI, bundleID)
 
 				for _, chainID := range chainIDs {
