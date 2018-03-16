@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -222,10 +223,22 @@ func generateRefString(imageURL *url.URL) string {
 	refString += imageURL.Path
 
 	if runtime.GOOS == "windows" && imageURL.Scheme == "oci" {
-		refString = strings.TrimPrefix(refString, "//")
+		refString = destToWindowsPath(refString)
 	}
 
 	return refString
+}
+
+func destToWindowsPath(input string) string {
+	input = strings.TrimPrefix(input, "//")
+	vol := filepath.VolumeName(input)
+	if vol == "" {
+		if !strings.HasPrefix(input, "/") {
+			input = filepath.Join("/", input)
+		}
+		input = filepath.Join("C:", input)
+	}
+	return filepath.Clean(input)
 }
 
 func (s *LayerSource) getImageWithRetries(logger lager.Logger) (types.Image, error) {
