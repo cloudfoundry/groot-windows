@@ -95,7 +95,12 @@ func randomBundleID() string {
 
 	return fmt.Sprintf("%d", r.Int64())
 }
-
+func pathToUnixURI(path string) string {
+	path = strings.Replace(path, "C:", "", 1)
+	path = strings.Replace(path, `\`, `/`, -1)
+	path = strings.TrimPrefix(path, "/")
+	return fmt.Sprintf("oci:///%s", path)
+}
 func pathToOCIURI(path string) string {
 	return fmt.Sprintf("oci:///%s", filepath.ToSlash(path))
 }
