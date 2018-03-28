@@ -141,8 +141,6 @@ var _ = Describe("Create", func() {
 
 		Context("the OCI URI is a Unix-style path", func() {
 			BeforeEach(func() {
-				Skip("pending until groot support unix style uris on Windows")
-
 				imagePath := filepath.Join(ociImagesDir, "regularfile")
 				imageURI = pathToUnixURI(imagePath)
 				chainIDs = getLayerChainIdsFromOCIImage(imagePath)
