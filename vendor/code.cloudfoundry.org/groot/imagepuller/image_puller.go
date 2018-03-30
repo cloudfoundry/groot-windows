@@ -126,65 +126,45 @@ func (p *ImagePuller) buildLayer(logger lager.Logger, index int, layerInfos []La
 	}
 
 	layerInfo := layerInfos[index]
-	logger = logger.Session("build-layer")
-	logger.Debug("buildlayer-started", lager.Data{
+	logger = logger.Session("build-layer", lager.Data{
 		"blobID":        layerInfo.BlobID,
 		"chainID":       layerInfo.ChainID,
 		"parentChainID": layerInfo.ParentChainID,
 	})
-
 	if p.volumeDriver.Exists(logger, layerInfo.ChainID) {
 		return nil
 	}
 
-	downloadChan := make(chan downloadReturn, 1)
-	go p.downloadLayer(logger, spec, layerInfo, downloadChan)
-
-	// buildLayerErr is deliberately checked later so we can cleanup properly
-	buildLayerErr := p.buildLayer(logger, index-1, layerInfos, spec)
-
-	downloadResult := <-downloadChan
-	if downloadResult.Err != nil {
-		return downloadResult.Err
-	}
-	defer downloadResult.Stream.Close()
-
-	if buildLayerErr != nil {
-		return buildLayerErr
+	if err := p.buildLayer(logger, index-1, layerInfos, spec); err != nil {
+		return err
 	}
 
+	return p.downloadLayer(logger, layerInfo, getParentChainIDs(layerInfos[0:index]), spec)
+}
+
+func getParentChainIDs(layerInfos []LayerInfo) []string {
 	parentChainIDs := []string{}
-	if index != 0 {
-		for i := 0; i < index; i++ {
-			parentChainIDs = append(parentChainIDs, layerInfos[i].ChainID)
-		}
+	for _, info := range layerInfos {
+		parentChainIDs = append(parentChainIDs, info.ChainID)
 	}
 
-	return p.volumeDriver.Unpack(logger, layerInfos[index].ChainID, parentChainIDs, downloadResult.Stream)
+	return parentChainIDs
 }
 
-type downloadReturn struct {
-	Stream io.ReadCloser
-	Err    error
-}
-
-func (p *ImagePuller) downloadLayer(logger lager.Logger, spec ImageSpec, layerInfo LayerInfo, downloadChan chan downloadReturn) {
+func (p *ImagePuller) downloadLayer(logger lager.Logger, layerInfo LayerInfo, parentChainIDs []string, spec ImageSpec) error {
 	logger = logger.Session("downloading-layer", lager.Data{"LayerInfo": layerInfo})
 	logger.Debug("starting")
 	defer logger.Debug("ending")
 
 	stream, size, err := p.fetcher.StreamBlob(logger, layerInfo)
 	if err != nil {
-		err = errors.Wrapf(err, "streaming blob `%s`", layerInfo.BlobID)
+		return errors.Wrapf(err, "streaming blob `%s`", layerInfo.BlobID)
 	}
+	defer stream.Close()
 
-	logger.Debug("got-stream-for-blob", lager.Data{
-		"size":                  size,
-		"diskLimit":             spec.DiskLimit,
-		"excludeImageFromQuota": spec.ExcludeImageFromQuota,
-	})
+	logger.Debug("got-stream-for-blob", lager.Data{"size": size})
 
-	downloadChan <- downloadReturn{Stream: stream, Err: err}
+	return p.volumeDriver.Unpack(logger, layerInfo.ChainID, parentChainIDs, stream)
 }
 
 func (p *ImagePuller) layersSize(layerInfos []LayerInfo) int64 {

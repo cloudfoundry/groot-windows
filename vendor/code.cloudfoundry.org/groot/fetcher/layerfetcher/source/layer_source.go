@@ -36,14 +36,18 @@ type LayerSource struct {
 	systemContext          types.SystemContext
 	imageURL               *url.URL
 	// imageSource needs to be a singleton that is initialised on demand in createImageSource. DO NOT use the field directly, use getImageSource instead
-	imageSource types.ImageSource
+	imageSource              types.ImageSource
+	imageQuota               int64
+	skipImageQuotaValidation bool
 }
 
-func NewLayerSource(systemContext types.SystemContext, skipOCILayerValidation bool, imageURL *url.URL) LayerSource {
+func NewLayerSource(systemContext types.SystemContext, skipOCILayerValidation, skipImageQuotaValidation bool, diskLimit int64, imageURL *url.URL) LayerSource {
 	return LayerSource{
-		systemContext:          systemContext,
-		skipOCILayerValidation: skipOCILayerValidation,
-		imageURL:               imageURL,
+		systemContext:            systemContext,
+		skipOCILayerValidation:   skipOCILayerValidation,
+		imageURL:                 imageURL,
+		imageQuota:               diskLimit,
+		skipImageQuotaValidation: skipImageQuotaValidation,
 	}
 }
 
@@ -81,8 +85,10 @@ func (s *LayerSource) Manifest(logger lager.Logger) (types.Image, error) {
 func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo) (string, int64, error) {
 	logrus.SetOutput(os.Stderr)
 	logger = logger.Session("streaming-blob", lager.Data{
-		"imageURL": s.imageURL,
-		"digest":   layerInfo.BlobID,
+		"imageURL":                 s.imageURL,
+		"digest":                   layerInfo.BlobID,
+		"imageQuota":               s.imageQuota,
+		"skipImageQuotaValidation": s.skipImageQuotaValidation,
 	})
 	logger.Info("starting")
 	defer logger.Info("ending")
@@ -101,48 +107,48 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 	if err != nil {
 		return "", 0, err
 	}
-	defer blob.Close()
 	logger.Debug("got-blob-stream", lager.Data{"digest": layerInfo.BlobID, "size": size, "mediaType": layerInfo.MediaType})
 
-	quotaedReader := &layerfetcher.QuotaedReader{
-		DelegateReader: blob,
-		QuotaLeft:      layerInfo.Size,
-		SkipValidation: s.skipOCILayerValidation,
-		QuotaExceededErrorHandler: func() error {
-			return fmt.Errorf("layer size is greater than the value in the manifest")
-		},
+	if err = s.validateLayerSize(layerInfo, size); err != nil {
+		return "", 0, err
 	}
 
-	// Make the blob path suitable for Windows
-	fileName := "blob-" + strings.Replace(layerInfo.BlobID, ":", "-", -1)
-	blobTempFile, err := ioutil.TempFile("", fileName)
+	blobTempFile, err := ioutil.TempFile("", fmt.Sprintf("blob-%s", layerInfo.BlobID))
 	if err != nil {
 		return "", 0, err
 	}
-	defer func() {
-		blobTempFile.Close()
-		if err != nil {
-			os.Remove(blobTempFile.Name())
-		}
-	}()
 
 	blobIDHash := sha256.New()
-	digestReader := ioutil.NopCloser(io.TeeReader(quotaedReader, blobIDHash))
+	digestReader := ioutil.NopCloser(io.TeeReader(blob, blobIDHash))
 	if layerInfo.MediaType == "" || strings.Contains(layerInfo.MediaType, "gzip") {
 		logger.Debug("uncompressing-blob")
 
 		digestReader, err = gzip.NewReader(digestReader)
 		if err != nil {
-
 			return "", 0, errors.Wrapf(err, "expected blob to be of type %s", layerInfo.MediaType)
 		}
 		defer digestReader.Close()
+
 	}
+
+	if s.shouldEnforceImageQuotaValidation() {
+		digestReader = layerfetcher.NewQuotaedReader(digestReader, s.imageQuota, "uncompressed layer size exceeds quota")
+	}
+
+	defer func() {
+		blob.Close()
+		blobTempFile.Close()
+
+		if err != nil {
+			os.Remove(blobTempFile.Name())
+		}
+	}()
 
 	diffIDHash := sha256.New()
 	digestReader = ioutil.NopCloser(io.TeeReader(digestReader, diffIDHash))
 
-	if _, err = io.Copy(blobTempFile, digestReader); err != nil {
+	uncompressedSize, err := io.Copy(blobTempFile, digestReader)
+	if err != nil {
 		logger.Error("writing-blob-to-file", err)
 		return "", 0, errors.Wrap(err, "writing blob to tempfile")
 	}
@@ -156,11 +162,25 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 		return "", 0, errors.Wrap(err, "diffID digest mismatch")
 	}
 
-	if quotaedReader.AnyQuotaLeft() {
-		return "", 0, fmt.Errorf("layer size is less than the value in the manifest")
-	}
+	s.imageQuota -= uncompressedSize
 
 	return blobTempFile.Name(), size, nil
+}
+
+func (s *LayerSource) shouldEnforceImageQuotaValidation() bool {
+	return !s.skipImageQuotaValidation
+}
+
+func (s *LayerSource) validateLayerSize(layerInfo imagepuller.LayerInfo, size int64) error {
+	if s.skipOCILayerValidation || isV1Image(layerInfo) || layerInfo.Size == size {
+		return nil
+	}
+
+	return errors.New("layer size is different from the value in the manifest")
+}
+
+func isV1Image(layerInfo imagepuller.LayerInfo) bool {
+	return layerInfo.Size == -1
 }
 
 func (s *LayerSource) Close() error {

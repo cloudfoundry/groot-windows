@@ -85,7 +85,7 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 				},
 			},
 			Action: func(ctx *cli.Context) error {
-				if fetcher, err = createFetcher(ctx.Args()[0]); err != nil {
+				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes")); err != nil {
 					return err
 				}
 				defer fetcher.Close()
@@ -104,7 +104,7 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 		{
 			Name: "pull",
 			Action: func(ctx *cli.Context) error {
-				if fetcher, err = createFetcher(ctx.Args()[0]); err != nil {
+				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes")); err != nil {
 					return err
 				}
 				defer fetcher.Close()
@@ -157,16 +157,20 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 	}
 }
 
-func createFetcher(urlAsString string) (imagepuller.Fetcher, error) {
+func createFetcher(urlAsString string, excludeImageFromQuota bool, diskLimitSizeBytes int64) (imagepuller.Fetcher, error) {
 	imageURL, err := url.Parse(urlAsString)
 	if err != nil {
 		return nil, err
 	}
 	if imageURL.Scheme == "oci" || imageURL.Scheme == "docker" {
-		layerSource := source.NewLayerSource(types.SystemContext{}, false, imageURL)
+		layerSource := source.NewLayerSource(types.SystemContext{}, false, shouldSkipImageQuotaValidation(excludeImageFromQuota, diskLimitSizeBytes), diskLimitSizeBytes, imageURL)
 		return layerfetcher.NewLayerFetcher(&layerSource), nil
 	}
 	return filefetcher.NewFileFetcher(imageURL), nil
+}
+
+func shouldSkipImageQuotaValidation(excludeImageFromQuota bool, diskLimitSizeBytes int64) bool {
+	return excludeImageFromQuota || diskLimitSizeBytes == 0
 }
 
 func newLogger(logLevelStr string) (lager.Logger, error) {
