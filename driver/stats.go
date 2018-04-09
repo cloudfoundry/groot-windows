@@ -32,13 +32,13 @@ func (d *Driver) Stats(logger lager.Logger, bundleID string) (groot.VolumeStats,
 		return groot.VolumeStats{}, err
 	}
 
-	var volumeData groot.VolumeMetadata
+	var volumeData groot.ImageMetadata
 	if err := json.Unmarshal(data, &volumeData); err != nil {
 		return groot.VolumeStats{}, fmt.Errorf("couldn't parse metadata.json: %s", err.Error())
 	}
 
 	return groot.VolumeStats{DiskUsage: groot.DiskUsage{
-		TotalBytesUsed:     volumeData.BaseImageSize + int64(quotaUsed),
+		TotalBytesUsed:     volumeData.Size + int64(quotaUsed),
 		ExclusiveBytesUsed: int64(quotaUsed),
 	}}, nil
 }

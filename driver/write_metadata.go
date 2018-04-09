@@ -9,7 +9,7 @@ import (
 	"code.cloudfoundry.org/lager"
 )
 
-func (d *Driver) WriteMetadata(logger lager.Logger, bundleID string, volumeData groot.VolumeMetadata) error {
+func (d *Driver) WriteMetadata(logger lager.Logger, bundleID string, volumeData groot.ImageMetadata) error {
 	logger.Info("write-metadata-start")
 	defer logger.Info("write-metadata-finished")
 
@@ -20,7 +20,7 @@ func (d *Driver) WriteMetadata(logger lager.Logger, bundleID string, volumeData 
 	return nil
 }
 
-func (d *Driver) writeMetadata(metadataFile string, volumeData groot.VolumeMetadata) error {
+func (d *Driver) writeMetadata(metadataFile string, volumeData groot.ImageMetadata) error {
 	data, err := json.Marshal(volumeData)
 	if err != nil {
 		return err

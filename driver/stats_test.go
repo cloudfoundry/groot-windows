@@ -53,7 +53,7 @@ var _ = Describe("Stats", func() {
 
 		baseImageSize = 12345
 		metadataFile = filepath.Join(bundleVolumeDir, "metadata.json")
-		data, err := json.Marshal(groot.VolumeMetadata{BaseImageSize: baseImageSize})
+		data, err := json.Marshal(groot.ImageMetadata{Size: baseImageSize})
 		Expect(err).NotTo(HaveOccurred())
 		Expect(ioutil.WriteFile(metadataFile, data, 0644)).To(Succeed())
 

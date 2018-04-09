@@ -3,9 +3,11 @@ package driver
 import (
 	"bytes"
 	"io"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	winio "github.com/Microsoft/go-winio"
@@ -15,21 +17,36 @@ import (
 	"github.com/Microsoft/hcsshim"
 )
 
-func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) error {
+func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string, layerTar io.Reader) (int64, error) {
 	logger.Info("unpack-start")
 	defer logger.Info("unpack-finished")
 
 	if d.Store == "" {
-		return &EmptyDriverStoreError{}
+		return 0, &EmptyDriverStoreError{}
+	}
+
+	di := hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}
+	exists, err := d.hcsClient.LayerExists(di, layerID)
+	if err != nil {
+		return 0, err
+	}
+
+	if exists {
+		logger.Info("layer-id-exists", lager.Data{"layerID": layerID})
+		content, err := ioutil.ReadFile(d.layerSizeFile(layerID))
+		if err != nil {
+			return 0, err
+		}
+		return strconv.ParseInt(string(content), 10, 64)
 	}
 
 	outputDir := filepath.Join(d.LayerStore(), layerID)
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		return err
+		return 0, err
 	}
 
 	if err := d.privilegeElevator.EnableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}); err != nil {
-		return err
+		return 0, err
 	}
 	defer d.privilegeElevator.DisableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege})
 
@@ -38,10 +55,9 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 		parentLayerPaths = append([]string{filepath.Join(d.LayerStore(), id)}, parentLayerPaths...)
 	}
 
-	di := hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}
 	layerWriter, err := d.hcsClient.NewLayerWriter(di, layerID, parentLayerPaths)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	defer layerWriter.Close()
 
@@ -53,33 +69,35 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 		nextFileErr error
 	)
 
+	var totalSize int64
 	for {
 		if hdr == nil {
 			hdr, nextFileErr = d.tarStreamer.Next()
 		} else if base := path.Base(hdr.Name); strings.HasPrefix(base, ".wh.") {
 			name := filepath.Join(path.Dir(hdr.Name), base[len(".wh."):])
 			if err := layerWriter.Remove(name); err != nil {
-				return err
+				return 0, err
 			}
 
 			hdr, nextFileErr = d.tarStreamer.Next()
 		} else if hdr.Typeflag == tar.TypeLink {
 			if err := layerWriter.AddLink(filepath.FromSlash(hdr.Name), filepath.FromSlash(hdr.Linkname)); err != nil {
-				return err
+				return 0, err
 			}
 
 			hdr, nextFileErr = d.tarStreamer.Next()
 		} else {
-			name, _, fileInfo, err := d.tarStreamer.FileInfoFromHeader(hdr)
+			name, size, fileInfo, err := d.tarStreamer.FileInfoFromHeader(hdr)
 			if err != nil {
-				return err
+				return 0, err
 			}
 
 			if err := layerWriter.Add(filepath.FromSlash(name), fileInfo); err != nil {
-				return err
+				return 0, err
 			}
 
 			hdr, nextFileErr = d.tarStreamer.WriteBackupStreamFromTarFile(layerWriter, hdr)
+			totalSize += size
 		}
 
 		if nextFileErr != nil {
@@ -88,8 +106,9 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 	}
 
 	if nextFileErr != io.EOF {
-		return nextFileErr
+		return 0, nextFileErr
 	}
 
-	return nil
+	err = ioutil.WriteFile(d.layerSizeFile(layerID), []byte(strconv.FormatInt(totalSize, 10)), 0644)
+	return totalSize, err
 }

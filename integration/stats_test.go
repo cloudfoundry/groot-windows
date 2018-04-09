@@ -14,10 +14,9 @@ import (
 
 var _ = Describe("Stats", func() {
 	const (
-		// note: this is the size of all the gzipped layers which is what libgroot
-		// reports as the image size. We'll need to fix this whenever that bug is fixed
-		baseImageSizeBytes = int64(81039739 + 42470724 + 70745)
-		diskLimitSizeBytes = int64(160 * 1024 * 1024)
+		//NOTE: this is for 1709 version of container image
+		baseImageSizeBytes = (203295012 + 100010759 + 983964)
+		diskLimitSizeBytes = int64(350 * 1024 * 1024)
 		fileSize           = int64(30 * 1024 * 1024)
 	)
 

@@ -24,7 +24,7 @@ var _ = Describe("WriteMetadata", func() {
 		logger                *lagertest.TestLogger
 		bundleID              string
 		storeDir              string
-		volumeData            groot.VolumeMetadata
+		volumeData            groot.ImageMetadata
 	)
 
 	BeforeEach(func() {
@@ -43,7 +43,7 @@ var _ = Describe("WriteMetadata", func() {
 		logger = lagertest.NewTestLogger("driver-write-metadata-test")
 		bundleID = "some-bundle-id"
 
-		volumeData = groot.VolumeMetadata{BaseImageSize: 4000}
+		volumeData = groot.ImageMetadata{Size: 4000}
 	})
 
 	AfterEach(func() {
@@ -61,7 +61,7 @@ var _ = Describe("WriteMetadata", func() {
 			contents, err := ioutil.ReadFile(filepath.Join(d.VolumeStore(), "some-bundle-id", "metadata.json"))
 			Expect(err).NotTo(HaveOccurred())
 
-			var data groot.VolumeMetadata
+			var data groot.ImageMetadata
 			Expect(json.Unmarshal(contents, &data)).To(Succeed())
 			Expect(data).To(Equal(volumeData))
 		})

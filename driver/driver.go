@@ -74,6 +74,10 @@ func (d *Driver) metadataFile(bundleId string) string {
 	return filepath.Join(d.VolumeStore(), bundleId, "metadata.json")
 }
 
+func (d *Driver) layerSizeFile(layerId string) string {
+	return filepath.Join(d.LayerStore(), layerId, "size")
+}
+
 func toWindowsPath(input string) string {
 	vol := filepath.VolumeName(input)
 	if vol == "" {

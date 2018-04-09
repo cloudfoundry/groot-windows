@@ -243,9 +243,8 @@ var _ = Describe("Create", func() {
 
 	Context("when provided a disk limit", func() {
 		var (
-			// note: this is the size of all the gzipped layers which is what libgroot
-			// reports as the image size. We'll need to fix this whenever that bug is fixed
-			baseImageSizeBytes = 81039739 + 42470724 + 70745
+			//NOTE: this is for 1709 version of container image
+			baseImageSizeBytes = 203295012 + 100010759 + 983964
 			diskLimitSizeBytes = baseImageSizeBytes + 50*1024*1024
 			remainingQuota     = diskLimitSizeBytes - baseImageSizeBytes
 		)
@@ -294,7 +293,8 @@ var _ = Describe("Create", func() {
 			It("does not count the base image size against the limit", func() {
 				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 				Expect(err).NotTo(HaveOccurred(), string(output))
-				Expect(string(output)).To(MatchRegexp(`Limit:\s*167.87 MB \(Hard\)`))
+				//NOTE: this is for 1709 version of container image
+				Expect(string(output)).To(MatchRegexp(`Limit:\s*340.20 MB \(Hard\)`))
 			})
 
 			It("doesn't allow files larger than remaining quota to be created", func() {

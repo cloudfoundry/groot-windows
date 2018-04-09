@@ -48,7 +48,7 @@ var _ = Describe("Pull", func() {
 				grootPull(driverStore, imageURI)
 			})
 
-			It("creates a volume without updating the unpacked layers", func() {
+			It("does not overwrite the unpacked layers", func() {
 				lastWriteTimes := []int64{}
 				for _, chainID := range chainIDs {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
@@ -81,7 +81,7 @@ var _ = Describe("Pull", func() {
 				grootPull(driverStore, imageURI)
 			})
 
-			It("creates a volume without updating the unpacked layers", func() {
+			It("does not overwrite the unpacked layers", func() {
 				lastWriteTimes := []int64{}
 				for _, chainID := range chainIDs {
 					lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))

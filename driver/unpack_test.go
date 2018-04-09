@@ -28,7 +28,6 @@ var _ = Describe("Unpack", func() {
 		hcsClientFake         *fakes.HCSClient
 		tarStreamerFake       *fakes.TarStreamer
 		privilegeElevatorFake *fakes.PrivilegeElevator
-		limiterFake           *fakes.Limiter
 		logger                lager.Logger
 		layerID               string
 		buffer                *bytes.Buffer
@@ -43,7 +42,7 @@ var _ = Describe("Unpack", func() {
 		hcsClientFake = &fakes.HCSClient{}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
-		limiterFake = &fakes.Limiter{}
+		limiterFake := &fakes.Limiter{}
 
 		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
 		d.Store = storeDir
@@ -63,15 +62,27 @@ var _ = Describe("Unpack", func() {
 		Expect(os.RemoveAll(storeDir)).To(Succeed())
 	})
 
+	It("passes the correct DriverInfo to LayerExists", func() {
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
+
+		Expect(hcsClientFake.LayerExistsCallCount()).To(Equal(1))
+		di, id := hcsClientFake.LayerExistsArgsForCall(0)
+		Expect(di).To(Equal(hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}))
+		Expect(id).To(Equal(layerID))
+	})
+
 	It("create an associated layerId path", func() {
-		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
 
 		expectedDir := filepath.Join(d.LayerStore(), layerID)
 		Expect(expectedDir).To(BeADirectory())
 	})
 
 	It("elevates itself with the backup and restore privileges", func() {
-		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
 
 		Expect(privilegeElevatorFake.EnableProcessPrivilegesCallCount()).To(Equal(1))
 		Expect(privilegeElevatorFake.EnableProcessPrivilegesArgsForCall(0)).To(Equal([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}))
@@ -86,19 +97,22 @@ var _ = Describe("Unpack", func() {
 		})
 
 		It("errors", func() {
-			Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+			_, err := d.Unpack(logger, layerID, []string{}, buffer)
+			Expect(err).To(MatchError(expectedErr))
 		})
 	})
 
 	It("releases the backup and restore privileges on exit", func() {
-		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
 
 		Expect(privilegeElevatorFake.DisableProcessPrivilegesCallCount()).To(Equal(1))
 		Expect(privilegeElevatorFake.DisableProcessPrivilegesArgsForCall(0)).To(Equal([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}))
 	})
 
 	It("creates a layer writer with the correct layer id", func() {
-		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
 
 		Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(1))
 		di, actualLayerID, parentIDs := hcsClientFake.NewLayerWriterArgsForCall(0)
@@ -108,12 +122,14 @@ var _ = Describe("Unpack", func() {
 	})
 
 	It("closes the layer writer on exit", func() {
-		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
 		Expect(layerWriterFake.CloseCallCount()).To(Equal(1))
 	})
 
 	It("sets up a tar reader with the layer tarball contents, clearing it at the end", func() {
-		Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+		_, err := d.Unpack(logger, layerID, []string{}, buffer)
+		Expect(err).To(Succeed())
 
 		Expect(tarStreamerFake.SetReaderCallCount()).To(Equal(2))
 		Expect(tarStreamerFake.SetReaderArgsForCall(0)).To(Equal(buffer))
@@ -145,7 +161,7 @@ var _ = Describe("Unpack", func() {
 			})
 
 			It("return an error", func() {
-				err := d.Unpack(logger, layerID, []string{}, buffer)
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
 				Expect(err).To(HaveOccurred())
 				Expect(err).To(MatchError("driver store must be set"))
 			})
@@ -157,16 +173,34 @@ var _ = Describe("Unpack", func() {
 				tarStreamerFake.NextReturnsOnCall(1, linkFileHeader, nil)
 				tarStreamerFake.NextReturnsOnCall(2, regularFileHeader, nil)
 				tarStreamerFake.NextReturnsOnCall(3, linkFileHeader, nil)
+				tarStreamerFake.NextReturnsOnCall(4, regularFileHeader, nil)
 
 				tarStreamerFake.WriteBackupStreamFromTarFileReturnsOnCall(0, whiteoutFileHeader, nil)
 
-				tarStreamerFake.FileInfoFromHeaderReturns("regular/file/name", 100, &winio.FileBasicInfo{}, nil)
+				tarStreamerFake.FileInfoFromHeaderReturnsOnCall(0, "regular/file/name", 100, &winio.FileBasicInfo{}, nil)
+				tarStreamerFake.FileInfoFromHeaderReturnsOnCall(1, "regular/file/other-name", 200, &winio.FileBasicInfo{}, nil)
 			})
 
 			It("reads files from the layer tarball until EOF", func() {
-				Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
 
 				Expect(tarStreamerFake.NextCallCount()).To(Equal(5))
+			})
+
+			It("returns the size of the layer", func() {
+				size, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
+
+				Expect(size).To(Equal(int64(300)))
+			})
+
+			It("writes the size to the size file", func() {
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
+				content, err := ioutil.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
+				Expect(err).NotTo(HaveOccurred())
+				Expect(string(content)).To(Equal("300"))
 			})
 		})
 
@@ -178,7 +212,8 @@ var _ = Describe("Unpack", func() {
 			})
 
 			It("removes the file and finds the next file", func() {
-				Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
 
 				Expect(tarStreamerFake.NextCallCount()).To(Equal(2))
 
@@ -195,7 +230,8 @@ var _ = Describe("Unpack", func() {
 				})
 
 				It("errors", func() {
-					Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+					_, err := d.Unpack(logger, layerID, []string{}, buffer)
+					Expect(err).To(MatchError(expectedErr))
 				})
 			})
 		})
@@ -210,7 +246,8 @@ var _ = Describe("Unpack", func() {
 			})
 
 			It("adds the file as a link", func() {
-				Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
 
 				Expect(tarStreamerFake.NextCallCount()).To(Equal(2))
 
@@ -229,7 +266,8 @@ var _ = Describe("Unpack", func() {
 				})
 
 				It("errors", func() {
-					Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+					_, err := d.Unpack(logger, layerID, []string{}, buffer)
+					Expect(err).To(MatchError(expectedErr))
 				})
 			})
 		})
@@ -250,7 +288,8 @@ var _ = Describe("Unpack", func() {
 			})
 
 			It("adds the file to the layer", func() {
-				Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(Succeed())
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
 
 				Expect(tarStreamerFake.NextCallCount()).To(Equal(1))
 
@@ -268,6 +307,21 @@ var _ = Describe("Unpack", func() {
 				Expect(actualTarHeader).To(Equal(tarHeader))
 			})
 
+			It("returns the size of the layer", func() {
+				size, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
+
+				Expect(size).To(Equal(int64(100)))
+			})
+
+			It("writes the size to the size file", func() {
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(Succeed())
+				content, err := ioutil.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
+				Expect(err).NotTo(HaveOccurred())
+				Expect(string(content)).To(Equal("100"))
+			})
+
 			Context("when getting the file info fails", func() {
 				var expectedErr error
 
@@ -277,7 +331,8 @@ var _ = Describe("Unpack", func() {
 				})
 
 				It("errors", func() {
-					Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+					_, err := d.Unpack(logger, layerID, []string{}, buffer)
+					Expect(err).To(MatchError(expectedErr))
 				})
 			})
 
@@ -290,7 +345,8 @@ var _ = Describe("Unpack", func() {
 				})
 
 				It("errors", func() {
-					Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+					_, err := d.Unpack(logger, layerID, []string{}, buffer)
+					Expect(err).To(MatchError(expectedErr))
 				})
 			})
 		})
@@ -304,7 +360,8 @@ var _ = Describe("Unpack", func() {
 			})
 
 			It("errors", func() {
-				Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+				_, err := d.Unpack(logger, layerID, []string{}, buffer)
+				Expect(err).To(MatchError(expectedErr))
 			})
 		})
 	})
@@ -312,7 +369,8 @@ var _ = Describe("Unpack", func() {
 	Context("when the layer being unpacked has parents", func() {
 		It("creates a layer writer with its parent layer paths from newest to oldest", func() {
 			parentIDs := []string{"oldest-parent-id", "newest-parent-id"}
-			Expect(d.Unpack(logger, layerID, parentIDs, buffer)).To(Succeed())
+			_, err := d.Unpack(logger, layerID, parentIDs, buffer)
+			Expect(err).To(Succeed())
 
 			_, _, hcsParentIds := hcsClientFake.NewLayerWriterArgsForCall(0)
 			Expect(hcsParentIds).To(Equal([]string{filepath.Join(d.LayerStore(), "newest-parent-id"), filepath.Join(d.LayerStore(), "oldest-parent-id")}))
@@ -328,7 +386,42 @@ var _ = Describe("Unpack", func() {
 		})
 
 		It("errors", func() {
-			Expect(d.Unpack(logger, layerID, []string{}, buffer)).To(MatchError(expectedErr))
+			_, err := d.Unpack(logger, layerID, []string{}, buffer)
+			Expect(err).To(MatchError(expectedErr))
+		})
+	})
+
+	Context("the layer has already been unpacked", func() {
+		BeforeEach(func() {
+			Expect(os.MkdirAll(filepath.Join(d.LayerStore(), layerID), 0755)).To(Succeed())
+			Expect(ioutil.WriteFile(filepath.Join(d.LayerStore(), layerID, "size"), []byte("300"), 0644))
+			hcsClientFake.LayerExistsReturnsOnCall(0, true, nil)
+		})
+
+		It("does not unpack the layer and returns the size", func() {
+			size, err := d.Unpack(logger, layerID, []string{}, buffer)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(size).To(Equal(int64(300)))
+
+			Expect(privilegeElevatorFake.EnableProcessPrivilegesCallCount()).To(Equal(0))
+			Expect(privilegeElevatorFake.DisableProcessPrivilegesCallCount()).To(Equal(0))
+			Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(0))
+			Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(0))
+			Expect(tarStreamerFake.SetReaderCallCount()).To(Equal(0))
+			Expect(tarStreamerFake.NextCallCount()).To(Equal(0))
+			Expect(tarStreamerFake.FileInfoFromHeaderCallCount()).To(Equal(0))
+			Expect(tarStreamerFake.WriteBackupStreamFromTarFileCallCount()).To(Equal(0))
+		})
+	})
+
+	Context("LayerExists returns an error", func() {
+		BeforeEach(func() {
+			hcsClientFake.LayerExistsReturnsOnCall(0, false, errors.New("LayerExists failed"))
+		})
+
+		It("returns an error", func() {
+			_, err := d.Unpack(logger, layerID, []string{}, buffer)
+			Expect(err).To(MatchError("LayerExists failed"))
 		})
 	})
 })
