@@ -15,9 +15,10 @@
     "fetcher/filefetcher",
     "fetcher/layerfetcher",
     "fetcher/layerfetcher/source",
-    "imagepuller"
+    "imagepuller",
+    "imagepuller/ondemand"
   ]
-  revision = "9157a9ea12f0e2a5e3c1b1acdd93ff2744389e3b"
+  revision = "9449163cd7d0210bce839c5fd81ce4f3f289ccde"
 
 [[projects]]
   branch = "master"

@@ -30,9 +30,9 @@ func (g *Groot) Create(handle string, diskLimit int64, excludeImageFromQuota boo
 	quota := diskLimit
 
 	if diskLimit != 0 && !excludeImageFromQuota {
-		quota = quota - image.BaseImageSize
+		quota = quota - image.Size
 		if quota <= 0 {
-			return runspec.Spec{}, fmt.Errorf("disk limit %d must be larger than image size %d", diskLimit, image.BaseImageSize)
+			return runspec.Spec{}, fmt.Errorf("disk limit %d must be larger than image size %d", diskLimit, image.Size)
 		}
 	}
 
@@ -41,7 +41,7 @@ func (g *Groot) Create(handle string, diskLimit int64, excludeImageFromQuota boo
 		return runspec.Spec{}, errors.Wrap(err, "creating bundle")
 	}
 
-	metadata := VolumeMetadata{BaseImageSize: image.BaseImageSize}
+	metadata := ImageMetadata{Size: image.Size}
 	err = g.Driver.WriteMetadata(g.Logger.Session("write-metadata"), handle, metadata)
 
 	return bundle, err
