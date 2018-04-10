@@ -60,6 +60,29 @@ var _ = Describe("Pull", func() {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))
 				}
 			})
+
+			Context("when the image was unpacked without the size file", func() {
+				BeforeEach(func() {
+					grootPull(driverStore, imageURI)
+					for _, chainID := range chainIDs {
+						Expect(os.Remove(filepath.Join(layerStore, chainID, "size"))).To(Succeed())
+					}
+				})
+
+				It("repulls the layers", func() {
+					lastWriteTimes := []int64{}
+					for _, chainID := range chainIDs {
+						lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
+					}
+
+					grootPull(driverStore, imageURI)
+
+					for i, chainID := range chainIDs {
+						Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(BeNumerically(">", lastWriteTimes[i]))
+						Expect(filepath.Join(layerStore, chainID, "size")).To(BeAnExistingFile())
+					}
+				})
+			})
 		})
 	})
 
@@ -92,6 +115,29 @@ var _ = Describe("Pull", func() {
 				for i, chainID := range chainIDs {
 					Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(Equal(lastWriteTimes[i]))
 				}
+			})
+
+			Context("when the image was unpacked without the size file", func() {
+				BeforeEach(func() {
+					grootPull(driverStore, imageURI)
+					for _, chainID := range chainIDs {
+						Expect(os.Remove(filepath.Join(layerStore, chainID, "size"))).To(Succeed())
+					}
+				})
+
+				It("repulls the layers", func() {
+					lastWriteTimes := []int64{}
+					for _, chainID := range chainIDs {
+						lastWriteTimes = append(lastWriteTimes, getLastWriteTime(filepath.Join(layerStore, chainID)))
+					}
+
+					grootPull(driverStore, imageURI)
+
+					for i, chainID := range chainIDs {
+						Expect(getLastWriteTime(filepath.Join(layerStore, chainID))).To(BeNumerically(">", lastWriteTimes[i]))
+						Expect(filepath.Join(layerStore, chainID, "size")).To(BeAnExistingFile())
+					}
+				})
 			})
 		})
 	})

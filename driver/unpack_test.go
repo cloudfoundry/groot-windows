@@ -403,14 +403,51 @@ var _ = Describe("Unpack", func() {
 			Expect(err).NotTo(HaveOccurred())
 			Expect(size).To(Equal(int64(300)))
 
-			Expect(privilegeElevatorFake.EnableProcessPrivilegesCallCount()).To(Equal(0))
-			Expect(privilegeElevatorFake.DisableProcessPrivilegesCallCount()).To(Equal(0))
-			Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(0))
+			Expect(privilegeElevatorFake.EnableProcessPrivilegesCallCount()).To(Equal(1))
+			Expect(privilegeElevatorFake.DisableProcessPrivilegesCallCount()).To(Equal(1))
 			Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(0))
 			Expect(tarStreamerFake.SetReaderCallCount()).To(Equal(0))
 			Expect(tarStreamerFake.NextCallCount()).To(Equal(0))
 			Expect(tarStreamerFake.FileInfoFromHeaderCallCount()).To(Equal(0))
 			Expect(tarStreamerFake.WriteBackupStreamFromTarFileCallCount()).To(Equal(0))
+		})
+	})
+
+	Context("the layer has already been unpacked without size file", func() {
+		var (
+			tarHeader *tar.Header
+			fileInfo  *winio.FileBasicInfo
+		)
+		BeforeEach(func() {
+			tarHeader = &tar.Header{
+				Name: "regular/file/name",
+			}
+			tarStreamerFake.NextReturnsOnCall(0, tarHeader, nil)
+			fileInfo = &winio.FileBasicInfo{}
+			tarStreamerFake.FileInfoFromHeaderReturns("regular/file/name", 300, fileInfo, nil)
+
+			Expect(os.MkdirAll(filepath.Join(d.LayerStore(), layerID), 0755)).To(Succeed())
+			hcsClientFake.LayerExistsReturnsOnCall(0, true, nil)
+		})
+
+		It("destroys the layer and re-unpacks", func() {
+			size, err := d.Unpack(logger, layerID, []string{}, buffer)
+			Expect(err).NotTo(HaveOccurred())
+			Expect(size).To(Equal(int64(300)))
+
+			Expect(privilegeElevatorFake.EnableProcessPrivilegesCallCount()).To(Equal(1))
+			Expect(privilegeElevatorFake.DisableProcessPrivilegesCallCount()).To(Equal(1))
+			Expect(hcsClientFake.DestroyLayerCallCount()).To(Equal(1))
+
+			Expect(hcsClientFake.NewLayerWriterCallCount()).To(Equal(1))
+			Expect(tarStreamerFake.SetReaderCallCount()).To(Equal(2))
+			Expect(tarStreamerFake.NextCallCount()).To(Equal(1))
+			Expect(tarStreamerFake.FileInfoFromHeaderCallCount()).To(Equal(1))
+			Expect(tarStreamerFake.WriteBackupStreamFromTarFileCallCount()).To(Equal(1))
+
+			contents, err := ioutil.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(string(contents)).To(Equal("300"))
 		})
 	})
 

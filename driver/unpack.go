@@ -31,24 +31,36 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 		return 0, err
 	}
 
-	if exists {
-		logger.Info("layer-id-exists", lager.Data{"layerID": layerID})
-		content, err := ioutil.ReadFile(d.layerSizeFile(layerID))
-		if err != nil {
-			return 0, err
-		}
-		return strconv.ParseInt(string(content), 10, 64)
-	}
-
-	outputDir := filepath.Join(d.LayerStore(), layerID)
-	if err := os.MkdirAll(outputDir, 0755); err != nil {
-		return 0, err
-	}
-
 	if err := d.privilegeElevator.EnableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}); err != nil {
 		return 0, err
 	}
 	defer d.privilegeElevator.DisableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege})
+
+	outputDir := filepath.Join(d.LayerStore(), layerID)
+
+	if exists {
+		logger.Info("layer-id-exists", lager.Data{"layerID": layerID})
+		content, err := ioutil.ReadFile(d.layerSizeFile(layerID))
+		if err != nil {
+
+			// if the size file does not exist, delete the layer and recreate
+			// this way there is an upgrade path from previous groot versions
+			if os.IsNotExist(err) {
+				logger.Info("removing-out-of-date-layer", lager.Data{"layerID": layerID})
+				if err := d.hcsClient.DestroyLayer(di, layerID); err != nil {
+					return 0, err
+				}
+			} else {
+				return 0, err
+			}
+		} else {
+			return strconv.ParseInt(string(content), 10, 64)
+		}
+	}
+
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return 0, err
+	}
 
 	parentLayerPaths := []string{}
 	for _, id := range parentIDs {
