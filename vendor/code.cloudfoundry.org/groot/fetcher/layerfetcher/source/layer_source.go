@@ -2,6 +2,7 @@ package source // import "code.cloudfoundry.org/groot/fetcher/layerfetcher/sourc
 
 import (
 	"compress/gzip"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -70,7 +71,7 @@ func (s *LayerSource) Manifest(logger lager.Logger) (types.Image, error) {
 
 	for i := 0; i < MAX_DOCKER_RETRIES; i++ {
 		logger.Debug("attempt-get-config", lager.Data{"attempt": i + 1})
-		_, e := img.ConfigBlob()
+		_, e := img.ConfigBlob(context.TODO())
 		if e == nil {
 			return img, nil
 		}
@@ -194,7 +195,7 @@ func (s *LayerSource) getBlobWithRetries(logger lager.Logger, imgSrc types.Image
 	var err error
 	for i := 0; i < MAX_DOCKER_RETRIES; i++ {
 		logger.Debug(fmt.Sprintf("attempt-get-blob-%d", i+1))
-		blob, size, e := imgSrc.GetBlob(blobInfo)
+		blob, size, e := imgSrc.GetBlob(context.TODO(), blobInfo)
 		if e == nil {
 			logger.Debug("attempt-get-blob-success")
 			return blob, size, nil
@@ -257,7 +258,7 @@ func (s *LayerSource) getImageWithRetries(logger lager.Logger) (types.Image, err
 
 		imageSource, err := s.getImageSource(logger)
 		if err == nil {
-			img, err = image.FromUnparsedImage(&s.systemContext, image.UnparsedInstance(imageSource, nil))
+			img, err = image.FromUnparsedImage(context.TODO(), &s.systemContext, image.UnparsedInstance(imageSource, nil))
 			if err == nil {
 				logger.Debug("attempt-get-image-success")
 				return img, nil
@@ -287,7 +288,7 @@ func (s *LayerSource) createImageSource(logger lager.Logger) (types.ImageSource,
 		return nil, err
 	}
 
-	imgSrc, err := ref.NewImageSource(&s.systemContext)
+	imgSrc, err := ref.NewImageSource(context.TODO(), &s.systemContext)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating image source")
 	}
@@ -296,7 +297,7 @@ func (s *LayerSource) createImageSource(logger lager.Logger) (types.ImageSource,
 }
 
 func (s *LayerSource) convertImage(logger lager.Logger, originalImage types.Image) (types.Image, error) {
-	_, mimetype, err := originalImage.Manifest()
+	_, mimetype, err := originalImage.Manifest(context.TODO())
 	if err != nil {
 		return nil, err
 	}
@@ -331,7 +332,7 @@ func (s *LayerSource) convertImage(logger lager.Logger, originalImage types.Imag
 		},
 	}
 
-	return originalImage.UpdatedImage(options)
+	return originalImage.UpdatedImage(context.TODO(), options)
 }
 
 func (s *LayerSource) v1DiffID(logger lager.Logger, layer types.BlobInfo, imgSrc types.ImageSource) (digestpkg.Digest, error) {

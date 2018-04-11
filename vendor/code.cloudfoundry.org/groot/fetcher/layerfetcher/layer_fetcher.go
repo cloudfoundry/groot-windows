@@ -1,6 +1,7 @@
 package layerfetcher // import "code.cloudfoundry.org/groot/fetcher/layerfetcher"
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -55,7 +56,7 @@ func (f *LayerFetcher) ImageInfo(logger lager.Logger) (imagepuller.ImageInfo, er
 
 	logger.Debug("fetching-image-config")
 	var config *imgspec.Image
-	config, err = manifest.OCIConfig()
+	config, err = manifest.OCIConfig(context.TODO())
 	if err != nil {
 		return imagepuller.ImageInfo{}, err
 	}
