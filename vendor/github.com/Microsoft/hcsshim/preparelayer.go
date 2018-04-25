@@ -34,7 +34,9 @@ func PrepareLayer(info DriverInfo, layerId string, parentLayerPaths []string) er
 	// call to prepareLayer at a time vastly reduces the chance of a timeout.
 	prepareLayerLock.Lock()
 	defer prepareLayerLock.Unlock()
+	logrus.Printf("finished layerId %s", layerId)
 	err = prepareLayer(&infop, layerId, layers)
+	logrus.Printf("finished layerId %s", layerId)
 	if err != nil {
 		err = makeErrorf(err, title, "layerId=%s flavour=%d", layerId, info.Flavour)
 		logrus.Error(err)
