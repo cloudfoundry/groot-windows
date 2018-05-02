@@ -55,8 +55,8 @@
 [[projects]]
   name = "github.com/Microsoft/hcsshim"
   packages = ["."]
-  revision = "45ef15484298b76abeb9513ea0ea0abd2b5b84b3"
-  version = "v0.6.8"
+  revision = "26713568b7c6a6686e147b5dd294dc7dd159a6f9"
+  version = "v0.6.10"
 
 [[projects]]
   branch = "master"
@@ -303,6 +303,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "746826cf016c779f36f5c97d1904bb81f05b97567ebb539302026b20c96fa364"
+  inputs-digest = "67d1bb7ca47fa4fd41d433a49b2efe8880db69c9f092868435904ffeb0dc3fca"
   solver-name = "gps-cdcl"
   solver-version = 1
