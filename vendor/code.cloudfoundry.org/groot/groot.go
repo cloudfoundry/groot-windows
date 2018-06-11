@@ -62,12 +62,19 @@ type Groot struct {
 	ImagePuller ImagePuller
 }
 
+type DockerConfig struct {
+	InsecureRegistries []string
+	Username           string
+	Password           string
+}
+
 func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 	// The `Before` closure sets this. This is ugly, but we don't know the log
 	// level until the CLI framework has parsed the flags.
 	var g *Groot
 	var err error
 	var fetcher imagepuller.Fetcher
+	var conf config
 
 	app := cli.NewApp()
 	app.Usage = "A garden image plugin"
@@ -90,9 +97,23 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 					Name:  "exclude-image-from-quota",
 					Usage: "Set disk limit to be exclusive (i.e.: excluding image layers)",
 				},
+				cli.StringFlag{
+					Name:  "username",
+					Usage: "Username to authenticate in image registry",
+				},
+				cli.StringFlag{
+					Name:  "password",
+					Usage: "Password to authenticate in image registry",
+				},
 			},
 			Action: func(ctx *cli.Context) error {
-				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes")); err != nil {
+				dockerConfig := DockerConfig{
+					InsecureRegistries: conf.InsecureRegistries,
+					Username:           ctx.String("username"),
+					Password:           ctx.String("password"),
+				}
+
+				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes"), dockerConfig); err != nil {
 					return err
 				}
 				defer fetcher.Close()
@@ -111,7 +132,13 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 		{
 			Name: "pull",
 			Action: func(ctx *cli.Context) error {
-				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes")); err != nil {
+				dockerConfig := DockerConfig{
+					InsecureRegistries: conf.InsecureRegistries,
+					Username:           ctx.String("username"),
+					Password:           ctx.String("password"),
+				}
+
+				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes"), dockerConfig); err != nil {
 					return err
 				}
 				defer fetcher.Close()
@@ -139,7 +166,8 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 		},
 	}
 	app.Before = func(ctx *cli.Context) error {
-		conf, err := parseConfig(ctx.GlobalString("config"))
+		var err error
+		conf, err = parseConfig(ctx.GlobalString("config"))
 		if err != nil {
 			return silentError(err)
 		}
@@ -164,15 +192,28 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 	}
 }
 
-func createFetcher(urlAsString string, excludeImageFromQuota bool, diskLimitSizeBytes int64) (imagepuller.Fetcher, error) {
+func createFetcher(urlAsString string, excludeImageFromQuota bool, diskLimitSizeBytes int64, dockerConfig DockerConfig) (imagepuller.Fetcher, error) {
 	imageURL, err := url.Parse(urlAsString)
 	if err != nil {
 		return nil, err
 	}
+
 	if imageURL.Scheme == "oci" || imageURL.Scheme == "docker" {
-		layerSource := source.NewLayerSource(types.SystemContext{}, false, shouldSkipImageQuotaValidation(excludeImageFromQuota, diskLimitSizeBytes), diskLimitSizeBytes, imageURL)
+		systemContext := types.SystemContext{}
+
+		if imageURL.Scheme == "docker" {
+			systemContext.DockerInsecureSkipTLSVerify = skipTLSValidation(imageURL, dockerConfig.InsecureRegistries)
+			systemContext.DockerAuthConfig = &types.DockerAuthConfig{
+				Username: dockerConfig.Username,
+				Password: dockerConfig.Password,
+			}
+		}
+
+		layerSource := source.NewLayerSource(systemContext, false, shouldSkipImageQuotaValidation(excludeImageFromQuota, diskLimitSizeBytes), diskLimitSizeBytes, imageURL)
+
 		return layerfetcher.NewLayerFetcher(&layerSource), nil
 	}
+
 	return filefetcher.NewFileFetcher(imageURL), nil
 }
 
@@ -211,4 +252,14 @@ func (e SilentError) Error() string {
 
 func silentError(err error) SilentError {
 	return SilentError{Underlying: err}
+}
+
+func skipTLSValidation(baseImageURL *url.URL, trustedRegistries []string) bool {
+	for _, trustedRegistry := range trustedRegistries {
+		if baseImageURL.Host == trustedRegistry {
+			return true
+		}
+	}
+
+	return false
 }

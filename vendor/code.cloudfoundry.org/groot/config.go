@@ -8,7 +8,8 @@ import (
 )
 
 type config struct {
-	LogLevel string `yaml:"log_level"`
+	LogLevel           string   `yaml:"log_level"`
+	InsecureRegistries []string `yaml:"insecure_registries"`
 }
 
 func parseConfig(configFilePath string) (conf config, err error) {
