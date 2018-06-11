@@ -28,5 +28,5 @@ func main() {
 			Value: "",
 			Usage: "ignored for backward compatibility with Guardian",
 		}}
-	groot.Run(driver, os.Args, driverFlags)
+	groot.Run(driver, os.Args, driverFlags, "")
 }
