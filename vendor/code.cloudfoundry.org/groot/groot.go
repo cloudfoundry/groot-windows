@@ -131,6 +131,16 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 		},
 		{
 			Name: "pull",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "username",
+					Usage: "Username to authenticate in image registry",
+				},
+				cli.StringFlag{
+					Name:  "password",
+					Usage: "Password to authenticate in image registry",
+				},
+			},
 			Action: func(ctx *cli.Context) error {
 				dockerConfig := DockerConfig{
 					InsecureRegistries: conf.InsecureRegistries,
