@@ -68,7 +68,7 @@ type DockerConfig struct {
 	Password           string
 }
 
-func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
+func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 	// The `Before` closure sets this. This is ugly, but we don't know the log
 	// level until the CLI framework has parsed the flags.
 	var g *Groot
@@ -77,6 +77,7 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag) {
 	var conf config
 
 	app := cli.NewApp()
+	app.Version = version
 	app.Usage = "A garden image plugin"
 	app.Flags = append([]cli.Flag{
 		cli.StringFlag{
