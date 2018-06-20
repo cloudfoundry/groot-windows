@@ -114,6 +114,10 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 					Password:           ctx.String("password"),
 				}
 
+				if err := validateArgs(ctx, 2); err != nil {
+					return err
+				}
+
 				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes"), dockerConfig); err != nil {
 					return err
 				}
@@ -148,6 +152,9 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 					Username:           ctx.String("username"),
 					Password:           ctx.String("password"),
 				}
+				if err := validateArgs(ctx, 1); err != nil {
+					return err
+				}
 
 				if fetcher, err = createFetcher(ctx.Args()[0], ctx.Bool("exclude-image-from-quota"), ctx.Int64("disk-limit-size-bytes"), dockerConfig); err != nil {
 					return err
@@ -160,6 +167,9 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 		{
 			Name: "delete",
 			Action: func(ctx *cli.Context) error {
+				if err := validateArgs(ctx, 1); err != nil {
+					return err
+				}
 				handle := ctx.Args()[0]
 				return g.Delete(handle)
 			},
@@ -167,6 +177,9 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 		{
 			Name: "stats",
 			Action: func(ctx *cli.Context) error {
+				if err := validateArgs(ctx, 1); err != nil {
+					return err
+				}
 				handle := ctx.Args()[0]
 				stats, err := g.Stats(handle)
 				if err != nil {
@@ -273,4 +286,12 @@ func skipTLSValidation(baseImageURL *url.URL, trustedRegistries []string) bool {
 	}
 
 	return false
+}
+
+func validateArgs(ctx *cli.Context, num int) error {
+	if len(ctx.Args()) != num {
+		return fmt.Errorf("Incorrect number of args. Expect %d, got %d", num, len(ctx.Args()))
+	}
+
+	return nil
 }
