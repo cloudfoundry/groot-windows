@@ -53,10 +53,22 @@
   version = "v0.4.7"
 
 [[projects]]
+  branch = "master"
   name = "github.com/Microsoft/hcsshim"
-  packages = ["."]
-  revision = "26713568b7c6a6686e147b5dd294dc7dd159a6f9"
-  version = "v0.6.10"
+  packages = [
+    ".",
+    "internal/guid",
+    "internal/hcs",
+    "internal/hcserror",
+    "internal/hns",
+    "internal/interop",
+    "internal/longpath",
+    "internal/mergemaps",
+    "internal/safefile",
+    "internal/schema1",
+    "internal/wclayer"
+  ]
+  revision = "4a468a6f7ae547974bc32911395c51fb1862b7df"
 
 [[projects]]
   branch = "master"
@@ -303,6 +315,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "67d1bb7ca47fa4fd41d433a49b2efe8880db69c9f092868435904ffeb0dc3fca"
+  inputs-digest = "7f7749806b250ef5560b3ece552f227b93c53d8e78c6b553afc929d72ffcc383"
   solver-name = "gps-cdcl"
   solver-version = 1
