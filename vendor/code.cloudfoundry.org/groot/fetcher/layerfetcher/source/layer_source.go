@@ -114,7 +114,8 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 		return "", 0, err
 	}
 
-	blobTempFile, err := ioutil.TempFile("", fmt.Sprintf("blob-%s", layerInfo.BlobID))
+	// ":" is an invalid character for Windows paths
+	blobTempFile, err := ioutil.TempFile("", "blob-"+strings.Replace(layerInfo.BlobID, ":", "-", -1))
 	if err != nil {
 		return "", 0, err
 	}
