@@ -174,6 +174,11 @@ type ImageDestination interface {
 	AcceptsForeignLayerURLs() bool
 	// MustMatchRuntimeOS returns true iff the destination can store only images targeted for the current runtime OS. False otherwise.
 	MustMatchRuntimeOS() bool
+	// IgnoresEmbeddedDockerReference() returns true iff the destination does not care about Image.EmbeddedDockerReferenceConflicts(),
+	// and would prefer to receive an unmodified manifest instead of one modified for the destination.
+	// Does not make a difference if Reference().DockerReference() is nil.
+	IgnoresEmbeddedDockerReference() bool
+
 	// PutBlob writes contents of stream and returns data representing the result.
 	// inputInfo.Digest can be optionally provided if known; it is not mandatory for the implementation to verify it.
 	// inputInfo.Size is the expected length of stream, if known.
@@ -319,6 +324,30 @@ type DockerAuthConfig struct {
 	Password string
 }
 
+// OptionalBool is a boolean with an additional undefined value, which is meant
+// to be used in the context of user input to distinguish between a
+// user-specified value and a default value.
+type OptionalBool byte
+
+const (
+	// OptionalBoolUndefined indicates that the OptionalBoolean hasn't been written.
+	OptionalBoolUndefined OptionalBool = iota
+	// OptionalBoolTrue represents the boolean true.
+	OptionalBoolTrue
+	// OptionalBoolFalse represents the boolean false.
+	OptionalBoolFalse
+)
+
+// NewOptionalBool converts the input bool into either OptionalBoolTrue or
+// OptionalBoolFalse.  The function is meant to avoid boilerplate code of users.
+func NewOptionalBool(b bool) OptionalBool {
+	o := OptionalBoolFalse
+	if b == true {
+		o = OptionalBoolTrue
+	}
+	return o
+}
+
 // SystemContext allows parameterizing access to implicitly-accessed resources,
 // like configuration files in /etc and users' login state in their home directory.
 // Various components can share the same field only if their semantics is exactly
@@ -347,6 +376,9 @@ type SystemContext struct {
 	// If not "", overrides the use of platform.GOOS when choosing an image or verifying OS match.
 	OSChoice string
 
+	// Additional tags when creating or copying a docker-archive.
+	DockerArchiveAdditionalTags []reference.NamedTagged
+
 	// === OCI.Transport overrides ===
 	// If not "", a directory containing a CA certificate (ending with ".crt"),
 	// a client certificate (ending with ".cert") and a client ceritificate key
@@ -356,6 +388,8 @@ type SystemContext struct {
 	OCIInsecureSkipTLSVerify bool
 	// If not "", use a shared directory for storing blobs rather than within OCI layouts
 	OCISharedBlobDirPath string
+	// Allow UnCompress image layer for OCI image layer
+	OCIAcceptUncompressedLayers bool
 
 	// === docker.Transport overrides ===
 	// If not "", a directory containing a CA certificate (ending with ".crt"),
@@ -366,7 +400,7 @@ type SystemContext struct {
 	// Ignored if DockerCertPath is non-empty.
 	DockerPerHostCertDirPath string
 	// Allow contacting docker registries over HTTP, or HTTPS with failed TLS verification. Note that this does not affect other TLS connections.
-	DockerInsecureSkipTLSVerify bool
+	DockerInsecureSkipTLSVerify OptionalBool
 	// if nil, the library tries to parse ~/.docker/config.json to retrieve credentials
 	DockerAuthConfig *DockerAuthConfig
 	// if not "", an User-Agent header is added to each request when contacting a registry.

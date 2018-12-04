@@ -3,6 +3,7 @@ package integration_test
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -64,7 +65,8 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	for _, tag := range imageTags {
 		_, err := os.Stat(filepath.Join(ociImagesDir, tag))
 		if err != nil && os.IsNotExist(err) {
-			Expect(hydrator.New(filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, true).Run()).To(Succeed())
+			logger := log.New(os.Stdout, "", 0)
+			Expect(hydrator.New(logger, filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, true).Run()).To(Succeed())
 			err = nil
 		}
 		Expect(err).NotTo(HaveOccurred())

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,14 +20,16 @@ type Hydrator struct {
 	imageName string
 	imageTag  string
 	noTarball bool
+	logger    *log.Logger
 }
 
-func New(outDir, imageName, imageTag string, noTarball bool) *Hydrator {
+func New(logger *log.Logger, outDir, imageName, imageTag string, noTarball bool) *Hydrator {
 	return &Hydrator{
 		outDir:    outDir,
 		imageName: imageName,
 		imageTag:  imageTag,
 		noTarball: noTarball,
+		logger:    logger,
 	}
 }
 
@@ -58,7 +61,7 @@ func (h *Hydrator) Run() error {
 	}
 
 	r := registry.New("https://auth.docker.io", "https://registry.hub.docker.com", h.imageName, h.imageTag)
-	d := downloader.New(blobDownloadDir, r, os.Stdout)
+	d := downloader.New(h.logger, blobDownloadDir, r)
 
 	layers, diffIds, err := d.Run()
 	if err != nil {
@@ -69,7 +72,7 @@ func (h *Hydrator) Run() error {
 	if err := w.Write(); err != nil {
 		return err
 	}
-	fmt.Printf("\nAll layers downloaded.\n")
+	h.logger.Printf("\nAll layers downloaded.\n")
 
 	if !h.noTarball {
 		nameParts := strings.Split(h.imageName, "/")
@@ -78,14 +81,14 @@ func (h *Hydrator) Run() error {
 		}
 		outFile := filepath.Join(h.outDir, fmt.Sprintf("%s-%s.tgz", nameParts[1], h.imageTag))
 
-		fmt.Printf("Writing %s...\n", outFile)
+		h.logger.Printf("Writing %s...\n", outFile)
 
 		c := compress.New()
 		if err := c.WriteTgz(imageDownloadDir, outFile); err != nil {
 			return err
 		}
 
-		fmt.Println("Done.")
+		h.logger.Println("Done.")
 	}
 
 	return nil
