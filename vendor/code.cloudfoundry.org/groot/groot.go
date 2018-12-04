@@ -226,7 +226,7 @@ func createFetcher(urlAsString string, excludeImageFromQuota bool, diskLimitSize
 		systemContext := types.SystemContext{}
 
 		if imageURL.Scheme == "docker" {
-			systemContext.DockerInsecureSkipTLSVerify = skipTLSValidation(imageURL, dockerConfig.InsecureRegistries)
+			systemContext.DockerInsecureSkipTLSVerify = types.NewOptionalBool(skipTLSValidation(imageURL, dockerConfig.InsecureRegistries))
 			systemContext.DockerAuthConfig = &types.DockerAuthConfig{
 				Username: dockerConfig.Username,
 				Password: dockerConfig.Password,
