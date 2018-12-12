@@ -45,26 +45,29 @@ func (d *Driver) Bundle(logger lager.Logger, bundleID string, layerIDs []string,
 		cleanupLayer()
 		return specs.Spec{}, err
 	}
+	// runhcs expects the layer folders to contain the scratch layer (i.e. volume)
+	layerFolders = append(layerFolders, filepath.Join(d.VolumeStore(), bundleID))
 
-	volumePath, err := d.hcsClient.GetLayerMountPath(di, bundleID)
-	if err != nil {
-		cleanupLayer()
-		return specs.Spec{}, err
-	} else if volumePath == "" {
-		cleanupLayer()
-		return specs.Spec{}, &MissingVolumePathError{Id: bundleID}
-	}
+	// runhcs will mount the volume for us
+	//volumePath, err := d.hcsClient.GetLayerMountPath(di, bundleID)
+	//if err != nil {
+	//	cleanupLayer()
+	//	return specs.Spec{}, err
+	//} else if volumePath == "" {
+	//	cleanupLayer()
+	//	return specs.Spec{}, &MissingVolumePathError{Id: bundleID}
+	//}
 
-	if err := d.limiter.SetQuota(volumePath, uint64(diskLimit)); err != nil {
-		cleanupLayer()
-		return specs.Spec{}, err
-	}
+	//if err := d.limiter.SetQuota(volumePath, uint64(diskLimit)); err != nil {
+	//	cleanupLayer()
+	//	return specs.Spec{}, err
+	//}
 
 	return specs.Spec{
 		Version: specs.Version,
-		Root: &specs.Root{
-			Path: volumePath,
-		},
+		//Root: &specs.Root{
+		//	Path: volumePath,
+		//},
 		Windows: &specs.Windows{
 			LayerFolders: layerFolders,
 		},

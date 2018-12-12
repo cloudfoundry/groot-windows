@@ -72,6 +72,7 @@ var _ = Describe("Bundle", func() {
 			filepath.Join(d.LayerStore(), "newest-layer"),
 			filepath.Join(d.LayerStore(), "middle-layer"),
 			filepath.Join(d.LayerStore(), "oldest-layer"),
+			filepath.Join(d.VolumeStore(), "some-bundle-id"),
 		}
 		Expect(spec.Windows.LayerFolders).To(Equal(expectedLayerDirs))
 	})

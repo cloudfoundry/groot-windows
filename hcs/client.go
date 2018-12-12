@@ -42,15 +42,14 @@ func (c *Client) CreateLayer(di hcsshim.DriverInfo, id string, parentLayerPaths 
 	}
 	defer f.Close()
 
-	if err := hcsshim.CreateSandboxLayer(di, id, "", parentLayerPaths); err != nil {
-		return err
-	}
+	// runhcs activates and prepares the layers
+	return hcsshim.CreateSandboxLayer(di, id, "", parentLayerPaths)
 
-	if err := hcsshim.ActivateLayer(di, id); err != nil {
-		return err
-	}
+	//if err := hcsshim.ActivateLayer(di, id); err != nil {
+	//	return err
+	//}
 
-	return hcsshim.PrepareLayer(di, id, parentLayerPaths)
+	//return hcsshim.PrepareLayer(di, id, parentLayerPaths)
 }
 
 func (c *Client) DestroyLayer(di hcsshim.DriverInfo, id string) error {
