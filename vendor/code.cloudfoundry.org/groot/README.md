@@ -6,8 +6,8 @@ A framework for building image plugins for
 ## Running tests
 Running Groot tests is as easy as running `scripts/test`. Some of the tests are testing against a private docker registry and therefore you need to setup your own (see below for instructions how to do that).
 The following environment variables configure the private docker registry access:
-* `REGISTRY_USERNAME` - the private registry username
-* `REGISTRY_PASSWORD` - the private registry password
+* `DOCKER_REGISTRY_USERNAME` - the private registry username
+* `DOCKER_REGISTRY_PASSWORD` - the private registry password
 * `PRIVATE_DOCKER_IMAGE_URL` - the private docker image URL, e.g. `docker://my-user/my-image:my-tag`
 
 ## Setting up the private docker image
