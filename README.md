@@ -10,7 +10,7 @@ Make sure `GOPATH` is set. Then run:
 go build
 ```
 
-It generates a `garden-windows.exe` in the current directory.
+It generates a `groot-windows.exe` in the current directory.
 
 ## Usage
 
