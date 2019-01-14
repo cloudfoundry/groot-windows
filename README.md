@@ -17,6 +17,17 @@ It generates a `groot-windows.exe` in the current directory.
 ```
 groot-windows.exe [global options] command [command options] [arguments...]
 ```
+
+#### Examples
+
+```
+groot-windows.exe --driver-store="c:\ProgramData\groot" create "oci:///C:/hydratorOutput" container1
+```
+
+```
+groot-windows.exe --driver-store="c:\ProgramData\groot" delete container1
+```
+
 Use `groot-windows.exe --help` to show detailed usage.
 
 ## Testing
