@@ -7,7 +7,7 @@ A [Garden](https://github.com/cloudfoundry/garden) image plugin for Windows.
 Make sure `GOPATH` is set. Then run:
 
 ```
-go build
+GOOS=windows go build .
 ```
 
 It generates a `groot-windows.exe` in the current directory.
@@ -34,4 +34,6 @@ Use `groot-windows.exe --help` to show detailed usage.
 
 #### Requirements
 
-To run the entire suite of tests, do `ginkgo -r .`
+You must be in a windows environment to run these tests.
+
+To run the entire suite of tests, run `ginkgo -r -race -p .`
