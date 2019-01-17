@@ -44,7 +44,7 @@ required = ["github.com/onsi/ginkgo/ginkgo"]
 
 [[constraint]]
   name = "github.com/Microsoft/hcsshim"
-  branch = "master"
+  version = "v0.8.3"
 
 [[constraint]]
   name = "github.com/Microsoft/go-winio"
