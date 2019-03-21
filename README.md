@@ -22,7 +22,7 @@ groot-windows.exe [global options] command [command options] [arguments...]
 
 `groot pull`: Downloads the layers from the image registry if remote, and unpacks each layer into *directories* of the same name/digest located at `<driver-store>/layers`. If `<driver-store>/layers` already contain the same unpacked layers, this is a NOOP.
 
-`groot create`: Runs a `groot pull`, creates a virtual Hard disk file inside `<driver-store>/volumes`, mounts it as a Windows Volume path and returns a valid [runtime spec](https://github.com/opencontainers/runtime-spec/blob/master/specs-go/config.go) on stdout.
+`groot create`: Runs a `groot pull`, uses the relevant layers to create a virtual Hard disk file inside `<driver-store>/volumes`, mounts it as a Windows Volume path and returns a valid [runtime spec](https://github.com/opencontainers/runtime-spec/blob/master/specs-go/config.go) on stdout.
 
 
 #### Examples
