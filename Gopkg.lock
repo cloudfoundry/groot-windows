@@ -18,7 +18,7 @@
     "imagepuller",
     "imagepuller/ondemand"
   ]
-  revision = "ef159a1e46641b8f23b65c9dc28fc01a3e54e98e"
+  revision = "230a8af24d750d2cbdeaf1b13ba8d30e9cc27b69"
 
 [[projects]]
   branch = "master"
@@ -88,7 +88,6 @@
   revision = "3a771d992973f24aa725d07868b467d1ddfceafb"
 
 [[projects]]
-  branch = "master"
   name = "github.com/containers/image"
   packages = [
     "directory/explicitfilepath",
@@ -99,6 +98,7 @@
     "manifest",
     "oci/internal",
     "oci/layout",
+    "pkg/blobinfocache/none",
     "pkg/docker/config",
     "pkg/strslice",
     "pkg/sysregistriesv2",
@@ -106,7 +106,8 @@
     "transports",
     "types"
   ]
-  revision = "63a1cbdc5e6537056695cf0d627c0a33b334df53"
+  revision = "f52cf78ebfa1916da406f8b6210d8f7764ec1185"
+  version = "v1.5.1"
 
 [[projects]]
   name = "github.com/docker/distribution"

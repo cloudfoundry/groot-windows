@@ -4,8 +4,8 @@ github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Microsoft/go-winio v0.4.7 h1:vOvDiY/F1avSWlCWiKJjdYKz2jVjTK3pWPHndeG4OAY=
 github.com/Microsoft/go-winio v0.4.7/go.mod h1:VhR8bwka0BXejwEJY73c50VrPtXAaKcyvVC4A4RozmA=
-github.com/containers/image v0.0.0-20181129122009-63a1cbdc5e65 h1:TDK8klqsMt64MvOaDbAbyjTD2hFeGVxQhxqyIyzOTfI=
-github.com/containers/image v0.0.0-20181129122009-63a1cbdc5e65/go.mod h1:8Vtij257IWSanUQKe1tAeNOm2sRVkSqQTVQ1IlwI3+M=
+github.com/containers/image v1.5.1 h1:ssEuj1c24uJvdMkUa2IrawuEFZBP12p6WzrjNBTQxE0=
+github.com/containers/image v1.5.1/go.mod h1:8Vtij257IWSanUQKe1tAeNOm2sRVkSqQTVQ1IlwI3+M=
 github.com/containers/storage v1.12.1 h1:SXHunndHpApK76qR14vlrAc8iE99ulqddMtr7BgH35w=
 github.com/containers/storage v1.12.1/go.mod h1:+RirK6VQAqskQlaTBrOG6ulDvn4si2QjFE1NZCn06MM=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=

@@ -6,7 +6,7 @@ require (
 	code.cloudfoundry.org/lager v1.0.0
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/Microsoft/go-winio v0.4.7 // indirect
-	github.com/containers/image v0.0.0-20181129122009-63a1cbdc5e65
+	github.com/containers/image v1.5.1
 	github.com/containers/storage v1.12.1 // indirect
 	github.com/docker/distribution v0.0.0-20180203002934-fea8bd511433 // indirect
 	github.com/docker/docker v1.13.1 // indirect
