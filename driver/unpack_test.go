@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"code.cloudfoundry.org/filelock"
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
 	hcsfakes "code.cloudfoundry.org/groot-windows/hcs/fakes"
@@ -39,7 +40,9 @@ var _ = Describe("Unpack", func() {
 		storeDir, err = ioutil.TempDir("", "driver")
 		Expect(err).To(Succeed())
 
-		hcsClientFake = &fakes.HCSClient{}
+		hcsClientFake = &fakes.HCSClient{
+			LayersLock: filelock.NewLocker("C:\\var\\vcap\\data\\groot-windows\\layers.lock"),
+		}
 		tarStreamerFake = &fakes.TarStreamer{}
 		privilegeElevatorFake = &fakes.PrivilegeElevator{}
 		limiterFake := &fakes.Limiter{}
