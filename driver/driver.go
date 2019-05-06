@@ -4,7 +4,6 @@ import (
 	"io"
 	"path/filepath"
 
-	"code.cloudfoundry.org/filelock"
 	"code.cloudfoundry.org/groot-windows/hcs"
 	"github.com/Microsoft/go-winio/archive/tar"
 
@@ -27,7 +26,6 @@ type HCSClient interface {
 	LayerExists(hcsshim.DriverInfo, string) (bool, error)
 	GetLayerMountPath(hcsshim.DriverInfo, string) (string, error)
 	DestroyLayer(hcsshim.DriverInfo, string) error
-	GetLayersLock() filelock.FileLocker
 }
 
 //go:generate counterfeiter -o fakes/privilege_elevator.go --fake-name PrivilegeElevator . PrivilegeElevator

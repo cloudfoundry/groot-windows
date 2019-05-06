@@ -31,12 +31,6 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 		return 0, err
 	}
 
-	layersLockFd, err := d.hcsClient.GetLayersLock().Open()
-	if err != nil {
-		return 0, err
-	}
-	defer layersLockFd.Close()
-
 	if err := d.privilegeElevator.EnableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}); err != nil {
 		return 0, err
 	}
