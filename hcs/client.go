@@ -18,17 +18,13 @@ type LayerWriter interface {
 }
 
 type Client struct {
-	LayersLock filelock.FileLocker
+	layerCreateLock filelock.FileLocker
 }
 
 func NewClient() *Client {
 	return &Client{
-		LayersLock: filelock.NewLocker("C:\\var\\vcap\\data\\groot-windows\\layers.lock"),
+		layerCreateLock: filelock.NewLocker("C:\\var\\vcap\\data\\groot-windows\\create.lock"),
 	}
-}
-
-func (c *Client) GetLayersLock() filelock.FileLocker {
-	return c.LayersLock
 }
 
 func (c *Client) NewLayerWriter(di hcsshim.DriverInfo, layerID string, parentLayerPaths []string) (LayerWriter, error) {
@@ -40,7 +36,7 @@ func (c *Client) GetLayerMountPath(di hcsshim.DriverInfo, id string) (string, er
 }
 
 func (c *Client) CreateLayer(di hcsshim.DriverInfo, id string, parentLayerPaths []string) error {
-	f, err := c.LayersLock.Open()
+	f, err := c.layerCreateLock.Open()
 	if err != nil {
 		return err
 	}
