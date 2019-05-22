@@ -81,7 +81,7 @@ type HCSClient struct {
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
-	LayersLock       filelock.FileLocker
+	LayersLock       filelock.FileLock
 }
 
 func (fake *HCSClient) NewLayerWriter(arg1 hcsshim.DriverInfo, arg2 string, arg3 []string) (hcs.LayerWriter, error) {
