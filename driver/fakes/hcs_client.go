@@ -4,7 +4,6 @@ package fakes
 import (
 	"sync"
 
-	"code.cloudfoundry.org/filelock"
 	"code.cloudfoundry.org/groot-windows/driver"
 	"code.cloudfoundry.org/groot-windows/hcs"
 	"github.com/Microsoft/hcsshim"
@@ -81,7 +80,6 @@ type HCSClient struct {
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
-	LayersLock       filelock.FileLock
 }
 
 func (fake *HCSClient) NewLayerWriter(arg1 hcsshim.DriverInfo, arg2 string, arg3 []string) (hcs.LayerWriter, error) {
@@ -380,10 +378,6 @@ func (fake *HCSClient) recordInvocation(key string, args []interface{}) {
 		fake.invocations[key] = [][]interface{}{}
 	}
 	fake.invocations[key] = append(fake.invocations[key], args)
-}
-
-func (fake *HCSClient) GetLayersLock() filelock.FileLocker {
-	return fake.LayersLock
 }
 
 var _ driver.HCSClient = new(HCSClient)
