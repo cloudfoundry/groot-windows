@@ -3,7 +3,7 @@ module code.cloudfoundry.org/groot
 go 1.12
 
 require (
-	code.cloudfoundry.org/lager v1.0.0
+	code.cloudfoundry.org/lager v1.1.0
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/Microsoft/go-winio v0.4.7 // indirect
 	github.com/containers/image v1.5.1
@@ -25,7 +25,7 @@ require (
 	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/opencontainers/runtime-spec v1.0.1
 	github.com/pkg/errors v0.8.1
-	github.com/sirupsen/logrus v1.4.1
+	github.com/sirupsen/logrus v1.4.2
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/urfave/cli v0.0.0-20180202211318-803d0665796d
 	golang.org/x/sync v0.0.0-20190227155943-e225da77a7e6 // indirect
