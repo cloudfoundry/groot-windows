@@ -18,7 +18,7 @@
     "imagepuller",
     "imagepuller/ondemand"
   ]
-  revision = "fa8e64523fd20612ea9b4c6906a947e8ca5c0020"
+  revision = "a57dd9e4942e71c2d094d5381e690eaf635f8b69"
 
 [[projects]]
   branch = "master"
