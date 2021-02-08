@@ -26,7 +26,7 @@ require (
 	github.com/opencontainers/runc v0.1.1 // indirect
 	github.com/opencontainers/runtime-spec v1.0.2
 	github.com/pkg/errors v0.9.1
-	github.com/sirupsen/logrus v1.6.0
+	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/urfave/cli v0.0.0-20180202211318-803d0665796d
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
