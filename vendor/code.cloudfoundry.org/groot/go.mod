@@ -1,6 +1,6 @@
 module code.cloudfoundry.org/groot
 
-go 1.14
+go 1.15
 
 require (
 	code.cloudfoundry.org/lager v1.1.0
@@ -18,7 +18,7 @@ require (
 	github.com/gorilla/context v0.0.0-20160226214623-1ea25387ff6f // indirect
 	github.com/gorilla/mux v1.6.1 // indirect
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/onsi/ginkgo v1.16.1
+	github.com/onsi/ginkgo v1.16.2
 	github.com/onsi/gomega v1.11.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.1
@@ -28,9 +28,8 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/urfave/cli v0.0.0-20180202211318-803d0665796d
-	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
-	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
-	golang.org/x/text v0.3.5 // indirect
+	golang.org/x/net v0.0.0-20210505024714-0287a6fb4125 // indirect
+	golang.org/x/sys v0.0.0-20210503173754-0981d6026fa6 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
