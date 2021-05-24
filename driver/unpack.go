@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	winio "github.com/Microsoft/go-winio"
-	"github.com/Microsoft/go-winio/archive/tar"
+	"github.com/Microsoft/go-winio/backuptar"
 
 	"code.cloudfoundry.org/lager"
 	"github.com/Microsoft/hcsshim"
