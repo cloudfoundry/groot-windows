@@ -19,6 +19,7 @@ require (
 	github.com/urfave/cli v1.22.2
 	golang.org/x/net v0.0.0-20210521195947-fe42d452be8f // indirect
 	golang.org/x/sys v0.0.0-20210521203332-0cec03c779c1
+	golang.org/x/tools v0.1.1 // indirect
 )
 
 replace github.com/Microsoft/hcsshim v0.8.17 => github.com/greenhouse-org/hcsshim v0.6.8-0.20190130155644-d3cfe7c848cd
