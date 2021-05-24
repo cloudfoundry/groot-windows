@@ -13,11 +13,12 @@ require (
 	github.com/docker/docker-credential-helpers v0.6.1 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/onsi/ginkgo v1.16.2
-	github.com/onsi/gomega v1.11.0
+	github.com/onsi/gomega v1.12.0
 	github.com/opencontainers/image-spec v1.0.1
 	github.com/opencontainers/runtime-spec v1.0.3-0.20200929063507-e6143ca7d51d
 	github.com/urfave/cli v1.22.2
-	golang.org/x/sys v0.0.0-20210503173754-0981d6026fa6
+	golang.org/x/net v0.0.0-20210521195947-fe42d452be8f // indirect
+	golang.org/x/sys v0.0.0-20210521203332-0cec03c779c1
 )
 
 replace github.com/Microsoft/hcsshim v0.8.17 => github.com/greenhouse-org/hcsshim v0.6.8-0.20190130155644-d3cfe7c848cd
