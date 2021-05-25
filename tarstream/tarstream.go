@@ -7,7 +7,7 @@ import (
 
 	winio "github.com/Microsoft/go-winio"
 	"github.com/Microsoft/go-winio/archive/tar"
-	"github.com/Microsoft/go-winio/archive/tar"
+	"github.com/Microsoft/go-winio/backuptar"
 )
 
 type Streamer struct {
