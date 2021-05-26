@@ -7,7 +7,7 @@ import (
 
 	"code.cloudfoundry.org/groot-windows/driver"
 	"github.com/Microsoft/go-winio"
-	"github.com/Microsoft/go-winio/backuptar"
+	"github.com/Microsoft/go-winio/archive/tar"
 )
 
 type TarStreamer struct {
