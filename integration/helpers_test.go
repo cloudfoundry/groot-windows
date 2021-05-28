@@ -18,6 +18,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"unicode/utf16"
 	"unsafe"
 
 	"code.cloudfoundry.org/groot"
@@ -304,13 +305,10 @@ func getSymlinkDest(filename string) string {
 	switch rdb.ReparseTag {
 	case syscall.IO_REPARSE_TAG_SYMLINK:
 		data := (*symbolicLinkReparseBuffer)(unsafe.Pointer(&rdb.reparseBuffer))
-		p := (*[0xffff]uint16)(unsafe.Pointer(&data.PathBuffer[0]))
-		s = syscall.UTF16ToString(p[data.SubstituteNameOffset/2 : (data.SubstituteNameOffset+data.SubstituteNameLength)/2])
-
+		s = utf16PtrToString(&data.PathBuffer[0])
 	case IO_REPARSE_TAG_MOUNT_POINT:
 		data := (*mountPointReparseBuffer)(unsafe.Pointer(&rdb.reparseBuffer))
-		p := (*[0xffff]uint16)(unsafe.Pointer(&data.PathBuffer[0]))
-		s = syscall.UTF16ToString(p[data.SubstituteNameOffset/2 : (data.SubstituteNameOffset+data.SubstituteNameLength)/2])
+		s = utf16PtrToString(&data.PathBuffer[0])
 	default:
 		panic(fmt.Sprintf("unknown reparse tag %d", rdb.ReparseTag))
 	}
@@ -350,4 +348,41 @@ func getLastWriteTime(file string) int64 {
 	fi, err := os.Stat(file)
 	ExpectWithOffset(1, err).NotTo(HaveOccurred())
 	return fi.Sys().(*syscall.Win32FileAttributeData).LastWriteTime.Nanoseconds()
+}
+
+// Taken from: .../go/1.16.3/libexec/src/internal/syscall/windows/syscall_windows.go
+// UTF16PtrToString is like UTF16ToString, but takes *uint16
+// as a parameter instead of []uint16.
+func utf16PtrToString(p *uint16) string {
+	if p == nil {
+		return ""
+	}
+	// Find NUL terminator.
+	end := unsafe.Pointer(p)
+	n := 0
+	for *(*uint16)(end) != 0 {
+		end = unsafe.Pointer(uintptr(end) + unsafe.Sizeof(*p))
+		n++
+	}
+	// Turn *uint16 into []uint16.
+	var s []uint16
+	hdr := (*unsafeheaderSlice)(unsafe.Pointer(&s))
+	hdr.Data = unsafe.Pointer(p)
+	hdr.Cap = n
+	hdr.Len = n
+	// Decode []uint16 into string.
+	return string(utf16.Decode(s))
+}
+
+// Taken from: .../go/1.16.3/libexec/src/internal/unsafeheader/unsafeheader.go
+// Slice is the runtime representation of a slice.
+// It cannot be used safely or portably and its representation may
+// change in a later release.
+//
+// Unlike reflect.SliceHeader, its Data field is sufficient to guarantee the
+// data it references will not be garbage collected.
+type unsafeheaderSlice struct {
+	Data unsafe.Pointer
+	Len  int
+	Cap  int
 }
