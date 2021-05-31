@@ -3,7 +3,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
 ## explicit
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20210505095527-8906ba001ae9
+# code.cloudfoundry.org/groot v0.0.0-20210531100206-bc65fffc7823
 ## explicit
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -115,7 +115,7 @@ github.com/nxadm/tail/ratelimiter
 github.com/nxadm/tail/util
 github.com/nxadm/tail/watch
 github.com/nxadm/tail/winfile
-# github.com/onsi/ginkgo v1.16.2
+# github.com/onsi/ginkgo v1.16.3
 ## explicit
 github.com/onsi/ginkgo
 github.com/onsi/ginkgo/config
