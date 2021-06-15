@@ -11,7 +11,7 @@ import (
 	"code.cloudfoundry.org/groot/imagepuller"
 	"code.cloudfoundry.org/lager"
 
-	"github.com/containers/image/types"
+	"github.com/containers/image/v5/types"
 	imgspec "github.com/opencontainers/image-spec/specs-go/v1"
 	errorspkg "github.com/pkg/errors"
 )
