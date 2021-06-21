@@ -171,6 +171,7 @@ type SystemError struct {
 	ID     string
 	Op     string
 	Err    error
+	Extra  string
 	Events []ErrorEvent
 }
 
@@ -180,6 +181,9 @@ func (e *SystemError) Error() string {
 	s := e.Op + " " + e.ID + ": " + e.Err.Error()
 	for _, ev := range e.Events {
 		s += "\n" + ev.String()
+	}
+	if e.Extra != "" {
+		s += "\n(extra info: " + e.Extra + ")"
 	}
 	return s
 }
@@ -194,7 +198,7 @@ func (e *SystemError) Timeout() bool {
 	return ok && err.Timeout()
 }
 
-func makeSystemError(system *System, op string, err error, events []ErrorEvent) error {
+func makeSystemError(system *System, op string, extra string, err error, events []ErrorEvent) error {
 	// Don't double wrap errors
 	if _, ok := err.(*SystemError); ok {
 		return err
@@ -202,6 +206,7 @@ func makeSystemError(system *System, op string, err error, events []ErrorEvent) 
 	return &SystemError{
 		ID:     system.ID(),
 		Op:     op,
+		Extra:  extra,
 		Err:    err,
 		Events: events,
 	}
@@ -307,13 +312,6 @@ func IsOperationInvalidState(err error) bool {
 	return err == ErrVmcomputeOperationInvalidState
 }
 
-// IsAccessIsDenied returns true when err is caused by
-// `ErrVmcomputeOperationAccessIsDenied`.
-func IsAccessIsDenied(err error) bool {
-	err = getInnerError(err)
-	return err == ErrVmcomputeOperationAccessIsDenied
-}
-
 func getInnerError(err error) error {
 	switch pe := err.(type) {
 	case nil:
@@ -326,4 +324,13 @@ func getInnerError(err error) error {
 		err = pe.Err
 	}
 	return err
+}
+
+func getOperationLogResult(err error) (string, error) {
+	switch err {
+	case nil:
+		return "Success", nil
+	default:
+		return "Error", err
+	}
 }
