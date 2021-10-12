@@ -3,7 +3,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
 ## explicit
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20210615090005-2975580e9665
+# code.cloudfoundry.org/groot v0.0.0-20211012145205-290e4e816cb0
 ## explicit
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -23,15 +23,16 @@ code.cloudfoundry.org/hydrator/registry
 code.cloudfoundry.org/lager
 code.cloudfoundry.org/lager/lagerctx
 code.cloudfoundry.org/lager/lagertest
-# github.com/BurntSushi/toml v0.3.1
+# github.com/BurntSushi/toml v0.4.1
 github.com/BurntSushi/toml
+github.com/BurntSushi/toml/internal
 # github.com/Microsoft/go-winio v0.5.0 => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 ## explicit
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/archive/tar
 github.com/Microsoft/go-winio/backuptar
 github.com/Microsoft/go-winio/pkg/guid
-# github.com/Microsoft/hcsshim v0.8.17 => github.com/Microsoft/hcsshim v0.8.7
+# github.com/Microsoft/hcsshim v0.8.20 => github.com/Microsoft/hcsshim v0.8.7
 ## explicit
 github.com/Microsoft/hcsshim
 github.com/Microsoft/hcsshim/internal/cow
@@ -55,9 +56,11 @@ github.com/Microsoft/hcsshim/osversion
 github.com/beorn7/perks/quantile
 # github.com/cespare/xxhash/v2 v2.1.1
 github.com/cespare/xxhash/v2
+# github.com/checkpoint-restore/go-criu/v4 v4.1.0
+## explicit
 # github.com/containerd/cgroups v0.0.0-20190919134610-bf292b21730f
 github.com/containerd/cgroups/stats/v1
-# github.com/containers/image/v5 v5.12.0
+# github.com/containers/image/v5 v5.15.1
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
 github.com/containers/image/v5/docker/policyconfiguration
@@ -68,6 +71,7 @@ github.com/containers/image/v5/internal/iolimits
 github.com/containers/image/v5/internal/pkg/keyctl
 github.com/containers/image/v5/internal/pkg/platform
 github.com/containers/image/v5/internal/rootless
+github.com/containers/image/v5/internal/types
 github.com/containers/image/v5/internal/uploadreader
 github.com/containers/image/v5/manifest
 github.com/containers/image/v5/oci/internal
@@ -85,18 +89,22 @@ github.com/containers/image/v5/types
 github.com/containers/image/v5/version
 # github.com/containers/libtrust v0.0.0-20200511145503-9c3a6c22cd9a
 github.com/containers/libtrust
-# github.com/containers/ocicrypt v1.1.0
+# github.com/containers/ocicrypt v1.1.2
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.32.2
+# github.com/containers/storage v1.34.0
+github.com/containers/storage/pkg/chunked/compressor
+github.com/containers/storage/pkg/chunked/internal
 github.com/containers/storage/pkg/homedir
 github.com/containers/storage/pkg/idtools
+github.com/containers/storage/pkg/ioutils
 github.com/containers/storage/pkg/lockfile
+github.com/containers/storage/pkg/longpath
 github.com/containers/storage/pkg/mount
 github.com/containers/storage/pkg/reexec
 github.com/containers/storage/pkg/stringid
 github.com/containers/storage/pkg/system
 github.com/containers/storage/pkg/unshare
-# github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
+# github.com/cpuguy83/go-md2man/v2 v2.0.1
 github.com/cpuguy83/go-md2man/v2/md2man
 # github.com/docker/distribution v2.7.1+incompatible
 github.com/docker/distribution
@@ -110,7 +118,7 @@ github.com/docker/distribution/registry/client/auth/challenge
 github.com/docker/distribution/registry/client/transport
 github.com/docker/distribution/registry/storage/cache
 github.com/docker/distribution/registry/storage/cache/memory
-# github.com/docker/docker v20.10.7+incompatible
+# github.com/docker/docker v20.10.8+incompatible
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.6.4
 github.com/docker/docker-credential-helpers/client
@@ -139,7 +147,7 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
-# github.com/golang/snappy v0.0.3
+# github.com/golang/snappy v0.0.4
 github.com/golang/snappy
 # github.com/gorilla/mux v1.8.0
 github.com/gorilla/mux
@@ -147,7 +155,8 @@ github.com/gorilla/mux
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-multierror v1.1.1
 github.com/hashicorp/go-multierror
-# github.com/klauspost/compress v1.13.1
+# github.com/klauspost/compress v1.13.4
+github.com/klauspost/compress
 github.com/klauspost/compress/flate
 github.com/klauspost/compress/fse
 github.com/klauspost/compress/huff0
@@ -187,17 +196,13 @@ github.com/onsi/ginkgo/reporters/stenographer
 github.com/onsi/ginkgo/reporters/stenographer/support/go-colorable
 github.com/onsi/ginkgo/reporters/stenographer/support/go-isatty
 github.com/onsi/ginkgo/types
-# github.com/onsi/gomega v1.13.0
+# github.com/onsi/gomega v1.15.0
 ## explicit
 github.com/onsi/gomega
 github.com/onsi/gomega/format
 github.com/onsi/gomega/gbytes
 github.com/onsi/gomega/gexec
-github.com/onsi/gomega/internal/assertion
-github.com/onsi/gomega/internal/asyncassertion
-github.com/onsi/gomega/internal/defaults
-github.com/onsi/gomega/internal/oraclematcher
-github.com/onsi/gomega/internal/testingtsupport
+github.com/onsi/gomega/internal
 github.com/onsi/gomega/matchers
 github.com/onsi/gomega/matchers/support/goraph/bipartitegraph
 github.com/onsi/gomega/matchers/support/goraph/edge
@@ -210,24 +215,26 @@ github.com/opencontainers/go-digest
 ## explicit
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
-# github.com/opencontainers/runc v1.0.0-rc95
+# github.com/opencontainers/runc v1.0.1
 github.com/opencontainers/runc/libcontainer/user
 # github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
 ## explicit
 github.com/opencontainers/runtime-spec/specs-go
 # github.com/pkg/errors v0.9.1
 github.com/pkg/errors
+# github.com/pquerna/ffjson v0.0.0-20190813045741-dac163c6c0a9
+## explicit
 # github.com/prometheus/client_golang v1.11.0
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
 github.com/prometheus/client_golang/prometheus/promhttp
 # github.com/prometheus/client_model v0.2.0
 github.com/prometheus/client_model/go
-# github.com/prometheus/common v0.29.0
+# github.com/prometheus/common v0.30.0
 github.com/prometheus/common/expfmt
 github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
 github.com/prometheus/common/model
-# github.com/prometheus/procfs v0.6.0
+# github.com/prometheus/procfs v0.7.2
 github.com/prometheus/procfs
 github.com/prometheus/procfs/internal/fs
 github.com/prometheus/procfs/internal/util
@@ -245,25 +252,32 @@ github.com/ulikunitz/xz/lzma
 # github.com/urfave/cli v1.22.5
 ## explicit
 github.com/urfave/cli
+# github.com/vbatts/tar-split v0.11.1
+github.com/vbatts/tar-split/archive/tar
+# github.com/vbauerster/mpb/v6 v6.0.3
+## explicit
+# github.com/willf/bitset v1.1.11
+## explicit
 # go.opencensus.io v0.22.4
 go.opencensus.io
 go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/net v0.0.0-20210614182718-04defd469f4e
+# golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d
+golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
 golang.org/x/net/internal/socks
 golang.org/x/net/proxy
-# golang.org/x/sys v0.0.0-20210615035016-665e8c7367d1
+# golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e
 ## explicit
 golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.3.6
+# golang.org/x/text v0.3.7
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
 golang.org/x/text/encoding/htmlindex
@@ -281,7 +295,7 @@ golang.org/x/text/internal/utf8internal
 golang.org/x/text/language
 golang.org/x/text/runes
 golang.org/x/text/transform
-# google.golang.org/protobuf v1.26.0
+# google.golang.org/protobuf v1.27.1
 google.golang.org/protobuf/encoding/prototext
 google.golang.org/protobuf/encoding/protowire
 google.golang.org/protobuf/internal/descfmt
