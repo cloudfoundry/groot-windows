@@ -10,16 +10,12 @@ require (
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	github.com/Microsoft/go-winio v0.5.0
 	github.com/Microsoft/hcsshim v0.8.20
-	github.com/checkpoint-restore/go-criu/v4 v4.1.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
-	github.com/onsi/ginkgo v1.16.4
+	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.15.0
 	github.com/opencontainers/image-spec v1.0.2-0.20190823105129-775207bd45b6
 	github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
-	github.com/pquerna/ffjson v0.0.0-20190813045741-dac163c6c0a9 // indirect
 	github.com/urfave/cli v1.22.5
-	github.com/vbauerster/mpb/v6 v6.0.3 // indirect
-	github.com/willf/bitset v1.1.11 // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e
 )
 

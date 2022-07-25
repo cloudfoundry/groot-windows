@@ -56,8 +56,6 @@ github.com/Microsoft/hcsshim/osversion
 github.com/beorn7/perks/quantile
 # github.com/cespare/xxhash/v2 v2.1.1
 github.com/cespare/xxhash/v2
-# github.com/checkpoint-restore/go-criu/v4 v4.1.0
-## explicit
 # github.com/containerd/cgroups v0.0.0-20190919134610-bf292b21730f
 github.com/containerd/cgroups/stats/v1
 # github.com/containers/image/v5 v5.15.1
@@ -174,7 +172,7 @@ github.com/nxadm/tail/ratelimiter
 github.com/nxadm/tail/util
 github.com/nxadm/tail/watch
 github.com/nxadm/tail/winfile
-# github.com/onsi/ginkgo v1.16.4
+# github.com/onsi/ginkgo v1.16.5
 ## explicit
 github.com/onsi/ginkgo
 github.com/onsi/ginkgo/config
@@ -222,8 +220,6 @@ github.com/opencontainers/runc/libcontainer/user
 github.com/opencontainers/runtime-spec/specs-go
 # github.com/pkg/errors v0.9.1
 github.com/pkg/errors
-# github.com/pquerna/ffjson v0.0.0-20190813045741-dac163c6c0a9
-## explicit
 # github.com/prometheus/client_golang v1.11.0
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
@@ -254,10 +250,6 @@ github.com/ulikunitz/xz/lzma
 github.com/urfave/cli
 # github.com/vbatts/tar-split v0.11.1
 github.com/vbatts/tar-split/archive/tar
-# github.com/vbauerster/mpb/v6 v6.0.3
-## explicit
-# github.com/willf/bitset v1.1.11
-## explicit
 # go.opencensus.io v0.22.4
 go.opencensus.io
 go.opencensus.io/internal
