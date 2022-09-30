@@ -5,7 +5,7 @@ go 1.15
 require (
 	code.cloudfoundry.org/archiver v0.0.0-20210513174825-6979f8d756e2 // indirect
 	code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
-	code.cloudfoundry.org/groot v0.0.0-20220930111326-7ccc64b59bc8
+	code.cloudfoundry.org/groot v0.0.0-20220930220731-cf5cbeb74810
 	code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	github.com/Microsoft/go-winio v0.5.2
