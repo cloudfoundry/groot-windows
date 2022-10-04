@@ -5,6 +5,8 @@ code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639 h1:c+Sv3PcX6x3
 code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639/go.mod h1:V+dLGgqNJ1KyoipMBOkTMhXztmimMOyo5P0TL/kcPvU=
 code.cloudfoundry.org/groot v0.0.0-20221003212439-81e0aad35b20 h1:xiKRHEqyB31ozMSt+pWXktGqEZfULdcuZylxaQ2FNC0=
 code.cloudfoundry.org/groot v0.0.0-20221003212439-81e0aad35b20/go.mod h1:TS4EbWXQmx6mVTlEFZPxoqZDg70mLTXgDFfgPG0Dp5c=
+code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640 h1:9O6wr8FI2TeTev1akB+goDOdtZ7DC/riwU5hHwrWNfA=
+code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640/go.mod h1:jmM8pbsfnvAS0T2OOpKNKeL/0bykh94N9yPDz0Zk8Nc=
 code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0 h1:AurCSdWIRfi9zo/ov5GYyAnS09MCLWVTI3epukoPKkU=
 code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0/go.mod h1:ZxzdUuTsl614pKwLbdmrpwj5jw6flyB7+s6WhkMPmB8=
 code.cloudfoundry.org/lager v2.0.0+incompatible h1:WZwDKDB2PLd/oL+USK4b4aEjUymIej9My2nUQ9oWEwQ=
@@ -174,6 +176,8 @@ github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3I
 github.com/opencontainers/image-spec v1.0.2/go.mod h1:BtxoFyWECRxE4U/7sNtV5W15zMzWCbyJoFRP3s7yZA0=
 github.com/opencontainers/image-spec v1.1.0-rc1 h1:lfG+OTa7V8PD3PKvkocSG9KAcA9MANqJn53m31Fvwkc=
 github.com/opencontainers/image-spec v1.1.0-rc1/go.mod h1:3OVijpioIKYWTqjiG0zfF6wvoJ4fAXGbjdZuI2NgsRQ=
+github.com/opencontainers/image-spec v1.1.0-rc2 h1:2zx/Stx4Wc5pIPDvIxHXvXtQFW/7XWJGmnM7r3wg034=
+github.com/opencontainers/image-spec v1.1.0-rc2/go.mod h1:3OVijpioIKYWTqjiG0zfF6wvoJ4fAXGbjdZuI2NgsRQ=
 github.com/opencontainers/runc v0.0.0-20190115041553-12f6a991201f/go.mod h1:qT5XzbpPznkRYVz/mWwUaVBUv2rmF59PVA73FjuZG0U=
 github.com/opencontainers/runc v1.1.4 h1:nRCz/8sKg6K6jgYAFLDlXzPeITBZJyX28DBVhWD+5dg=
 github.com/opencontainers/runc v1.1.4/go.mod h1:1J5XiS+vdZ3wCyZybsuxXZWGrgSr8fFJHLXuG2PsnNg=

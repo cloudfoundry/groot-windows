@@ -4,14 +4,14 @@ go 1.17
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
-	code.cloudfoundry.org/groot v0.0.0-20221003212439-81e0aad35b20
+	code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640
 	code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	github.com/Microsoft/go-winio v0.5.2
 	github.com/Microsoft/hcsshim v0.9.4
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.19.0
-	github.com/opencontainers/image-spec v1.1.0-rc1
+	github.com/opencontainers/image-spec v1.1.0-rc2
 	github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
 	github.com/urfave/cli v1.22.5
 	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8
