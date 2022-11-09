@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
-	code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640
+	code.cloudfoundry.org/groot v0.0.0-20221109160834-bbd4d5200fce
 	code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0
 	code.cloudfoundry.org/lager v2.0.0+incompatible
 	github.com/Microsoft/go-winio v0.5.2

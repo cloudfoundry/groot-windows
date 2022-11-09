@@ -7,6 +7,8 @@ code.cloudfoundry.org/groot v0.0.0-20221003212439-81e0aad35b20 h1:xiKRHEqyB31ozM
 code.cloudfoundry.org/groot v0.0.0-20221003212439-81e0aad35b20/go.mod h1:TS4EbWXQmx6mVTlEFZPxoqZDg70mLTXgDFfgPG0Dp5c=
 code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640 h1:9O6wr8FI2TeTev1akB+goDOdtZ7DC/riwU5hHwrWNfA=
 code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640/go.mod h1:jmM8pbsfnvAS0T2OOpKNKeL/0bykh94N9yPDz0Zk8Nc=
+code.cloudfoundry.org/groot v0.0.0-20221109160834-bbd4d5200fce h1:LSRNBMWGhLf2x0zxkx3MzmzmvNoULJ0LRZwpc7ifnwQ=
+code.cloudfoundry.org/groot v0.0.0-20221109160834-bbd4d5200fce/go.mod h1:jmM8pbsfnvAS0T2OOpKNKeL/0bykh94N9yPDz0Zk8Nc=
 code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0 h1:AurCSdWIRfi9zo/ov5GYyAnS09MCLWVTI3epukoPKkU=
 code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0/go.mod h1:ZxzdUuTsl614pKwLbdmrpwj5jw6flyB7+s6WhkMPmB8=
 code.cloudfoundry.org/lager v2.0.0+incompatible h1:WZwDKDB2PLd/oL+USK4b4aEjUymIej9My2nUQ9oWEwQ=
