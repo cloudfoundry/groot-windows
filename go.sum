@@ -9,6 +9,8 @@ code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640 h1:9O6wr8FI2TeTev
 code.cloudfoundry.org/groot v0.0.0-20221004112357-83ee1d2de640/go.mod h1:jmM8pbsfnvAS0T2OOpKNKeL/0bykh94N9yPDz0Zk8Nc=
 code.cloudfoundry.org/groot v0.0.0-20221109160834-bbd4d5200fce h1:LSRNBMWGhLf2x0zxkx3MzmzmvNoULJ0LRZwpc7ifnwQ=
 code.cloudfoundry.org/groot v0.0.0-20221109160834-bbd4d5200fce/go.mod h1:jmM8pbsfnvAS0T2OOpKNKeL/0bykh94N9yPDz0Zk8Nc=
+code.cloudfoundry.org/groot v0.0.0-20221110110256-a1b2c8863028 h1:YZJm1jRTl2Z/ypWLPMdVGBcoB0eMRsBzlPvWbyYZp3g=
+code.cloudfoundry.org/groot v0.0.0-20221110110256-a1b2c8863028/go.mod h1:tdDVslVwjt/Wb3YJBhJZta4Xk0EGPWFeLco4cBBOLFs=
 code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0 h1:AurCSdWIRfi9zo/ov5GYyAnS09MCLWVTI3epukoPKkU=
 code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0/go.mod h1:ZxzdUuTsl614pKwLbdmrpwj5jw6flyB7+s6WhkMPmB8=
 code.cloudfoundry.org/lager v2.0.0+incompatible h1:WZwDKDB2PLd/oL+USK4b4aEjUymIej9My2nUQ9oWEwQ=
@@ -40,6 +42,8 @@ github.com/containerd/ttrpc v0.0.0-20190828154514-0e0f228740de/go.mod h1:PvCDdDG
 github.com/containerd/typeurl v0.0.0-20180627222232-a93fcdb778cd/go.mod h1:Cm3kwCdlkCfMSHURc+r6fwoGH6/F1hH3S4sg0rLFWPc=
 github.com/containers/image/v5 v5.23.0 h1:Uv/n8zsHVUBBJK2rfBUHbN4CutHHmsQeyi4f80lAOf8=
 github.com/containers/image/v5 v5.23.0/go.mod h1:EXFFGEsL99S6aqLqK2mQJ3yrNh6Q05UCHt4mhF9JNoM=
+github.com/containers/image/v5 v5.23.1 h1:dUK9p5xfd38iTQXJEgMsUGqIHXbkDugrleZtd3zB+Wg=
+github.com/containers/image/v5 v5.23.1/go.mod h1:EXFFGEsL99S6aqLqK2mQJ3yrNh6Q05UCHt4mhF9JNoM=
 github.com/containers/libtrust v0.0.0-20200511145503-9c3a6c22cd9a h1:spAGlqziZjCJL25C6F1zsQY05tfCKE9F5YwtEWWe6hU=
 github.com/containers/libtrust v0.0.0-20200511145503-9c3a6c22cd9a/go.mod h1:9rfv8iPl1ZP7aqh9YA68wnZv2NUDbXdcdPHVz0pFbPY=
 github.com/containers/ocicrypt v1.1.5 h1:UO+gBnBXvMvC7HTXLh0bPgLslfW8HlY+oxYcoSHBcZQ=
