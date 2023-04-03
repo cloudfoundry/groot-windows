@@ -8,7 +8,7 @@ import (
 	"code.cloudfoundry.org/groot-windows/driver/fakes"
 	"code.cloudfoundry.org/lager/lagertest"
 	"github.com/Microsoft/hcsshim"
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
