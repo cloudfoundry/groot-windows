@@ -56,7 +56,7 @@ require (
 	github.com/vbatts/tar-split v0.11.2 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/net v0.0.0-20220909164309-bea034e7d591 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.3.8 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
