@@ -1,7 +1,7 @@
 package driver
 
 import (
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	"github.com/Microsoft/hcsshim"
 )
 

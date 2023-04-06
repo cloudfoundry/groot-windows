@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 
 	"code.cloudfoundry.org/groot"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 )
 
 func (d *Driver) WriteMetadata(logger lager.Logger, bundleID string, volumeData groot.ImageMetadata) error {
