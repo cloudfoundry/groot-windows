@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 
 	"code.cloudfoundry.org/groot"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	"github.com/Microsoft/hcsshim"
 )
 
