@@ -4,7 +4,7 @@ import (
 	"io"
 
 	"code.cloudfoundry.org/groot/imagepuller/ondemand"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	imgspec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
 )

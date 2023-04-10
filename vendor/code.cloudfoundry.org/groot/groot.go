@@ -11,7 +11,7 @@ import (
 	"code.cloudfoundry.org/groot/fetcher/layerfetcher"
 	"code.cloudfoundry.org/groot/fetcher/layerfetcher/source"
 	"code.cloudfoundry.org/groot/imagepuller"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 	"github.com/containers/image/v5/types"
 	runspec "github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/urfave/cli"

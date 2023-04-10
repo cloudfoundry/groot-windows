@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"code.cloudfoundry.org/groot/imagepuller"
-	"code.cloudfoundry.org/lager"
+	"code.cloudfoundry.org/lager/v3"
 
 	"github.com/containers/image/v5/types"
 	imgspec "github.com/opencontainers/image-spec/specs-go/v1"

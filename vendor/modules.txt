@@ -3,8 +3,8 @@
 # code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
 ## explicit
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20221110110256-a1b2c8863028
-## explicit; go 1.17
+# code.cloudfoundry.org/groot v0.0.0-20230407181941-dd740b3c7b9f
+## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher
@@ -20,7 +20,6 @@ code.cloudfoundry.org/hydrator/oci-metadata
 code.cloudfoundry.org/hydrator/registry
 # code.cloudfoundry.org/lager v2.0.0+incompatible
 ## explicit
-code.cloudfoundry.org/lager
 # code.cloudfoundry.org/lager/v3 v3.0.1
 ## explicit; go 1.19
 code.cloudfoundry.org/lager/v3
