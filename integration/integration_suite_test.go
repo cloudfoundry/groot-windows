@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"code.cloudfoundry.org/hydrator/hydrator"
+	"code.cloudfoundry.org/hydrator/imagefetcher"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
@@ -66,7 +66,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		_, err := os.Stat(filepath.Join(ociImagesDir, tag))
 		if err != nil && os.IsNotExist(err) {
 			logger := log.New(os.Stdout, "", 0)
-			Expect(hydrator.New(logger, filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, true).Run()).To(Succeed())
+			Expect(imagefetcher.New(logger, filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, true).Run()).To(Succeed())
 			err = nil
 		}
 		Expect(err).NotTo(HaveOccurred())
