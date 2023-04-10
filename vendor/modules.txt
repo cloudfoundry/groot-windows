@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/archiver v0.0.0-20210513174825-6979f8d756e2
 ## explicit; go 1.16
-# code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
-## explicit
+# code.cloudfoundry.org/filelock v0.0.0-20230302172038-1783f8b1c987
+## explicit; go 1.20
 code.cloudfoundry.org/filelock
 # code.cloudfoundry.org/groot v0.0.0-20230407181941-dd740b3c7b9f
 ## explicit; go 1.19

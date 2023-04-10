@@ -4,6 +4,8 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20180314203404-13cd41364639
+	code.cloudfoundry.org/filelock v0.0.0-20230302172038-1783f8b1c987
+	code.cloudfoundry.org/groot v0.0.0-20221110110256-a1b2c8863028
 	code.cloudfoundry.org/groot v0.0.0-20230407181941-dd740b3c7b9f
 	code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0
 	code.cloudfoundry.org/lager/v3 v3.0.1
