@@ -10,7 +10,7 @@ import (
 	"github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-//go:generate counterfeiter . Registry
+//go:generate counterfeiter -o fakes/registry.go --fake-name Registry . Registry
 type Registry interface {
 	Manifest() (v1.Manifest, error)
 	Config(v1.Descriptor) (v1.Image, error)

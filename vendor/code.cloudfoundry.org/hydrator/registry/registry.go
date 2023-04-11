@@ -5,20 +5,20 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	digest "github.com/opencontainers/go-digest"
+	"github.com/opencontainers/image-spec/specs-go/v1"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
-
-	digest "github.com/opencontainers/go-digest"
-	"github.com/opencontainers/image-spec/specs-go/v1"
+	"regexp"
 )
 
 const (
-	tokenURL    = "%s/token?service=registry.docker.io&scope=repository:%s:pull"
-	manifestURL = "%s/v2/%s/manifests/%s"
-	blobURL     = "%s/v2/%s/blobs/%s"
+	manifestURL     = "%s/v2/%s/manifests/%s"
+	blobURL         = "%s/v2/%s/blobs/%s"
+	authServerRegex = `realm="(.*)".*service="(.*)".*scope="(.*)".*`
 )
 
 const (
@@ -30,15 +30,13 @@ const (
 )
 
 type Registry struct {
-	authServerURL     string
 	registryServerURL string
 	imageName         string
 	imageTag          string
 }
 
-func New(authServerURL, registryServerURL, imageName, imageTag string) *Registry {
+func New(registryServerURL, imageName, imageTag string) *Registry {
 	return &Registry{
-		authServerURL:     authServerURL,
 		registryServerURL: registryServerURL,
 		imageName:         imageName,
 		imageTag:          imageTag,
@@ -76,9 +74,9 @@ func (r *Registry) Config(config v1.Descriptor) (v1.Image, error) {
 		return v1.Image{}, &DownloadError{Cause: err, blobSHA: configSHA}
 	}
 
-	recievedSHA := fmt.Sprintf("%x", sha256.Sum256(buffer.Bytes()))
-	if configSHA != recievedSHA {
-		return v1.Image{}, &DownloadError{Cause: &SHAMismatchError{expected: configSHA, actual: recievedSHA}, blobSHA: configSHA}
+	receivedSHA := fmt.Sprintf("%x", sha256.Sum256(buffer.Bytes()))
+	if configSHA != receivedSHA {
+		return v1.Image{}, &DownloadError{Cause: &SHAMismatchError{expected: configSHA, actual: receivedSHA}, blobSHA: configSHA}
 	}
 
 	var i v1.Image
@@ -138,38 +136,68 @@ func (r *Registry) blobURL(d digest.Digest) string {
 	return fmt.Sprintf(blobURL, r.registryServerURL, r.imageName, d)
 }
 
-func (r *Registry) downloadResource(url string, output io.Writer, acceptMediaTypes ...string) error {
-	token, err := r.getToken()
-	if err != nil {
-		return err
-	}
+func (r *Registry) downloadRequest(url string, headerArgs HeaderArgs) (*http.Response, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	req.Header.Add("Authorization", "Bearer "+token)
-	for _, mediaType := range acceptMediaTypes {
+	for _, mediaType := range headerArgs.acceptMediaType {
 		req.Header.Add("Accept", mediaType)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	if headerArgs.authToken != "" {
+		req.Header.Add("Authorization", "Bearer "+headerArgs.authToken)
+	}
+
+	return http.DefaultClient.Do(req)
+}
+
+type HeaderArgs struct {
+	acceptMediaType []string
+	authToken       string
+}
+
+func (r *Registry) downloadResource(url string, output io.Writer, acceptMediaTypes ...string) error {
+	headerArgs := HeaderArgs{acceptMediaType: acceptMediaTypes, authToken: ""}
+
+	resp, err := r.downloadRequest(url, headerArgs)
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
+	switch resp.StatusCode {
+	case http.StatusOK:
+		defer resp.Body.Close()
+		_, err = io.Copy(output, resp.Body)
+		return err
+	case http.StatusUnauthorized:
+		token, err := r.getToken(resp.Header.Get("Www-Authenticate"))
+		if err != nil {
+			return err
+		}
+
+		headerArgs.authToken = token
+		resp, err := r.downloadRequest(url, headerArgs)
+		if err != nil {
+			return &HTTPNotOKError{statusCode: resp.StatusCode}
+		}
+
+		defer resp.Body.Close()
+		_, err = io.Copy(output, resp.Body)
+		return err
+	default:
 		return &HTTPNotOKError{statusCode: resp.StatusCode}
 	}
-	_, err = io.Copy(output, resp.Body)
-
-	return err
 }
 
-func (r *Registry) getToken() (string, error) {
-	resp, err := http.Get(fmt.Sprintf(tokenURL, r.authServerURL, r.imageName))
+func (r *Registry) getToken(authenticateInfo string) (string, error) {
+	re := regexp.MustCompile(authServerRegex)
+	authInfo := re.FindStringSubmatch(authenticateInfo)
+	authEndpoint, registryEndpoint, scope := authInfo[1], authInfo[2], authInfo[3]
+
+	resp, err := http.Get(fmt.Sprintf("%s?service=%s&scope=%s", authEndpoint, registryEndpoint, scope))
 	if err != nil {
 		return "", err
 	}

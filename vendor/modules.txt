@@ -1,5 +1,3 @@
-# code.cloudfoundry.org/archiver v0.0.0-20210513174825-6979f8d756e2
-## explicit; go 1.16
 # code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
@@ -11,12 +9,12 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20180411234439-6b2757c7f6f0
-## explicit
+# code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
+## explicit; go 1.20
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
-code.cloudfoundry.org/hydrator/hydrator
-code.cloudfoundry.org/hydrator/oci-metadata
+code.cloudfoundry.org/hydrator/imagefetcher
+code.cloudfoundry.org/hydrator/oci-directory
 code.cloudfoundry.org/hydrator/registry
 # code.cloudfoundry.org/lager/v3 v3.0.1
 ## explicit; go 1.19
@@ -24,17 +22,17 @@ code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
 code.cloudfoundry.org/lager/v3/lagertest
-# github.com/BurntSushi/toml v1.2.0
+# github.com/BurntSushi/toml v1.2.1
 ## explicit; go 1.16
 github.com/BurntSushi/toml
 github.com/BurntSushi/toml/internal
-# github.com/Microsoft/go-winio v0.5.2 => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
+# github.com/Microsoft/go-winio v0.6.0 => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 ## explicit; go 1.12
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/archive/tar
 github.com/Microsoft/go-winio/backuptar
 github.com/Microsoft/go-winio/pkg/guid
-# github.com/Microsoft/hcsshim v0.9.4 => github.com/Microsoft/hcsshim v0.8.7
+# github.com/Microsoft/hcsshim v0.9.8 => github.com/Microsoft/hcsshim v0.8.7
 ## explicit; go 1.13
 github.com/Microsoft/hcsshim
 github.com/Microsoft/hcsshim/internal/cow
@@ -54,7 +52,7 @@ github.com/Microsoft/hcsshim/internal/timeout
 github.com/Microsoft/hcsshim/internal/vmcompute
 github.com/Microsoft/hcsshim/internal/wclayer
 github.com/Microsoft/hcsshim/osversion
-# github.com/containerd/cgroups v1.0.4
+# github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
 # github.com/containers/image/v5 v5.23.1
@@ -124,7 +122,7 @@ github.com/docker/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v20.10.18+incompatible
+# github.com/docker/docker v23.0.3+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.7.0
@@ -178,8 +176,8 @@ github.com/hashicorp/go-multierror
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
-# github.com/klauspost/compress v1.15.11
-## explicit; go 1.17
+# github.com/klauspost/compress v1.16.4
+## explicit; go 1.18
 github.com/klauspost/compress
 github.com/klauspost/compress/flate
 github.com/klauspost/compress/fse
@@ -246,7 +244,7 @@ github.com/opencontainers/image-spec/specs-go/v1
 # github.com/opencontainers/runc v1.1.4
 ## explicit; go 1.16
 github.com/opencontainers/runc/libcontainer/user
-# github.com/opencontainers/runtime-spec v1.0.3-0.20210326190908-1c3f411f0417
+# github.com/opencontainers/runtime-spec v1.1.0-rc.1
 ## explicit
 github.com/opencontainers/runtime-spec/specs-go
 # github.com/openzipkin/zipkin-go v0.4.1
@@ -271,13 +269,13 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/urfave/cli v1.22.5
+# github.com/urfave/cli v1.22.12
 ## explicit; go 1.11
 github.com/urfave/cli
-# github.com/vbatts/tar-split v0.11.2
+# github.com/vbatts/tar-split v0.11.3
 ## explicit; go 1.15
 github.com/vbatts/tar-split/archive/tar
-# go.opencensus.io v0.23.0
+# go.opencensus.io v0.24.0
 ## explicit; go 1.13
 go.opencensus.io
 go.opencensus.io/internal
