@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20230418121938-4f01a76d185b
+# code.cloudfoundry.org/groot v0.0.0-20230418123002-726efb18c991
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -55,8 +55,8 @@ github.com/Microsoft/hcsshim/osversion
 # github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
-# github.com/containers/image/v5 v5.23.1
-## explicit; go 1.17
+# github.com/containers/image/v5 v5.25.0
+## explicit; go 1.18
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
 github.com/containers/image/v5/docker/policyconfiguration
@@ -75,10 +75,12 @@ github.com/containers/image/v5/internal/pkg/platform
 github.com/containers/image/v5/internal/private
 github.com/containers/image/v5/internal/putblobdigest
 github.com/containers/image/v5/internal/rootless
+github.com/containers/image/v5/internal/set
 github.com/containers/image/v5/internal/signature
 github.com/containers/image/v5/internal/streamdigest
 github.com/containers/image/v5/internal/tmpdir
 github.com/containers/image/v5/internal/uploadreader
+github.com/containers/image/v5/internal/useragent
 github.com/containers/image/v5/manifest
 github.com/containers/image/v5/oci/internal
 github.com/containers/image/v5/oci/layout
@@ -93,14 +95,14 @@ github.com/containers/image/v5/pkg/tlsclientconfig
 github.com/containers/image/v5/transports
 github.com/containers/image/v5/types
 github.com/containers/image/v5/version
-# github.com/containers/libtrust v0.0.0-20200511145503-9c3a6c22cd9a
+# github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01
 ## explicit
 github.com/containers/libtrust
-# github.com/containers/ocicrypt v1.1.5
-## explicit; go 1.12
-github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.43.0
+# github.com/containers/ocicrypt v1.1.7
 ## explicit; go 1.16
+github.com/containers/ocicrypt/spec
+# github.com/containers/storage v1.46.0
+## explicit; go 1.18
 github.com/containers/storage/pkg/chunked/compressor
 github.com/containers/storage/pkg/chunked/internal
 github.com/containers/storage/pkg/homedir
@@ -110,6 +112,7 @@ github.com/containers/storage/pkg/lockfile
 github.com/containers/storage/pkg/longpath
 github.com/containers/storage/pkg/mount
 github.com/containers/storage/pkg/reexec
+github.com/containers/storage/pkg/regexp
 github.com/containers/storage/pkg/system
 github.com/containers/storage/pkg/unshare
 # github.com/cpuguy83/go-md2man/v2 v2.0.2
@@ -131,14 +134,12 @@ github.com/docker/docker-credential-helpers/client
 github.com/docker/docker-credential-helpers/credentials
 # github.com/docker/go-connections v0.4.0
 ## explicit
-github.com/docker/go-connections/sockets
 github.com/docker/go-connections/tlsconfig
 # github.com/docker/go-units v0.5.0
 ## explicit
 github.com/docker/go-units
 # github.com/ghodss/yaml v1.0.0
 ## explicit
-github.com/ghodss/yaml
 # github.com/go-logr/logr v1.2.4
 ## explicit; go 1.16
 github.com/go-logr/logr
@@ -186,7 +187,7 @@ github.com/klauspost/compress/internal/cpuinfo
 github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
-# github.com/klauspost/pgzip v1.2.5
+# github.com/klauspost/pgzip v1.2.6-0.20220930104621-17e8dac29df8
 ## explicit
 github.com/klauspost/pgzip
 # github.com/moby/sys/mountinfo v0.6.2
@@ -241,7 +242,7 @@ github.com/opencontainers/go-digest
 ## explicit; go 1.17
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
-# github.com/opencontainers/runc v1.1.4
+# github.com/opencontainers/runc v1.1.5
 ## explicit; go 1.16
 github.com/opencontainers/runc/libcontainer/user
 # github.com/opencontainers/runtime-spec v1.1.0-rc.2
@@ -263,7 +264,7 @@ github.com/sirupsen/logrus
 # github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635
 ## explicit
 github.com/syndtr/gocapability/capability
-# github.com/ulikunitz/xz v0.5.10
+# github.com/ulikunitz/xz v0.5.11
 ## explicit; go 1.12
 github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
@@ -282,14 +283,17 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
+# golang.org/x/exp v0.0.0-20230321023759-10a507213a29
+## explicit; go 1.18
+golang.org/x/exp/constraints
+golang.org/x/exp/maps
+golang.org/x/exp/slices
 # golang.org/x/net v0.9.0
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
-golang.org/x/net/internal/socks
-golang.org/x/net/proxy
 # golang.org/x/sys v0.7.0
 ## explicit; go 1.17
 golang.org/x/sys/execabs

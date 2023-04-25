@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
-	code.cloudfoundry.org/groot v0.0.0-20230418121938-4f01a76d185b
+	code.cloudfoundry.org/groot v0.0.0-20230418123002-726efb18c991
 	code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
 	code.cloudfoundry.org/lager/v3 v3.0.1
 	github.com/Microsoft/go-winio v0.6.0
@@ -20,10 +20,10 @@ require (
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
-	github.com/containers/image/v5 v5.23.1 // indirect
-	github.com/containers/libtrust v0.0.0-20200511145503-9c3a6c22cd9a // indirect
-	github.com/containers/ocicrypt v1.1.5 // indirect
-	github.com/containers/storage v1.43.0 // indirect
+	github.com/containers/image/v5 v5.25.0 // indirect
+	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
+	github.com/containers/ocicrypt v1.1.7 // indirect
+	github.com/containers/storage v1.46.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/docker/distribution v2.8.1+incompatible // indirect
 	github.com/docker/docker v23.0.3+incompatible // indirect
@@ -42,20 +42,21 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.16.4 // indirect
-	github.com/klauspost/pgzip v1.2.5 // indirect
+	github.com/klauspost/pgzip v1.2.6-0.20220930104621-17e8dac29df8 // indirect
 	github.com/moby/sys/mountinfo v0.6.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
-	github.com/opencontainers/runc v1.1.4 // indirect
+	github.com/opencontainers/runc v1.1.5 // indirect
 	github.com/openzipkin/zipkin-go v0.4.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
-	github.com/ulikunitz/xz v0.5.10 // indirect
+	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/vbatts/tar-split v0.11.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.8.0 // indirect
