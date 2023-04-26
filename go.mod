@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
-	code.cloudfoundry.org/groot v0.0.0-20230418123002-726efb18c991
+	code.cloudfoundry.org/groot v0.0.0-20230425202016-e9c2cff80cb3
 	code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
 	code.cloudfoundry.org/lager/v3 v3.0.1
 	github.com/Microsoft/go-winio v0.6.0

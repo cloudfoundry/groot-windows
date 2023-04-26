@@ -8,6 +8,8 @@ code.cloudfoundry.org/groot v0.0.0-20230418121938-4f01a76d185b h1:tuRQCahuhvpxnr
 code.cloudfoundry.org/groot v0.0.0-20230418121938-4f01a76d185b/go.mod h1:aIcMfVJuR2Z9fiS41FvtIIdjQh3V7bUEm73i+LEiGlQ=
 code.cloudfoundry.org/groot v0.0.0-20230418123002-726efb18c991 h1:eOif1tf8jU+2/s/2Tdy04X7soTdBY5QqGdhHGS9vXas=
 code.cloudfoundry.org/groot v0.0.0-20230418123002-726efb18c991/go.mod h1:oTjXHE1K9uGy8W5mZuvU1Zau3gwN4E++6gP9R7enc9s=
+code.cloudfoundry.org/groot v0.0.0-20230425202016-e9c2cff80cb3 h1:HPPU2fZdHLaRYyUF+WMAJPj7NlJfeGYnIqiMpyfcHLc=
+code.cloudfoundry.org/groot v0.0.0-20230425202016-e9c2cff80cb3/go.mod h1:oTjXHE1K9uGy8W5mZuvU1Zau3gwN4E++6gP9R7enc9s=
 code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25 h1:6B+kIgHrCh1qpQ7a+XkA/y19zTOre9FRoXt+qAPjvJs=
 code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25/go.mod h1:sclCMeOLQFlA9cjLWIkyFqAooCfLOvCMZ2w1izlBC70=
 code.cloudfoundry.org/lager/v3 v3.0.1 h1:AI7h0EgCa4bJCCq0N8JV8EBP+tbJUIovqKc4hB4wZsA=
