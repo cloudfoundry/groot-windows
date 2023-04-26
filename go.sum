@@ -12,6 +12,8 @@ code.cloudfoundry.org/groot v0.0.0-20230425202016-e9c2cff80cb3 h1:HPPU2fZdHLaRYy
 code.cloudfoundry.org/groot v0.0.0-20230425202016-e9c2cff80cb3/go.mod h1:oTjXHE1K9uGy8W5mZuvU1Zau3gwN4E++6gP9R7enc9s=
 code.cloudfoundry.org/groot v0.0.0-20230426134444-fc7d94ae87d5 h1:eauWv2Jv4TmHSHcQSDdz/TcWEdy0amV/rhGCA8ZqbuY=
 code.cloudfoundry.org/groot v0.0.0-20230426134444-fc7d94ae87d5/go.mod h1:oTjXHE1K9uGy8W5mZuvU1Zau3gwN4E++6gP9R7enc9s=
+code.cloudfoundry.org/groot v0.0.0-20230426142516-c8fe7f053a0f h1:TkS3IvwUhD5Pje7bIoSR2dSKmo0pMWtYYFlH6h5mAuk=
+code.cloudfoundry.org/groot v0.0.0-20230426142516-c8fe7f053a0f/go.mod h1:oTjXHE1K9uGy8W5mZuvU1Zau3gwN4E++6gP9R7enc9s=
 code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25 h1:6B+kIgHrCh1qpQ7a+XkA/y19zTOre9FRoXt+qAPjvJs=
 code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25/go.mod h1:sclCMeOLQFlA9cjLWIkyFqAooCfLOvCMZ2w1izlBC70=
 code.cloudfoundry.org/lager/v3 v3.0.1 h1:AI7h0EgCa4bJCCq0N8JV8EBP+tbJUIovqKc4hB4wZsA=
