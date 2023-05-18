@@ -26,13 +26,13 @@ code.cloudfoundry.org/lager/v3/lagertest
 ## explicit; go 1.16
 github.com/BurntSushi/toml
 github.com/BurntSushi/toml/internal
-# github.com/Microsoft/go-winio v0.6.0 => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
+# github.com/Microsoft/go-winio v0.6.1 => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 ## explicit; go 1.12
 github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/archive/tar
 github.com/Microsoft/go-winio/backuptar
 github.com/Microsoft/go-winio/pkg/guid
-# github.com/Microsoft/hcsshim v0.9.8 => github.com/Microsoft/hcsshim v0.8.7
+# github.com/Microsoft/hcsshim v0.9.9 => github.com/Microsoft/hcsshim v0.8.7
 ## explicit; go 1.13
 github.com/Microsoft/hcsshim
 github.com/Microsoft/hcsshim/internal/cow
@@ -101,7 +101,7 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.1.7
 ## explicit; go 1.16
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.46.0
+# github.com/containers/storage v1.46.1
 ## explicit; go 1.18
 github.com/containers/storage/pkg/chunked/compressor
 github.com/containers/storage/pkg/chunked/internal
@@ -118,14 +118,14 @@ github.com/containers/storage/pkg/unshare
 # github.com/cpuguy83/go-md2man/v2 v2.0.2
 ## explicit; go 1.11
 github.com/cpuguy83/go-md2man/v2/md2man
-# github.com/docker/distribution v2.8.1+incompatible
+# github.com/docker/distribution v2.8.2+incompatible
 ## explicit
 github.com/docker/distribution/digestset
 github.com/docker/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v23.0.3+incompatible
+# github.com/docker/docker v24.0.0+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.7.0
@@ -138,8 +138,6 @@ github.com/docker/go-connections/tlsconfig
 # github.com/docker/go-units v0.5.0
 ## explicit
 github.com/docker/go-units
-# github.com/ghodss/yaml v1.0.0
-## explicit
 # github.com/go-logr/logr v1.2.4
 ## explicit; go 1.16
 github.com/go-logr/logr
@@ -162,7 +160,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20230406165453-00490a63f317
+# github.com/google/pprof v0.0.0-20230510103437-eeec1cb781c3
 ## explicit; go 1.19
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.0
@@ -177,7 +175,7 @@ github.com/hashicorp/go-multierror
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
-# github.com/klauspost/compress v1.16.4
+# github.com/klauspost/compress v1.16.5
 ## explicit; go 1.18
 github.com/klauspost/compress
 github.com/klauspost/compress/flate
@@ -187,7 +185,7 @@ github.com/klauspost/compress/internal/cpuinfo
 github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
-# github.com/klauspost/pgzip v1.2.6-0.20220930104621-17e8dac29df8
+# github.com/klauspost/pgzip v1.2.6
 ## explicit
 github.com/klauspost/pgzip
 # github.com/moby/sys/mountinfo v0.6.2
@@ -199,7 +197,7 @@ github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
 ## explicit; go 1.12
 github.com/modern-go/reflect2
-# github.com/onsi/ginkgo/v2 v2.9.2
+# github.com/onsi/ginkgo/v2 v2.9.5
 ## explicit; go 1.18
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
@@ -238,12 +236,12 @@ github.com/onsi/gomega/types
 # github.com/opencontainers/go-digest v1.0.0
 ## explicit; go 1.13
 github.com/opencontainers/go-digest
-# github.com/opencontainers/image-spec v1.1.0-rc2
+# github.com/opencontainers/image-spec v1.1.0-rc3 => github.com/opencontainers/image-spec v1.1.0-rc2
 ## explicit; go 1.17
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
-# github.com/opencontainers/runc v1.1.5
-## explicit; go 1.16
+# github.com/opencontainers/runc v1.1.7
+## explicit; go 1.17
 github.com/opencontainers/runc/libcontainer/user
 # github.com/opencontainers/runtime-spec v1.1.0-rc.2
 ## explicit
@@ -258,7 +256,7 @@ github.com/pkg/errors
 # github.com/russross/blackfriday/v2 v2.1.0
 ## explicit
 github.com/russross/blackfriday/v2
-# github.com/sirupsen/logrus v1.9.0
+# github.com/sirupsen/logrus v1.9.2
 ## explicit; go 1.13
 github.com/sirupsen/logrus
 # github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635
@@ -270,7 +268,7 @@ github.com/ulikunitz/xz
 github.com/ulikunitz/xz/internal/hash
 github.com/ulikunitz/xz/internal/xlog
 github.com/ulikunitz/xz/lzma
-# github.com/urfave/cli v1.22.12
+# github.com/urfave/cli v1.22.13
 ## explicit; go 1.11
 github.com/urfave/cli
 # github.com/vbatts/tar-split v0.11.3
@@ -283,18 +281,18 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20230321023759-10a507213a29
-## explicit; go 1.18
+# golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc
+## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
 golang.org/x/exp/slices
-# golang.org/x/net v0.9.0
+# golang.org/x/net v0.10.0
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
-# golang.org/x/sys v0.7.0
+# golang.org/x/sys v0.8.0
 ## explicit; go 1.17
 golang.org/x/sys/execabs
 golang.org/x/sys/internal/unsafeheader
@@ -319,7 +317,7 @@ golang.org/x/text/internal/utf8internal
 golang.org/x/text/language
 golang.org/x/text/runes
 golang.org/x/text/transform
-# golang.org/x/tools v0.8.0
+# golang.org/x/tools v0.9.1
 ## explicit; go 1.18
 golang.org/x/tools/go/ast/inspector
 golang.org/x/tools/internal/typeparams
@@ -331,3 +329,4 @@ gopkg.in/yaml.v2
 gopkg.in/yaml.v3
 # github.com/Microsoft/go-winio => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 # github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
+# github.com/opencontainers/image-spec => github.com/opencontainers/image-spec v1.1.0-rc2
