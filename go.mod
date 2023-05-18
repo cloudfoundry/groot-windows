@@ -67,4 +67,5 @@ require (
 replace (
 	github.com/Microsoft/go-winio => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 	github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
+	github.com/opencontainers/image-spec => github.com/opencontainers/image-spec v1.1.0-rc2
 )
