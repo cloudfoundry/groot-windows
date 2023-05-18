@@ -66,7 +66,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		_, err := os.Stat(filepath.Join(ociImagesDir, tag))
 		if err != nil && os.IsNotExist(err) {
 			logger := log.New(os.Stdout, "", 0)
-			Expect(imagefetcher.New(logger, filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, true).Run()).To(Succeed())
+			Expect(imagefetcher.New(logger, filepath.Join(ociImagesDir, tag), "cloudfoundry/groot-windows-test", tag, "", true).Run()).To(Succeed())
 			err = nil
 		}
 		Expect(err).NotTo(HaveOccurred())
