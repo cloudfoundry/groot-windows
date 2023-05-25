@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20230426142516-c8fe7f053a0f
+# code.cloudfoundry.org/groot v0.0.0-20230523195242-dfd19bf8bc3b
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -125,7 +125,7 @@ github.com/docker/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v24.0.0+incompatible
+# github.com/docker/docker v24.0.1+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.7.0
@@ -219,7 +219,7 @@ github.com/onsi/ginkgo/v2/internal/parallel_support
 github.com/onsi/ginkgo/v2/internal/testingtproxy
 github.com/onsi/ginkgo/v2/reporters
 github.com/onsi/ginkgo/v2/types
-# github.com/onsi/gomega v1.27.6
+# github.com/onsi/gomega v1.27.7
 ## explicit; go 1.18
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -281,7 +281,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc
+# golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
