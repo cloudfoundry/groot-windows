@@ -4,12 +4,12 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
-	code.cloudfoundry.org/groot v0.0.0-20230523195242-dfd19bf8bc3b
+	code.cloudfoundry.org/groot v0.0.0-20230530175902-35188c1fb2fb
 	code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
 	code.cloudfoundry.org/lager/v3 v3.0.1
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.9.9
-	github.com/onsi/ginkgo/v2 v2.9.5
+	github.com/onsi/ginkgo/v2 v2.9.7
 	github.com/onsi/gomega v1.27.7
 	github.com/opencontainers/image-spec v1.1.0-rc3
 	github.com/opencontainers/runtime-spec v1.1.0-rc.2
@@ -18,7 +18,7 @@ require (
 )
 
 require (
-	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/BurntSushi/toml v1.3.0 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
 	github.com/containers/image/v5 v5.25.0 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
@@ -26,7 +26,7 @@ require (
 	github.com/containers/storage v1.46.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/docker/distribution v2.8.2+incompatible // indirect
-	github.com/docker/docker v24.0.1+incompatible // indirect
+	github.com/docker/docker v24.0.2+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.7.0 // indirect
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -58,7 +58,7 @@ require (
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
-	golang.org/x/tools v0.9.1 // indirect
+	golang.org/x/tools v0.9.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
