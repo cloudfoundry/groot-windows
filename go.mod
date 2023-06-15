@@ -3,18 +3,18 @@ module code.cloudfoundry.org/groot-windows
 go 1.19
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20230410204127-470838d066c5
-	code.cloudfoundry.org/groot v0.0.0-20230606175941-c9fed3953d4f
+	code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
+	code.cloudfoundry.org/groot v0.0.0-20230613180124-4b146c1cc206
 	code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
-	code.cloudfoundry.org/lager/v3 v3.0.1
+	code.cloudfoundry.org/lager/v3 v3.0.2
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.9.9
 	github.com/onsi/ginkgo/v2 v2.10.0
-	github.com/onsi/gomega v1.27.7
+	github.com/onsi/gomega v1.27.8
 	github.com/opencontainers/image-spec v1.1.0-rc3
-	github.com/opencontainers/runtime-spec v1.1.0-rc.2
-	github.com/urfave/cli v1.22.13
-	golang.org/x/sys v0.8.0
+	github.com/opencontainers/runtime-spec v1.1.0-rc.3
+	github.com/urfave/cli v1.22.14
+	golang.org/x/sys v0.9.0
 )
 
 require (
@@ -40,7 +40,7 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.16.5 // indirect
+	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/moby/sys/mountinfo v0.6.2 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -56,8 +56,8 @@ require (
 	github.com/vbatts/tar-split v0.11.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
-	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/net v0.11.0 // indirect
+	golang.org/x/text v0.10.0 // indirect
 	golang.org/x/tools v0.9.3 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
