@@ -5,13 +5,13 @@ go 1.19
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
 	code.cloudfoundry.org/groot v0.0.0-20230628185116-64af5a540473
-	code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
+	code.cloudfoundry.org/hydrator v0.0.0-20230612152512-cab592e80dce
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.9.9
 	github.com/onsi/ginkgo/v2 v2.11.0
 	github.com/onsi/gomega v1.27.8
-	github.com/opencontainers/image-spec v1.1.0-rc3
+	github.com/opencontainers/image-spec v1.1.0-rc4
 	github.com/opencontainers/runtime-spec v1.1.0-rc.3
 	github.com/urfave/cli v1.22.14
 	golang.org/x/sys v0.9.0
@@ -66,5 +66,4 @@ require (
 replace (
 	github.com/Microsoft/go-winio => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 	github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
-	github.com/opencontainers/image-spec => github.com/opencontainers/image-spec v1.1.0-rc2
 )
