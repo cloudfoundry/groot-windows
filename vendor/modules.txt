@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20230410213017-736b9a742d25
+# code.cloudfoundry.org/hydrator v0.0.0-20230612152512-cab592e80dce
 ## explicit; go 1.20
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -236,8 +236,8 @@ github.com/onsi/gomega/types
 # github.com/opencontainers/go-digest v1.0.0
 ## explicit; go 1.13
 github.com/opencontainers/go-digest
-# github.com/opencontainers/image-spec v1.1.0-rc3 => github.com/opencontainers/image-spec v1.1.0-rc2
-## explicit; go 1.17
+# github.com/opencontainers/image-spec v1.1.0-rc4
+## explicit; go 1.18
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
 # github.com/opencontainers/runc v1.1.7
@@ -331,4 +331,3 @@ gopkg.in/yaml.v2
 gopkg.in/yaml.v3
 # github.com/Microsoft/go-winio => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 # github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
-# github.com/opencontainers/image-spec => github.com/opencontainers/image-spec v1.1.0-rc2

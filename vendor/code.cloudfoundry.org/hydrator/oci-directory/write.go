@@ -50,9 +50,11 @@ func (h *Handler) writeOCILayout() error {
 
 func (h *Handler) writeConfig(diffIds []digest.Digest) (oci.Descriptor, error) {
 	ic := oci.Image{
-		Architecture: "amd64",
-		OS:           "windows",
-		RootFS:       oci.RootFS{Type: "layers", DiffIDs: diffIds},
+		Platform: oci.Platform{
+			Architecture: "amd64",
+			OS:           "windows",
+		},
+		RootFS: oci.RootFS{Type: "layers", DiffIDs: diffIds},
 	}
 
 	d, err := h.writeBlob(ic)
