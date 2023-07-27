@@ -283,7 +283,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
+# golang.org/x/exp v0.0.0-20230725093048-515e97ebf090 => golang.org/x/exp v0.0.0-20230724220655-d98519c11495
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
@@ -328,5 +328,6 @@ gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.1
 ## explicit
 gopkg.in/yaml.v3
+# golang.org/x/exp => golang.org/x/exp v0.0.0-20230724220655-d98519c11495
 # github.com/Microsoft/go-winio => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 # github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
