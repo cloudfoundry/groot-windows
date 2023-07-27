@@ -2,6 +2,8 @@ module code.cloudfoundry.org/groot-windows
 
 go 1.19
 
+replace golang.org/x/exp => golang.org/x/exp v0.0.0-20230724220655-d98519c11495 // This was done because gihtub.com/containers/image/v5 has not updated their function signatures in order to match the latest version of golang.org/x/exp which uses an int. This should be able to be removed safely in the future.
+
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
 	code.cloudfoundry.org/groot v0.0.0-20230718180457-ea21492a8019
@@ -55,7 +57,7 @@ require (
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/vbatts/tar-split v0.11.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1 // indirect
+	golang.org/x/exp v0.0.0-20230725093048-515e97ebf090 // indirect
 	golang.org/x/net v0.12.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/tools v0.11.0 // indirect
