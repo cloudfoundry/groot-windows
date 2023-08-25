@@ -42,6 +42,7 @@ type VolumeDriver interface {
 }
 
 // Driver should implement the filesystem interaction
+//
 //go:generate counterfeiter . Driver
 type Driver interface {
 	ImageDriver
@@ -51,6 +52,7 @@ type Driver interface {
 // ImagePuller should be able to download and store a remote (or local) image
 // and return all its layer information so that it can be bundled together by
 // the driver
+//
 //go:generate counterfeiter . ImagePuller
 type ImagePuller interface {
 	Pull(logger lager.Logger, spec imagepuller.ImageSpec) (imagepuller.Image, error)
@@ -196,7 +198,7 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 			return silentError(err)
 		}
 
-		logger, err := newLogger(conf.LogLevel)
+		logger, err := newLogger(conf.LogLevel, conf.LogFormat)
 		if err != nil {
 			return err
 		}
@@ -245,7 +247,7 @@ func shouldSkipImageQuotaValidation(excludeImageFromQuota bool, diskLimitSizeByt
 	return excludeImageFromQuota || diskLimitSizeBytes == 0
 }
 
-func newLogger(logLevelStr string) (lager.Logger, error) {
+func newLogger(logLevelStr, logFormat string) (lager.Logger, error) {
 	logLevels := map[string]lager.LogLevel{
 		"debug": lager.DEBUG,
 		"info":  lager.INFO,
@@ -258,8 +260,18 @@ func newLogger(logLevelStr string) (lager.Logger, error) {
 		return nil, fmt.Errorf("invalid log level: %s", logLevelStr)
 	}
 
+	var sink lager.Sink
+	switch logFormat {
+	case "rfc3339":
+		sink = lager.NewPrettySink(os.Stderr, logLevel)
+	case "epoch":
+		sink = lager.NewWriterSink(os.Stderr, logLevel)
+	default:
+		return nil, fmt.Errorf("invalid log format: %s", logFormat)
+	}
+
 	logger := lager.NewLogger("groot")
-	logger.RegisterSink(lager.NewWriterSink(os.Stderr, logLevel))
+	logger.RegisterSink(sink)
 
 	return logger, nil
 }

@@ -6,7 +6,7 @@ replace golang.org/x/exp => golang.org/x/exp v0.0.0-20230724220655-d98519c11495 
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
-	code.cloudfoundry.org/groot v0.0.0-20230822181152-518cf4baa3b3
+	code.cloudfoundry.org/groot v0.0.0-20230824161746-1b085d756a72
 	code.cloudfoundry.org/hydrator v0.0.0-20230612152512-cab592e80dce
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	github.com/Microsoft/go-winio v0.6.1
