@@ -2,8 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 code.cloudfoundry.org/archiver v0.0.0-20230406165347-48bf3e51e0c6 h1:25BJuttITswSTjAJXdF2IHx/evjrPvDZNmjj+FFp6mE=
 code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4 h1:vFVV9R40DQzFoRxRK9SZcMvrkttffHUhAp/fXBzTL4s=
 code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4/go.mod h1:fgYWbGWTBO6Cx+4XGgLKO/cSIJAUCwswTd/qkkSc+jE=
-code.cloudfoundry.org/groot v0.0.0-20230824161746-1b085d756a72 h1:mm7/hihqQ/8UlRY/D0v+/pEElwb6XRgb1sKL0yS0C5s=
-code.cloudfoundry.org/groot v0.0.0-20230824161746-1b085d756a72/go.mod h1:TzEpRFuah25n4bwbpEYPr+Rm3RZT0LdCqbjQ0iaw2rs=
+code.cloudfoundry.org/groot v0.0.0-20230829181045-262478f19ae2 h1:5M5ousNSeYQMuw8+o5/hsN1gYjQCY+ORoBGrvlerLr8=
+code.cloudfoundry.org/groot v0.0.0-20230829181045-262478f19ae2/go.mod h1:E+h6M03ft6bUhaGsYDV81yGLGGUG/60Y1Z0rJ+IAm4o=
 code.cloudfoundry.org/hydrator v0.0.0-20230612152512-cab592e80dce h1:d4uS95G965xvUhfhfNgiQrQVUfaTq1MlTPvz7v3+51I=
 code.cloudfoundry.org/hydrator v0.0.0-20230612152512-cab592e80dce/go.mod h1:whODtQC1NtBPcsZT15VQ7D8cmj2V6nYVECzGJfiGVFE=
 code.cloudfoundry.org/lager/v3 v3.0.2 h1:H0dcQY+814G1Ea0e5K/AMaMpcr+Pe5Iv+AALJEwrP9U=
