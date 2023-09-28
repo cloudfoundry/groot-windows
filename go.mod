@@ -4,13 +4,13 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
-	code.cloudfoundry.org/groot v0.0.0-20230918154213-55c7e925f621
+	code.cloudfoundry.org/groot v0.0.0-20230926181507-71cf126d4aa5
 	code.cloudfoundry.org/hydrator v0.0.0-20230612152512-cab592e80dce
 	code.cloudfoundry.org/lager/v3 v3.0.2
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.12.0-rc.0
 	github.com/onsi/ginkgo/v2 v2.12.1
-	github.com/onsi/gomega v1.27.10
+	github.com/onsi/gomega v1.28.0
 	github.com/opencontainers/image-spec v1.1.0-rc5
 	github.com/opencontainers/runtime-spec v1.1.0
 	github.com/urfave/cli v1.22.14
@@ -35,7 +35,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/pprof v0.0.0-20230912144702-c363fe2c2ed8 // indirect
+	github.com/google/pprof v0.0.0-20230926050212-f7f687d19a98 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
