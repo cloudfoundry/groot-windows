@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20231115213651-b97297b15b31
+# code.cloudfoundry.org/groot v0.0.0-20231121182029-f21127888d10
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20231115181553-644210ecf636
+# code.cloudfoundry.org/hydrator v0.0.0-20231117224737-5f6950bc8144
 ## explicit; go 1.20
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -55,7 +55,7 @@ github.com/Microsoft/hcsshim/osversion
 # github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
-# github.com/containers/image/v5 v5.28.0
+# github.com/containers/image/v5 v5.29.0
 ## explicit; go 1.19
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
@@ -79,6 +79,7 @@ github.com/containers/image/v5/internal/set
 github.com/containers/image/v5/internal/signature
 github.com/containers/image/v5/internal/streamdigest
 github.com/containers/image/v5/internal/tmpdir
+github.com/containers/image/v5/internal/unparsedimage
 github.com/containers/image/v5/internal/uploadreader
 github.com/containers/image/v5/internal/useragent
 github.com/containers/image/v5/manifest
@@ -101,7 +102,7 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.1.9
 ## explicit; go 1.20
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.50.2
+# github.com/containers/storage v1.51.0
 ## explicit; go 1.19
 github.com/containers/storage/pkg/chunked/compressor
 github.com/containers/storage/pkg/chunked/internal
