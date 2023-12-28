@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20230612152934-de193be258e4
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20231219182526-1b6b54200427
+# code.cloudfoundry.org/groot v0.0.0-20231226182703-b6130c488620
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -140,7 +140,7 @@ github.com/docker/go-connections/tlsconfig
 # github.com/docker/go-units v0.5.0
 ## explicit
 github.com/docker/go-units
-# github.com/go-logr/logr v1.4.0
+# github.com/go-logr/logr v1.4.1
 ## explicit; go 1.18
 github.com/go-logr/logr
 github.com/go-logr/logr/funcr
@@ -285,7 +285,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
+# golang.org/x/exp v0.0.0-20231226003508-02704c960a9b
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
