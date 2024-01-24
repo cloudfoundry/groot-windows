@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240116200225-91558a7180a4
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240117130526-d6a8199d34ff
+# code.cloudfoundry.org/groot v0.0.0-20240124130453-e61b5aa154f6
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -55,8 +55,6 @@ github.com/Microsoft/hcsshim/osversion
 # github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
-# github.com/containerd/log v0.1.0
-## explicit; go 1.20
 # github.com/containers/image/v5 v5.29.1
 ## explicit; go 1.19
 github.com/containers/image/v5/directory/explicitfilepath
@@ -129,7 +127,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v25.0.0+incompatible
+# github.com/docker/docker v25.0.1+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.1

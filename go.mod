@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240116200225-91558a7180a4
-	code.cloudfoundry.org/groot v0.0.0-20240117130526-d6a8199d34ff
+	code.cloudfoundry.org/groot v0.0.0-20240124130453-e61b5aa154f6
 	code.cloudfoundry.org/hydrator v0.0.0-20240112153350-a6bf3b70363f
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
@@ -20,7 +20,6 @@ require (
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
-	github.com/containerd/log v0.1.0 // indirect
 	github.com/containers/image/v5 v5.29.1 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.1.9 // indirect
@@ -28,7 +27,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.3 // indirect
 	github.com/distribution/reference v0.5.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v25.0.0+incompatible // indirect
+	github.com/docker/docker v25.0.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.1 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
