@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240116200225-91558a7180a4
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240131131551-05fd8d3627e9
+# code.cloudfoundry.org/groot v0.0.0-20240131215226-a86440b80fec
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -32,7 +32,7 @@ github.com/Microsoft/go-winio
 github.com/Microsoft/go-winio/archive/tar
 github.com/Microsoft/go-winio/backuptar
 github.com/Microsoft/go-winio/pkg/guid
-# github.com/Microsoft/hcsshim v0.12.0-rc.2 => github.com/Microsoft/hcsshim v0.8.7
+# github.com/Microsoft/hcsshim v0.12.0-rc.3 => github.com/Microsoft/hcsshim v0.8.7
 ## explicit; go 1.13
 github.com/Microsoft/hcsshim
 github.com/Microsoft/hcsshim/internal/cow
@@ -127,7 +127,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v25.0.1+incompatible
+# github.com/docker/docker v25.0.2+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.1
@@ -177,7 +177,7 @@ github.com/hashicorp/go-multierror
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
 github.com/json-iterator/go
-# github.com/klauspost/compress v1.17.5
+# github.com/klauspost/compress v1.17.6
 ## explicit; go 1.19
 github.com/klauspost/compress
 github.com/klauspost/compress/flate
@@ -242,7 +242,7 @@ github.com/opencontainers/go-digest
 ## explicit; go 1.18
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
-# github.com/opencontainers/runc v1.1.11
+# github.com/opencontainers/runc v1.1.12
 ## explicit; go 1.17
 github.com/opencontainers/runc/libcontainer/user
 # github.com/opencontainers/runtime-spec v1.1.0
@@ -285,7 +285,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20240119083558-1b970713d09a
+# golang.org/x/exp v0.0.0-20240205201215-2c58cdc269a3
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
