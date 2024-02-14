@@ -3,16 +3,16 @@ module code.cloudfoundry.org/groot-windows
 go 1.19
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240116200225-91558a7180a4
-	code.cloudfoundry.org/groot v0.0.0-20240207132032-cb021b03f99c
-	code.cloudfoundry.org/hydrator v0.0.0-20240112153350-a6bf3b70363f
+	code.cloudfoundry.org/filelock v0.0.0-20240209144509-13bda475cb97
+	code.cloudfoundry.org/groot v0.0.0-20240214130954-196db9fd00f5
+	code.cloudfoundry.org/hydrator v0.0.0-20240209144515-015a088ba6aa
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.12.0-rc.3
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.31.1
 	github.com/opencontainers/image-spec v1.1.0-rc6
-	github.com/opencontainers/runtime-spec v1.1.0
+	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/urfave/cli v1.22.14
 	golang.org/x/sys v0.17.0
 )
@@ -56,10 +56,10 @@ require (
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20240205201215-2c58cdc269a3 // indirect
-	golang.org/x/net v0.20.0 // indirect
+	golang.org/x/exp v0.0.0-20240213143201-ec583247a57a // indirect
+	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
