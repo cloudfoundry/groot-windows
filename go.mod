@@ -3,15 +3,15 @@ module code.cloudfoundry.org/groot-windows
 go 1.19
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240209144509-13bda475cb97
-	code.cloudfoundry.org/groot v0.0.0-20240214130954-196db9fd00f5
-	code.cloudfoundry.org/hydrator v0.0.0-20240209144515-015a088ba6aa
+	code.cloudfoundry.org/filelock v0.0.0-20240216144523-6b33e29a39ef
+	code.cloudfoundry.org/groot v0.0.0-20240216144533-01faaaa37262
+	code.cloudfoundry.org/hydrator v0.0.0-20240216144530-328f53b2c35d
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.12.0-rc.3
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.31.1
-	github.com/opencontainers/image-spec v1.1.0-rc6
+	github.com/opencontainers/image-spec v1.1.0
 	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/urfave/cli v1.22.14
 	golang.org/x/sys v0.17.0
@@ -41,7 +41,7 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.6 // indirect
+	github.com/klauspost/compress v1.17.7 // indirect
 	github.com/klauspost/pgzip v1.2.6 // indirect
 	github.com/moby/sys/mountinfo v0.7.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
