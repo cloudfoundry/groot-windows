@@ -2,7 +2,6 @@ package integration_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -26,7 +25,7 @@ var _ = Describe("Delete", func() {
 
 	BeforeEach(func() {
 		var err error
-		driverStore, err = ioutil.TempDir("", "delete.store")
+		driverStore, err = os.MkdirTemp("", "delete.store")
 		Expect(err).ToNot(HaveOccurred())
 		layerStore = filepath.Join(driverStore, "layers")
 		volumeStore = filepath.Join(driverStore, "volumes")

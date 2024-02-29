@@ -2,7 +2,6 @@ package driver_test
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -36,7 +35,7 @@ var _ = Describe("Bundle", func() {
 	BeforeEach(func() {
 		var err error
 
-		storeDir, err = ioutil.TempDir("", "bundle-store")
+		storeDir, err = os.MkdirTemp("", "bundle-store")
 		Expect(err).NotTo(HaveOccurred())
 
 		hcsClientFake = &fakes.HCSClient{}

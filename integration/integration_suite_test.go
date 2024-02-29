@@ -2,7 +2,6 @@ package integration_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -58,7 +57,7 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	ociImagesDir, keepDir = os.LookupEnv("GROOT_WINDOWS_IMAGES")
 
 	if !keepDir {
-		ociImagesDir, err = ioutil.TempDir("", "groot-windows-test-images")
+		ociImagesDir, err = os.MkdirTemp("", "groot-windows-test-images")
 		Expect(err).ToNot(HaveOccurred())
 	}
 

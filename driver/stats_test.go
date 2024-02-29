@@ -3,7 +3,6 @@ package driver_test
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -39,7 +38,7 @@ var _ = Describe("Stats", func() {
 		limiterFake = &fakes.Limiter{}
 
 		var err error
-		storeDir, err = ioutil.TempDir("", "stats-store")
+		storeDir, err = os.MkdirTemp("", "stats-store")
 		Expect(err).NotTo(HaveOccurred())
 
 		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
@@ -55,7 +54,7 @@ var _ = Describe("Stats", func() {
 		metadataFile = filepath.Join(bundleVolumeDir, "metadata.json")
 		data, err := json.Marshal(groot.ImageMetadata{Size: baseImageSize})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(ioutil.WriteFile(metadataFile, data, 0644)).To(Succeed())
+		Expect(os.WriteFile(metadataFile, data, 0644)).To(Succeed())
 
 		quotaUsed = 6789
 		limiterFake.GetQuotaUsedReturnsOnCall(0, uint64(quotaUsed), nil)
@@ -97,7 +96,7 @@ var _ = Describe("Stats", func() {
 
 	Context("metadata.json file contains bad data", func() {
 		BeforeEach(func() {
-			Expect(ioutil.WriteFile(metadataFile, []byte("not json"), 0644)).To(Succeed())
+			Expect(os.WriteFile(metadataFile, []byte("not json"), 0644)).To(Succeed())
 		})
 
 		It("errors", func() {

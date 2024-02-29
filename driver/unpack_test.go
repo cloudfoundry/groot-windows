@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"errors"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -36,7 +35,7 @@ var _ = Describe("Unpack", func() {
 
 	BeforeEach(func() {
 		var err error
-		storeDir, err = ioutil.TempDir("", "driver")
+		storeDir, err = os.MkdirTemp("", "driver")
 		Expect(err).To(Succeed())
 
 		hcsClientFake = &fakes.HCSClient{}
@@ -198,7 +197,7 @@ var _ = Describe("Unpack", func() {
 			It("writes the size to the size file", func() {
 				_, err := d.Unpack(logger, layerID, []string{}, buffer)
 				Expect(err).To(Succeed())
-				content, err := ioutil.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
+				content, err := os.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
 				Expect(err).NotTo(HaveOccurred())
 				Expect(string(content)).To(Equal("300"))
 			})
@@ -317,7 +316,7 @@ var _ = Describe("Unpack", func() {
 			It("writes the size to the size file", func() {
 				_, err := d.Unpack(logger, layerID, []string{}, buffer)
 				Expect(err).To(Succeed())
-				content, err := ioutil.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
+				content, err := os.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
 				Expect(err).NotTo(HaveOccurred())
 				Expect(string(content)).To(Equal("100"))
 			})
@@ -394,7 +393,7 @@ var _ = Describe("Unpack", func() {
 	Context("the layer has already been unpacked", func() {
 		BeforeEach(func() {
 			Expect(os.MkdirAll(filepath.Join(d.LayerStore(), layerID), 0755)).To(Succeed())
-			Expect(ioutil.WriteFile(filepath.Join(d.LayerStore(), layerID, "size"), []byte("300"), 0644))
+			Expect(os.WriteFile(filepath.Join(d.LayerStore(), layerID, "size"), []byte("300"), 0644))
 			hcsClientFake.LayerExistsReturnsOnCall(0, true, nil)
 		})
 
@@ -445,7 +444,7 @@ var _ = Describe("Unpack", func() {
 			Expect(tarStreamerFake.FileInfoFromHeaderCallCount()).To(Equal(1))
 			Expect(tarStreamerFake.WriteBackupStreamFromTarFileCallCount()).To(Equal(1))
 
-			contents, err := ioutil.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
+			contents, err := os.ReadFile(filepath.Join(d.LayerStore(), layerID, "size"))
 			Expect(err).NotTo(HaveOccurred())
 			Expect(string(contents)).To(Equal("300"))
 		})

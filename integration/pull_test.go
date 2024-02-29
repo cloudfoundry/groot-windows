@@ -1,7 +1,6 @@
 package integration_test
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -19,7 +18,7 @@ var _ = Describe("Pull", func() {
 
 	BeforeEach(func() {
 		var err error
-		driverStore, err = ioutil.TempDir("", "pull.store")
+		driverStore, err = os.MkdirTemp("", "pull.store")
 		Expect(err).ToNot(HaveOccurred())
 		layerStore = filepath.Join(driverStore, "layers")
 

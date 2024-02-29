@@ -2,7 +2,6 @@ package integration_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -28,12 +27,12 @@ var _ = Describe("Create", func() {
 
 	BeforeEach(func() {
 		var err error
-		driverStore, err = ioutil.TempDir("", "create.store")
+		driverStore, err = os.MkdirTemp("", "create.store")
 		Expect(err).ToNot(HaveOccurred())
 		layerStore = filepath.Join(driverStore, "layers")
 		volumeStore = filepath.Join(driverStore, "volumes")
 
-		volumeMountDir, err = ioutil.TempDir("", "mounted-volume")
+		volumeMountDir, err = os.MkdirTemp("", "mounted-volume")
 		Expect(err).ToNot(HaveOccurred())
 
 		bundleID = randomBundleID()
@@ -184,7 +183,7 @@ var _ = Describe("Create", func() {
 				Expect(err).NotTo(HaveOccurred())
 				Expect(dest).To(Equal("C:\\temp\\test\\hello"))
 
-				data, err := ioutil.ReadFile(filepath.Join(volumeMountDir, "temp", "hardlinkfile"))
+				data, err := os.ReadFile(filepath.Join(volumeMountDir, "temp", "hardlinkfile"))
 				Expect(err).NotTo(HaveOccurred())
 				Expect(strings.TrimSpace(string(data))).To(Equal("hello"))
 

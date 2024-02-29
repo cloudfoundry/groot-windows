@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"math/big"
 	"os"
@@ -163,7 +162,7 @@ func destroyLayerStore(driverStore string) {
 	}
 	Expect(err).NotTo(HaveOccurred())
 
-	files, err := ioutil.ReadDir(layerStore)
+	files, err := os.ReadDir(layerStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
 	di := hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}
@@ -184,7 +183,7 @@ func destroyVolumeStore(driverStore string) {
 	}
 	Expect(err).NotTo(HaveOccurred())
 
-	files, err := ioutil.ReadDir(volumeStore)
+	files, err := os.ReadDir(volumeStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
 	for _, f := range files {

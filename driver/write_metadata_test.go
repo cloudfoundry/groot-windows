@@ -2,7 +2,6 @@ package driver_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -34,7 +33,7 @@ var _ = Describe("WriteMetadata", func() {
 		limiterFake = &fakes.Limiter{}
 
 		var err error
-		storeDir, err = ioutil.TempDir("", "write-metadata-store")
+		storeDir, err = os.MkdirTemp("", "write-metadata-store")
 		Expect(err).NotTo(HaveOccurred())
 
 		d = driver.New(hcsClientFake, tarStreamerFake, privilegeElevatorFake, limiterFake)
@@ -58,7 +57,7 @@ var _ = Describe("WriteMetadata", func() {
 		It("writes the metadata to the <volume-dir>/<bundle-id> directory", func() {
 			Expect(d.WriteMetadata(logger, bundleID, volumeData)).To(Succeed())
 
-			contents, err := ioutil.ReadFile(filepath.Join(d.VolumeStore(), "some-bundle-id", "metadata.json"))
+			contents, err := os.ReadFile(filepath.Join(d.VolumeStore(), "some-bundle-id", "metadata.json"))
 			Expect(err).NotTo(HaveOccurred())
 
 			var data groot.ImageMetadata
