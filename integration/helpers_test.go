@@ -269,7 +269,9 @@ func getFileAttributes(filename string) uint32 {
 }
 
 func openSymlinkDir(filename string) syscall.Handle {
-	fd, err := syscall.CreateFile(syscall.StringToUTF16Ptr(filename), 0, 0, nil,
+	filePtr, err := syscall.UTF16PtrFromString(filename)
+	ExpectWithOffset(1, err).NotTo(HaveOccurred())
+	fd, err := syscall.CreateFile(filePtr, 0, 0, nil,
 		syscall.OPEN_EXISTING, syscall.FILE_FLAG_OPEN_REPARSE_POINT|syscall.FILE_FLAG_BACKUP_SEMANTICS, 0)
 	ExpectWithOffset(1, err).NotTo(HaveOccurred())
 	return fd
