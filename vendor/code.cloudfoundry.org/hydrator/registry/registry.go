@@ -5,14 +5,14 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
-	digest "github.com/opencontainers/go-digest"
-	"github.com/opencontainers/image-spec/specs-go/v1"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
+
+	digest "github.com/opencontainers/go-digest"
+	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 const (
@@ -207,7 +207,7 @@ func (r *Registry) getToken(authenticateInfo string) (string, error) {
 		return "", &HTTPNotOKError{statusCode: resp.StatusCode}
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
 	}

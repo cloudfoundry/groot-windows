@@ -1,7 +1,7 @@
 package groot
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/pkg/errors"
 	yaml "gopkg.in/yaml.v2"
@@ -24,7 +24,7 @@ func parseConfig(configFilePath string) (conf config, err error) {
 		return conf, nil
 	}
 
-	contents, err := ioutil.ReadFile(configFilePath)
+	contents, err := os.ReadFile(configFilePath)
 	if err != nil {
 		return config{}, errors.Wrap(err, "reading config file")
 	}

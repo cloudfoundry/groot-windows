@@ -3,7 +3,6 @@ package imagefetcher
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -48,7 +47,7 @@ func (i *ImageFetcher) Run() error {
 	if i.noTarball {
 		imageDownloadDir = i.outDir
 	} else {
-		tempDir, err := ioutil.TempDir("", "hydrate")
+		tempDir, err := os.MkdirTemp("", "hydrate")
 		if err != nil {
 			return fmt.Errorf("Could not create tmp dir: %s", tempDir)
 		}

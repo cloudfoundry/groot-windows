@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"hash"
 	"io"
-	"io/ioutil"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -26,7 +25,6 @@ import (
 	"github.com/containers/image/v5/transports"
 	"github.com/containers/image/v5/types"
 	digestpkg "github.com/opencontainers/go-digest"
-	imgspec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
@@ -118,7 +116,7 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 	}
 
 	// ":" is an invalid character for Windows paths
-	blobTempFile, err := ioutil.TempFile("", "blob-"+strings.Replace(layerInfo.BlobID, ":", "-", -1))
+	blobTempFile, err := os.CreateTemp("", "blob-"+strings.Replace(layerInfo.BlobID, ":", "-", -1))
 	if err != nil {
 		return "", 0, err
 	}
@@ -132,7 +130,7 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 	}()
 
 	blobIDHash := sha256.New()
-	digestReader := ioutil.NopCloser(io.TeeReader(blob, blobIDHash))
+	digestReader := io.NopCloser(io.TeeReader(blob, blobIDHash))
 	if layerInfo.MediaType == "" || strings.Contains(layerInfo.MediaType, "gzip") {
 		logger.Debug("uncompressing-blob")
 
@@ -149,7 +147,7 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 	}
 
 	diffIDHash := sha256.New()
-	digestReader = ioutil.NopCloser(io.TeeReader(digestReader, diffIDHash))
+	digestReader = io.NopCloser(io.TeeReader(digestReader, diffIDHash))
 
 	uncompressedSize, err := io.Copy(blobTempFile, digestReader)
 	if err != nil {
@@ -350,20 +348,13 @@ func (s *LayerSource) v1DiffID(logger lager.Logger, layer types.BlobInfo, imgSrc
 		return "", errors.Wrap(err, "creating reader for V1 layer blob")
 	}
 
-	data, err := ioutil.ReadAll(gzipReader)
+	data, err := io.ReadAll(gzipReader)
 	if err != nil {
 		return "", errors.Wrap(err, "reading V1 layer blob")
 	}
 	sha := sha256.Sum256(data)
 
 	return digestpkg.NewDigestFromHex("sha256", hex.EncodeToString(sha[:])), nil
-}
-
-func preferedMediaTypes() []string {
-	return []string{
-		imgspec.MediaTypeImageManifest,
-		manifestpkg.DockerV2Schema2MediaType,
-	}
 }
 
 func destToWindowsPath(input string) string {

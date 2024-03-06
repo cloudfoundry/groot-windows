@@ -16,8 +16,6 @@ import (
 	errorspkg "github.com/pkg/errors"
 )
 
-const cfBaseDirectoryAnnotation = "org.cloudfoundry.experimental.image.base-directory"
-
 //go:generate counterfeiter . Source
 //go:generate counterfeiter . Manifest
 

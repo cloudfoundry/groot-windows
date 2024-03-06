@@ -4,7 +4,6 @@ import (
 	"archive/tar"
 	"compress/gzip"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -38,13 +37,17 @@ func writeDirToTar(srcDir string, dest *tar.Writer, prefix string) error {
 		return err
 	}
 
-	files, err := ioutil.ReadDir(srcDir)
+	files, err := os.ReadDir(srcDir)
 	if err != nil {
 		return err
 	}
 
-	for _, fi := range files {
-		source := filepath.Join(dir, fi.Name())
+	for _, dirEntry := range files {
+		source := filepath.Join(dir, dirEntry.Name())
+		fi, err := dirEntry.Info()
+		if err != nil {
+			return err
+		}
 		hdr := tarHeader(fi, prefix)
 
 		if err := addTarFile(source, &hdr, dest); err != nil {
@@ -52,7 +55,7 @@ func writeDirToTar(srcDir string, dest *tar.Writer, prefix string) error {
 		}
 
 		if fi.IsDir() {
-			if err := writeDirToTar(source, dest, filepath.Join(prefix, fi.Name())); err != nil {
+			if err := writeDirToTar(source, dest, filepath.Join(prefix, dirEntry.Name())); err != nil {
 				return err
 			}
 		}

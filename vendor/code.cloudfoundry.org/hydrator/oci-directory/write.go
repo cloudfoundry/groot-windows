@@ -4,7 +4,6 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	digest "github.com/opencontainers/go-digest"
@@ -24,7 +23,7 @@ func (h *Handler) WriteMetadata(layers []oci.Descriptor, diffIds []digest.Digest
 
 	annotations := make(map[string]string)
 	/* Mark that the top layer was added using hydrator */
-	if layerAdded == true {
+	if layerAdded {
 		annotations["hydrator.layerAdded"] = "true"
 	}
 
@@ -45,7 +44,7 @@ func (h *Handler) writeOCILayout() error {
 		return err
 	}
 
-	return ioutil.WriteFile(h.ociLayoutPath(), data, 0644)
+	return os.WriteFile(h.ociLayoutPath(), data, 0644)
 }
 
 func (h *Handler) writeConfig(diffIds []digest.Digest) (oci.Descriptor, error) {
@@ -97,7 +96,7 @@ func (h *Handler) writeBlob(blob interface{}) (oci.Descriptor, error) {
 	blobSha := fmt.Sprintf("%x", sha256.Sum256(data))
 	blobFile := h.blobsPath(blobSha)
 
-	if err := ioutil.WriteFile(blobFile, data, 0644); err != nil {
+	if err := os.WriteFile(blobFile, data, 0644); err != nil {
 		return oci.Descriptor{}, err
 	}
 
@@ -118,5 +117,5 @@ func (h *Handler) writeIndexJson(manifest oci.Descriptor) error {
 		return err
 	}
 
-	return ioutil.WriteFile(h.indexPath(), data, 0644)
+	return os.WriteFile(h.indexPath(), data, 0644)
 }

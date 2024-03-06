@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 
 	oci "github.com/opencontainers/image-spec/specs-go/v1"
@@ -130,7 +129,7 @@ func (h *Handler) validateSHA256(d oci.Descriptor) error {
 }
 
 func loadJSON(file string, obj interface{}) (string, error) {
-	contents, err := ioutil.ReadFile(file)
+	contents, err := os.ReadFile(file)
 	if err != nil {
 		return "", err
 	}
