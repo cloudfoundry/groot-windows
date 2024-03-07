@@ -2,7 +2,6 @@ package integration_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -29,10 +28,10 @@ var _ = Describe("Stats", func() {
 
 	BeforeEach(func() {
 		var err error
-		driverStore, err = ioutil.TempDir("", "stats.store")
+		driverStore, err = os.MkdirTemp("", "stats.store")
 		Expect(err).ToNot(HaveOccurred())
 
-		volumeMountDir, err = ioutil.TempDir("", "mounted-volume")
+		volumeMountDir, err = os.MkdirTemp("", "mounted-volume")
 		Expect(err).ToNot(HaveOccurred())
 
 		imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))

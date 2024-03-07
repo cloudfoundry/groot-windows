@@ -3,7 +3,7 @@ package driver
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/lager/v3"
@@ -27,7 +27,7 @@ func (d *Driver) Stats(logger lager.Logger, bundleID string) (groot.VolumeStats,
 		return groot.VolumeStats{}, err
 	}
 
-	data, err := ioutil.ReadFile(d.metadataFile(bundleID))
+	data, err := os.ReadFile(d.metadataFile(bundleID))
 	if err != nil {
 		return groot.VolumeStats{}, err
 	}

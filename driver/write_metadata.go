@@ -3,7 +3,7 @@ package driver
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"code.cloudfoundry.org/groot"
 	"code.cloudfoundry.org/lager/v3"
@@ -26,5 +26,5 @@ func (d *Driver) writeMetadata(metadataFile string, volumeData groot.ImageMetada
 		return err
 	}
 
-	return ioutil.WriteFile(metadataFile, data, 0644)
+	return os.WriteFile(metadataFile, data, 0644)
 }

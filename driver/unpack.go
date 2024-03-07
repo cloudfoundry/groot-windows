@@ -3,7 +3,6 @@ package driver
 import (
 	"bytes"
 	"io"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -40,7 +39,7 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 
 	if exists {
 		logger.Info("layer-id-exists", lager.Data{"layerID": layerID})
-		content, err := ioutil.ReadFile(d.layerSizeFile(layerID))
+		content, err := os.ReadFile(d.layerSizeFile(layerID))
 		if err != nil {
 
 			// if the size file does not exist, delete the layer and recreate
@@ -121,6 +120,6 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 		return 0, nextFileErr
 	}
 
-	err = ioutil.WriteFile(d.layerSizeFile(layerID), []byte(strconv.FormatInt(totalSize, 10)), 0644)
+	err = os.WriteFile(d.layerSizeFile(layerID), []byte(strconv.FormatInt(totalSize, 10)), 0644)
 	return totalSize, err
 }

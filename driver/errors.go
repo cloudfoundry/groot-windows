@@ -21,5 +21,5 @@ func (e *MissingVolumePathError) Error() string {
 type EmptyDriverStoreError struct{}
 
 func (e *EmptyDriverStoreError) Error() string {
-	return fmt.Sprintf("driver store must be set")
+	return "driver store must be set"
 }

@@ -1,16 +1,13 @@
 package integration_test
 
 import (
-	"archive/tar"
 	"bytes"
-	"compress/gzip"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"math/big"
 	"os"
@@ -165,7 +162,7 @@ func destroyLayerStore(driverStore string) {
 	}
 	Expect(err).NotTo(HaveOccurred())
 
-	files, err := ioutil.ReadDir(layerStore)
+	files, err := os.ReadDir(layerStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
 	di := hcsshim.DriverInfo{HomeDir: layerStore, Flavour: 1}
@@ -186,7 +183,7 @@ func destroyVolumeStore(driverStore string) {
 	}
 	Expect(err).NotTo(HaveOccurred())
 
-	files, err := ioutil.ReadDir(volumeStore)
+	files, err := os.ReadDir(volumeStore)
 	ExpectWithOffset(1, err).ToNot(HaveOccurred())
 
 	for _, f := range files {
@@ -196,72 +193,6 @@ func destroyVolumeStore(driverStore string) {
 	}
 
 	ExpectWithOffset(1, os.RemoveAll(volumeStore)).To(Succeed())
-}
-
-func extractTarGz(tarfile, destDir string) error {
-	file, err := os.Open(tarfile)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-	gz, err := gzip.NewReader(file)
-	if err != nil {
-		return err
-	}
-	defer gz.Close()
-	return extractTar(gz, destDir)
-}
-
-func extractTar(src io.Reader, destDir string) error {
-	tr := tar.NewReader(src)
-
-	for {
-		hdr, err := tr.Next()
-		if err == io.EOF {
-			break
-		}
-		path := filepath.Join(destDir, hdr.Name)
-		fi := hdr.FileInfo()
-
-		if fi.IsDir() {
-			err = os.MkdirAll(path, hdr.FileInfo().Mode())
-		} else if fi.Mode()&os.ModeSymlink != 0 {
-			target := hdr.Linkname
-			if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
-				return err
-			}
-			if err = os.Symlink(target, path); err != nil {
-				return err
-			}
-		} else {
-			err = writeToFile(tr, path, hdr.FileInfo().Mode())
-		}
-
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func writeToFile(source io.Reader, destFile string, mode os.FileMode) error {
-	err := os.MkdirAll(filepath.Dir(destFile), 0755)
-	if err != nil {
-		return err
-	}
-
-	fh, err := os.OpenFile(destFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, mode)
-	if err != nil {
-		return err
-	}
-	defer fh.Close()
-
-	_, err = io.Copy(fh, source)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 const IO_REPARSE_TAG_MOUNT_POINT = 0xA0000003
@@ -338,7 +269,9 @@ func getFileAttributes(filename string) uint32 {
 }
 
 func openSymlinkDir(filename string) syscall.Handle {
-	fd, err := syscall.CreateFile(syscall.StringToUTF16Ptr(filename), 0, 0, nil,
+	filePtr, err := syscall.UTF16PtrFromString(filename)
+	ExpectWithOffset(1, err).NotTo(HaveOccurred())
+	fd, err := syscall.CreateFile(filePtr, 0, 0, nil,
 		syscall.OPEN_EXISTING, syscall.FILE_FLAG_OPEN_REPARSE_POINT|syscall.FILE_FLAG_BACKUP_SEMANTICS, 0)
 	ExpectWithOffset(1, err).NotTo(HaveOccurred())
 	return fd
