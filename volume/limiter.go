@@ -32,12 +32,10 @@ func (l *Limiter) SetQuota(volumePath string, size uint64) error {
 		return err
 	}
 
-	r0, _, err := setQuota.Call(uintptr(unsafe.Pointer(volume)), uintptr(size))
+	// we ignore err here because Windows is Windows, and we generate everything based off of spawnRe
+	r0, _, _ := setQuota.Call(uintptr(unsafe.Pointer(volume)), uintptr(size))
 	if int32(r0) != 0 {
 		return fmt.Errorf("error setting quota: %s", windowsErrorMessage(uint32(r0)))
-	}
-	if err != nil {
-		return err
 	}
 
 	return nil
@@ -56,12 +54,10 @@ func (s *Limiter) GetQuotaUsed(volumePath string) (uint64, error) {
 
 	var quotaUsed uint64
 
-	r0, _, err := getQuotaUsed.Call(uintptr(unsafe.Pointer(volume)), uintptr(unsafe.Pointer(&quotaUsed)))
+	// we ignore err here because Windows is Windows, and we generate everything based off of spawnRe
+	r0, _, _ := getQuotaUsed.Call(uintptr(unsafe.Pointer(volume)), uintptr(unsafe.Pointer(&quotaUsed)))
 	if int32(r0) != 0 {
 		return 0, fmt.Errorf("error getting quota: %s", windowsErrorMessage(uint32(r0)))
-	}
-	if err != nil {
-		return 0, err
 	}
 
 	return quotaUsed, nil
