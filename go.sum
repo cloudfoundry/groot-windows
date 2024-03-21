@@ -1,10 +1,10 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 code.cloudfoundry.org/archiver v0.0.0-20240308143919-052b78e49a62 h1:JQ/YZt93ivIIj88DHPiup+9ptOQiM9XtVTCphCH7Dlw=
 code.cloudfoundry.org/archiver v0.0.0-20240308143919-052b78e49a62/go.mod h1:9Cx8Y5pQ1wG08OeP1c1i0FfweiTkszzAVimulampe0g=
-code.cloudfoundry.org/filelock v0.0.0-20240320161153-8e7799080169 h1:0m/joAm1ObgW6ibEmC1s3X1fA4oVxDsVcgxLhY2OPQQ=
-code.cloudfoundry.org/filelock v0.0.0-20240320161153-8e7799080169/go.mod h1:5KEOe/GEpB6shfUWAhn1YtS1VqVy0f2i4WZ36FnvDBM=
-code.cloudfoundry.org/groot v0.0.0-20240320161447-fc672c9225ff h1:cDWUDQs4grP5h5HoU5OLEete5xXotdBvfWkgt9D8nJA=
-code.cloudfoundry.org/groot v0.0.0-20240320161447-fc672c9225ff/go.mod h1:Ub8KJWbOGtBH2WJNNmHIfarNYF8dHGqekD7mDLcyMCg=
+code.cloudfoundry.org/filelock v0.0.0-20240321152940-375e81608808 h1:S3cFF6mycfcyh5Ns9BhAWVDpBaFs2OjXNnT+vCGggCw=
+code.cloudfoundry.org/filelock v0.0.0-20240321152940-375e81608808/go.mod h1:5KEOe/GEpB6shfUWAhn1YtS1VqVy0f2i4WZ36FnvDBM=
+code.cloudfoundry.org/groot v0.0.0-20240321141126-aa49276496bf h1:autqiOrI6LIvgsumlyjgvnyg/hMwnO+KHpAF3ydW9VA=
+code.cloudfoundry.org/groot v0.0.0-20240321141126-aa49276496bf/go.mod h1:nG9+H8NtaTRnBIC0lZZRTZSWeGYiQRsvNtfsLZGrG7k=
 code.cloudfoundry.org/hydrator v0.0.0-20240320161619-2c58fceacabf h1:GFL7e1blujtOYyNoB3Y8HtB33UTnPpDd0p+4HR6W2OM=
 code.cloudfoundry.org/hydrator v0.0.0-20240320161619-2c58fceacabf/go.mod h1:5/i9TQ4/L8HlcxT7YlrJOpxOoyY9gxxUW8ZFkpdWRlM=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
@@ -59,8 +59,8 @@ github.com/docker/cli v25.0.3+incompatible h1:KLeNs7zws74oFuVhgZQ5ONGZiXUUdgsdy6
 github.com/docker/cli v25.0.3+incompatible/go.mod h1:JLrzqnKDaYBop7H2jaqPtU4hHvMKP+vjCwu2uszcLI8=
 github.com/docker/distribution v2.8.3+incompatible h1:AtKxIZ36LoNK51+Z6RpzLpddBirtxJnzDrHLEKxTAYk=
 github.com/docker/distribution v2.8.3+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
-github.com/docker/docker v25.0.5+incompatible h1:UmQydMduGkrD5nQde1mecF/YnSbTOaPeFIeP5C4W+DE=
-github.com/docker/docker v25.0.5+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/docker/docker v26.0.0+incompatible h1:Ng2qi+gdKADUa/VM+6b6YaY2nlZhk/lVJiKR/2bMudU=
+github.com/docker/docker v26.0.0+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/docker-credential-helpers v0.8.1 h1:j/eKUktUltBtMzKqmfLB0PAgqYyMHOp5vfsD1807oKo=
 github.com/docker/docker-credential-helpers v0.8.1/go.mod h1:P3ci7E3lwkZg6XiHdRKft1KckHiO9a2rNtyFbZ/ry9M=
 github.com/docker/go-connections v0.5.0 h1:USnMq7hx7gwdVZq1L49hLXaFtUdTADjXGp+uj1Br63c=

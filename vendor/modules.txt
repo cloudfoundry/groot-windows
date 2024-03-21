@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240320161153-8e7799080169
+# code.cloudfoundry.org/filelock v0.0.0-20240321152940-375e81608808
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240320161447-fc672c9225ff
+# code.cloudfoundry.org/groot v0.0.0-20240321141126-aa49276496bf
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -127,7 +127,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v25.0.5+incompatible
+# github.com/docker/docker v26.0.0+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.1

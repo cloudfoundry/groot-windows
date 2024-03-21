@@ -5,8 +5,8 @@ go 1.21
 toolchain go1.21.8
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240320161153-8e7799080169
-	code.cloudfoundry.org/groot v0.0.0-20240320161447-fc672c9225ff
+	code.cloudfoundry.org/filelock v0.0.0-20240321152940-375e81608808
+	code.cloudfoundry.org/groot v0.0.0-20240321141126-aa49276496bf
 	code.cloudfoundry.org/hydrator v0.0.0-20240320161619-2c58fceacabf
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
@@ -29,7 +29,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.5.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v25.0.5+incompatible // indirect
+	github.com/docker/docker v26.0.0+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.1 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
