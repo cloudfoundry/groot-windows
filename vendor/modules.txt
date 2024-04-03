@@ -1,4 +1,4 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240403142352-8a69c21cc3ba
+# code.cloudfoundry.org/filelock v0.0.0-20240403181209-b0404ec58f48
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
 # code.cloudfoundry.org/groot v0.0.0-20240403131906-61b5d8c3c785
@@ -290,7 +290,7 @@ go.opencensus.io/trace/tracestate
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
 golang.org/x/exp/slices
-# golang.org/x/net v0.22.0
+# golang.org/x/net v0.23.0
 ## explicit; go 1.18
 golang.org/x/net/context
 golang.org/x/net/html
