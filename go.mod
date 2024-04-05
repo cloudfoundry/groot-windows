@@ -5,9 +5,9 @@ go 1.21
 toolchain go1.21.8
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240404142549-02c90625c4c9
-	code.cloudfoundry.org/groot v0.0.0-20240404142556-f0306b71d118
-	code.cloudfoundry.org/hydrator v0.0.0-20240404142545-f6ffad549480
+	code.cloudfoundry.org/filelock v0.0.0-20240405142619-d5c949b5e222
+	code.cloudfoundry.org/groot v0.0.0-20240405142637-7eb94205d3fd
+	code.cloudfoundry.org/hydrator v0.0.0-20240405142629-b640a1c77777
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.12.2
@@ -58,10 +58,10 @@ require (
 	github.com/ulikunitz/xz v0.5.12 // indirect
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20240325151524-a685a6edb6d8 // indirect
-	golang.org/x/net v0.23.0 // indirect
+	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0 // indirect
+	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.19.0 // indirect
+	golang.org/x/tools v0.20.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
