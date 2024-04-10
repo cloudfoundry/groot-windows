@@ -7,7 +7,7 @@ toolchain go1.21.8
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240409143021-86f5884ca555
 	code.cloudfoundry.org/groot v0.0.0-20240409143034-14d85a9b0b57
-	code.cloudfoundry.org/hydrator v0.0.0-20240409143023-d8a4a483fe8a
+	code.cloudfoundry.org/hydrator v0.0.0-20240410143027-29760d63d9ad
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.12.2
