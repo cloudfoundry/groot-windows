@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240409143021-86f5884ca555
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240409143034-14d85a9b0b57
+# code.cloudfoundry.org/groot v0.0.0-20240411184517-8e9754484ba5
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
