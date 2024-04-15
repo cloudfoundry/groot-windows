@@ -7,7 +7,7 @@ toolchain go1.21.8
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240409143021-86f5884ca555
 	code.cloudfoundry.org/groot v0.0.0-20240411184517-8e9754484ba5
-	code.cloudfoundry.org/hydrator v0.0.0-20240413143403-22d64ea4cea5
+	code.cloudfoundry.org/hydrator v0.0.0-20240415143617-4f54e4c659b5
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.1
 	github.com/Microsoft/hcsshim v0.12.2
@@ -38,7 +38,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240409012703-83162a5b38cd // indirect
+	github.com/google/pprof v0.0.0-20240415144954-be81aee2d733 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
