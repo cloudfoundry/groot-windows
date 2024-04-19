@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240417143641-f04b449d93e8
+# code.cloudfoundry.org/filelock v0.0.0-20240419143859-3e7294896977
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240416185157-8b656ee8deac
+# code.cloudfoundry.org/groot v0.0.0-20240419143912-283d2ede1ddc
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240417143645-20bc9e4611ee
+# code.cloudfoundry.org/hydrator v0.0.0-20240419143917-3c022166f21a
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -127,7 +127,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v26.0.1+incompatible
+# github.com/docker/docker v26.0.2+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.1
