@@ -4,8 +4,9 @@ import (
 	"io"
 	"path/filepath"
 
+	"archive/tar"
+
 	"code.cloudfoundry.org/groot-windows/hcs"
-	"github.com/Microsoft/go-winio/archive/tar"
 
 	winio "github.com/Microsoft/go-winio"
 	"github.com/Microsoft/hcsshim"
