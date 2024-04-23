@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240419143859-3e7294896977
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240419143912-283d2ede1ddc
+# code.cloudfoundry.org/groot v0.0.0-20240422185657-9e2685003242
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -127,7 +127,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v26.0.2+incompatible
+# github.com/docker/docker v26.1.0+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.1
@@ -162,7 +162,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20240422180639-6d00f2148849
+# github.com/google/pprof v0.0.0-20240422182052-72c8669ad3e7
 ## explicit; go 1.19
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.1
