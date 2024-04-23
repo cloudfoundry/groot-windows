@@ -4,6 +4,8 @@ go 1.21
 
 toolchain go1.21.8
 
+replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
+
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240419143859-3e7294896977
 	code.cloudfoundry.org/groot v0.0.0-20240422185657-9e2685003242
@@ -64,9 +66,4 @@ require (
 	golang.org/x/tools v0.20.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-)
-
-replace (
-	github.com/Microsoft/go-winio => github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
-	github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 )
