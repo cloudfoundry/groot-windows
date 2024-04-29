@@ -8,8 +8,8 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240428144643-f8a6b1def84d
-	code.cloudfoundry.org/groot v0.0.0-20240428144656-8b9f76732585
-	code.cloudfoundry.org/hydrator v0.0.0-20240428144644-8a73e2b92197
+	code.cloudfoundry.org/groot v0.0.0-20240429144729-6ec231ed1a47
+	code.cloudfoundry.org/hydrator v0.0.0-20240429144725-3b02a18e7723
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.3
@@ -52,7 +52,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
-	github.com/openzipkin/zipkin-go v0.4.2 // indirect
+	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
