@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240430144742-533492b1653c
+# code.cloudfoundry.org/filelock v0.0.0-20240505145246-ee31c1b1a865
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240430190620-146d0098a18d
+# code.cloudfoundry.org/groot v0.0.0-20240504191109-2bd3d2f6a4ed
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240504145229-d862f5b6b1af
+# code.cloudfoundry.org/hydrator v0.0.0-20240505145248-442a4980a408
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
