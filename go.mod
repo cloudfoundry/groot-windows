@@ -8,8 +8,8 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240505145246-ee31c1b1a865
-	code.cloudfoundry.org/groot v0.0.0-20240504191109-2bd3d2f6a4ed
-	code.cloudfoundry.org/hydrator v0.0.0-20240505145248-442a4980a408
+	code.cloudfoundry.org/groot v0.0.0-20240506145350-9533507efc07
+	code.cloudfoundry.org/hydrator v0.0.0-20240506145346-beeda1eb0778
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.3
@@ -61,9 +61,9 @@ require (
 	github.com/vbatts/tar-split v0.11.5 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f // indirect
-	golang.org/x/net v0.24.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/text v0.15.0 // indirect
-	golang.org/x/tools v0.20.0 // indirect
+	golang.org/x/tools v0.21.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
