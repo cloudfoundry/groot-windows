@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240505145246-ee31c1b1a865
+# code.cloudfoundry.org/filelock v0.0.0-20240507145458-36b645f6b3ce
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240506145350-9533507efc07
+# code.cloudfoundry.org/groot v0.0.0-20240507145515-d1703dc1979d
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240506145346-beeda1eb0778
+# code.cloudfoundry.org/hydrator v0.0.0-20240507145502-0fa225713339
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -164,7 +164,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20240430035430-e4905b036c4e
+# github.com/google/pprof v0.0.0-20240507165812-eadc5834db1b
 ## explicit; go 1.19
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.1
@@ -204,7 +204,7 @@ github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
 ## explicit; go 1.12
 github.com/modern-go/reflect2
-# github.com/onsi/ginkgo/v2 v2.17.2
+# github.com/onsi/ginkgo/v2 v2.17.3
 ## explicit; go 1.20
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
@@ -287,7 +287,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
+# golang.org/x/exp v0.0.0-20240506185415-9bf2ced13842
 ## explicit; go 1.20
 golang.org/x/exp/constraints
 golang.org/x/exp/maps
