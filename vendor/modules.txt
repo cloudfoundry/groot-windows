@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240508145508-413890995ac0
+# code.cloudfoundry.org/filelock v0.0.0-20240509145650-67a3677ef078
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240507191433-913ac76b63e6
+# code.cloudfoundry.org/groot v0.0.0-20240509145701-c51e8178e5e0
 ## explicit; go 1.19
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240508145509-1732d36287fd
+# code.cloudfoundry.org/hydrator v0.0.0-20240509145654-e8ed7a7c5545
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -57,7 +57,7 @@ github.com/Microsoft/hcsshim/osversion
 # github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
-# github.com/containers/image/v5 v5.30.0
+# github.com/containers/image/v5 v5.30.1
 ## explicit; go 1.19
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
@@ -129,7 +129,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v26.1.1+incompatible
+# github.com/docker/docker v26.1.2+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.1
@@ -164,7 +164,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20240508145209-1db217f89380
+# github.com/google/pprof v0.0.0-20240509144519-723abb6459b7
 ## explicit; go 1.19
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.1
