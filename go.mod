@@ -7,9 +7,9 @@ toolchain go1.21.8
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240509145650-67a3677ef078
-	code.cloudfoundry.org/groot v0.0.0-20240509191528-58e8985f36cd
-	code.cloudfoundry.org/hydrator v0.0.0-20240515150330-1275f39e084c
+	code.cloudfoundry.org/filelock v0.0.0-20240515185159-918e226e852d
+	code.cloudfoundry.org/groot v0.0.0-20240516150502-fbc5f2e19fa2
+	code.cloudfoundry.org/hydrator v0.0.0-20240516150506-e067371602af
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.3
@@ -31,7 +31,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v26.1.2+incompatible // indirect
+	github.com/docker/docker v26.1.3+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.1 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect

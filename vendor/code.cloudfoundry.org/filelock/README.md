@@ -1,16 +1,16 @@
-# groot
+# filelock
 
 [![Go Report
-Card](https://goreportcard.com/badge/code.cloudfoundry.org/groot)](https://goreportcard.com/report/code.cloudfoundry.org/groot)
+Card](https://goreportcard.com/badge/code.cloudfoundry.org/filelock)](https://goreportcard.com/report/code.cloudfoundry.org/filelock)
 [![Go
-Reference](https://pkg.go.dev/badge/code.cloudfoundry.org/groot.svg)](https://pkg.go.dev/code.cloudfoundry.org/groot)
+Reference](https://pkg.go.dev/badge/code.cloudfoundry.org/filelock.svg)](https://pkg.go.dev/code.cloudfoundry.org/filelock)
 
-A framework for building image plugins for
-[Guardian](https://github.com/cloudfoundry/guardian) in Go.
+This library will allow locking a file for synchronous operation.
 
 > \[!NOTE\]
 >
-> This repository should be imported as `code.cloudfoundry.org/groot`.
+> This repository should be imported as
+> `code.cloudfoundry.org/filelock`.
 
 # Contributing
 
