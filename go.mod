@@ -8,7 +8,7 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240515185159-918e226e852d
-	code.cloudfoundry.org/groot v0.0.0-20240516150502-fbc5f2e19fa2
+	code.cloudfoundry.org/groot v0.0.0-20240519150747-d4146468136c
 	code.cloudfoundry.org/hydrator v0.0.0-20240516150506-e067371602af
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
@@ -27,7 +27,7 @@ require (
 	github.com/containers/image/v5 v5.30.1 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.1.10 // indirect
-	github.com/containers/storage v1.53.0 // indirect
+	github.com/containers/storage v1.54.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect

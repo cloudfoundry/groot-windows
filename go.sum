@@ -3,8 +3,8 @@ code.cloudfoundry.org/archiver v0.0.0-20240510172921-e1824a4905ba h1:LFgbCyCqudo
 code.cloudfoundry.org/archiver v0.0.0-20240510172921-e1824a4905ba/go.mod h1:4kkNXRji+96Syqg2gFf9zaLHVqI5sdh8xtCQh8zX2mw=
 code.cloudfoundry.org/filelock v0.0.0-20240515185159-918e226e852d h1:mpa6jN4LdNzpn/CX9f5LKemM1XIvpZDTKdzpWOUtvoA=
 code.cloudfoundry.org/filelock v0.0.0-20240515185159-918e226e852d/go.mod h1:VcRcqFZuwnkDWdYQHUCq7Jm86Y0vFyFqr52UQusVduU=
-code.cloudfoundry.org/groot v0.0.0-20240516150502-fbc5f2e19fa2 h1:jFB/nwPVVjZTbohAjMjoRfAFoJwjatNbDtJaVQnqVCQ=
-code.cloudfoundry.org/groot v0.0.0-20240516150502-fbc5f2e19fa2/go.mod h1:RmGYsrSwJbmIHj4KDjLjePhxBE0yzAp8WhYPQD121XQ=
+code.cloudfoundry.org/groot v0.0.0-20240519150747-d4146468136c h1:qFq82EXryxiehD+t1MPXJbhfVNAvezqHe4u8VHkUsNc=
+code.cloudfoundry.org/groot v0.0.0-20240519150747-d4146468136c/go.mod h1:CyuOHnPse62J5demVpTx7ricRZApkZ+3axYZp7ZiBVw=
 code.cloudfoundry.org/hydrator v0.0.0-20240516150506-e067371602af h1:DL9sD4VH2/6ueqw3YH50lN7AsU7Ib/jgTtmbMeCyjto=
 code.cloudfoundry.org/hydrator v0.0.0-20240516150506-e067371602af/go.mod h1:/iG/1NpRQextovkZwabKEvCyWPLPr1ljopmKSb6SONI=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
@@ -43,8 +43,8 @@ github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 h1:Qzk5C6cYgle
 github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01/go.mod h1:9rfv8iPl1ZP7aqh9YA68wnZv2NUDbXdcdPHVz0pFbPY=
 github.com/containers/ocicrypt v1.1.10 h1:r7UR6o8+lyhkEywetubUUgcKFjOWOaWz8cEBrCPX0ic=
 github.com/containers/ocicrypt v1.1.10/go.mod h1:YfzSSr06PTHQwSTUKqDSjish9BeW1E4HUmreluQcMd8=
-github.com/containers/storage v1.53.0 h1:VSES3C/u1pxjTJIXvLrSmyP7OBtDky04oGu07UvdTEA=
-github.com/containers/storage v1.53.0/go.mod h1:pujcoOSc+upx15Jirdkebhtd8uJiLwbSd/mYT6zDJK8=
+github.com/containers/storage v1.54.0 h1:xwYAlf6n9OnIlURQLLg3FYHbO74fQ/2W2N6EtQEUM4I=
+github.com/containers/storage v1.54.0/go.mod h1:PlMOoinRrBSnhYODLxt4EXl0nmJt+X0kjG0Xdt9fMTw=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4 h1:wfIWP927BUkWJb2NmU/kNDYIBTh/ziUX91+lVfRxZq4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

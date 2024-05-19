@@ -1,8 +1,8 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240515185159-918e226e852d
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240516150502-fbc5f2e19fa2
-## explicit; go 1.19
+# code.cloudfoundry.org/groot v0.0.0-20240519150747-d4146468136c
+## explicit; go 1.21
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher
@@ -104,10 +104,11 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.1.10
 ## explicit; go 1.20
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.53.0
-## explicit; go 1.20
+# github.com/containers/storage v1.54.0
+## explicit; go 1.21
 github.com/containers/storage/pkg/chunked/compressor
 github.com/containers/storage/pkg/chunked/internal
+github.com/containers/storage/pkg/fileutils
 github.com/containers/storage/pkg/homedir
 github.com/containers/storage/pkg/idtools
 github.com/containers/storage/pkg/ioutils
