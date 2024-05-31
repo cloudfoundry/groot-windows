@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240528151814-fec2f63a5995
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240529152013-ec66dbd47915
+# code.cloudfoundry.org/groot v0.0.0-20240531152307-5a738ea374fd
 ## explicit; go 1.21
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -247,7 +247,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20240529005216-23cca8864a10
+# golang.org/x/exp v0.0.0-20240531132922-fd00a4e0eefc
 ## explicit; go 1.20
 golang.org/x/exp/maps
 # golang.org/x/net v0.25.0
