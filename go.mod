@@ -7,9 +7,9 @@ toolchain go1.21.8
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240528151814-fec2f63a5995
-	code.cloudfoundry.org/groot v0.0.0-20240531152307-5a738ea374fd
-	code.cloudfoundry.org/hydrator v0.0.0-20240529152018-6ecd674fee80
+	code.cloudfoundry.org/filelock v0.0.0-20240604152720-28f9cd5891c4
+	code.cloudfoundry.org/groot v0.0.0-20240604152723-027c5d344fe8
+	code.cloudfoundry.org/hydrator v0.0.0-20240604152723-9a8e86f9cd91
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.3
@@ -18,7 +18,7 @@ require (
 	github.com/opencontainers/image-spec v1.1.0
 	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/urfave/cli v1.22.15
-	golang.org/x/sys v0.20.0
+	golang.org/x/sys v0.21.0
 )
 
 require (
@@ -52,9 +52,9 @@ require (
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/exp v0.0.0-20240531132922-fd00a4e0eefc // indirect
-	golang.org/x/net v0.25.0 // indirect
-	golang.org/x/text v0.15.0 // indirect
-	golang.org/x/tools v0.21.0 // indirect
+	golang.org/x/net v0.26.0 // indirect
+	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/tools v0.22.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
