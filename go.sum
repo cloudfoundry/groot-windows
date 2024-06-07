@@ -5,8 +5,8 @@ code.cloudfoundry.org/filelock v0.0.0-20240605152813-891eacc2974f h1:9zSHZdWWYBW
 code.cloudfoundry.org/filelock v0.0.0-20240605152813-891eacc2974f/go.mod h1:3wmlLsTQP9AvoHpxJ/ZDy00t2Y3FwoMSmnrZrSI0LEI=
 code.cloudfoundry.org/groot v0.0.0-20240605194106-921168f4a71b h1:EZo0ZsGkYG7k0D9amYq1vxYYSmgiy4p/BJz1nbQu6+8=
 code.cloudfoundry.org/groot v0.0.0-20240605194106-921168f4a71b/go.mod h1:puvggEewmwPXtDW4mWIsmvsB11cGWhURGeh8Kigc8js=
-code.cloudfoundry.org/hydrator v0.0.0-20240606152906-03a528dfcbb4 h1:AM4za0gcOKFLv2EGLpaip6QobZs5LNNgZmqoHNKfZm0=
-code.cloudfoundry.org/hydrator v0.0.0-20240606152906-03a528dfcbb4/go.mod h1:7Uua2MfIJLBIN+O1kHo/T7wK3/nhc8Yn1FLz/zjYPEM=
+code.cloudfoundry.org/hydrator v0.0.0-20240607152959-d63f6a219b49 h1:c0cZjjnKQIM2Nc4y5slbzGtiMugKZ08Me5ubYzsR9/A=
+code.cloudfoundry.org/hydrator v0.0.0-20240607152959-d63f6a219b49/go.mod h1:nEwLh8CNJN6Yzu49HuOhtmkoxMUSYGVP5f5zyYQWlOk=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
 code.cloudfoundry.org/lager/v3 v3.0.3/go.mod h1:Zn5q1SrIuuHjEUE7xerMKt3ztunrJQCZETAo7rV0CH8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
