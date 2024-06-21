@@ -3,8 +3,8 @@ code.cloudfoundry.org/archiver v0.0.0-20240618173604-ae53fb2b9670 h1:cVRJv4fvdUK
 code.cloudfoundry.org/archiver v0.0.0-20240618173604-ae53fb2b9670/go.mod h1:daMtBdcp+xhGpZdR4VrqcUHPBZtlaeXxbeb/9vITF10=
 code.cloudfoundry.org/filelock v0.0.0-20240618153619-7ab7dc153b43 h1:1ykvn17FPpxsMWjktl50NUmFc0H6KRUDBn5Uco809H0=
 code.cloudfoundry.org/filelock v0.0.0-20240618153619-7ab7dc153b43/go.mod h1:IS9/LAinI6eQjPC2ZHQ+qhAIigXXrYQ8P3YLZXTGdvw=
-code.cloudfoundry.org/groot v0.0.0-20240618153616-c5370cdac83d h1:XPkMFKtsoMJY4J9sRMw4gFa+nNs6Ev5oipoOXCVk0UI=
-code.cloudfoundry.org/groot v0.0.0-20240618153616-c5370cdac83d/go.mod h1:nAwSxnRZ9Ixbl0HNL2wqzmFZtZV8qNOTc43/wQZYTp4=
+code.cloudfoundry.org/groot v0.0.0-20240620195718-706e2a4aabc6 h1:+8T0IA0KoZ6zeohCav4brklLs1K0hSMsEuFKRs2VJM4=
+code.cloudfoundry.org/groot v0.0.0-20240620195718-706e2a4aabc6/go.mod h1:YyKMIN7H/Z4mNs/v6hiFhjFCJeBCxAiMp47CkmGXVJc=
 code.cloudfoundry.org/hydrator v0.0.0-20240619153620-03625ccdc8e6 h1:slLrANdiLrrqAEQY50H3EP36EKmPqFy0acz/y3ANzkA=
 code.cloudfoundry.org/hydrator v0.0.0-20240619153620-03625ccdc8e6/go.mod h1:ArdTeaUqliWv1PBKQE7j/pkc2HsPxsrFJASBTxaLg5s=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
