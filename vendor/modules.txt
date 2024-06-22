@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240618153619-7ab7dc153b43
+# code.cloudfoundry.org/filelock v0.0.0-20240622153826-711d9a2fceb6
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240620195718-706e2a4aabc6
+# code.cloudfoundry.org/groot v0.0.0-20240622153843-d441847df3f2
 ## explicit; go 1.21
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240619153620-03625ccdc8e6
+# code.cloudfoundry.org/hydrator v0.0.0-20240622153844-677ad9f45f12
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -163,7 +163,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20240618054019-d3b898a103f8
+# github.com/google/pprof v0.0.0-20240622144329-c177fd99eaa9
 ## explicit; go 1.19
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.1
