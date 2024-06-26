@@ -1,12 +1,12 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-code.cloudfoundry.org/archiver v0.0.0-20240622173936-7869beba5df1 h1:/NstJ6GsSJtzLFT3KJGGhePqsEF/kSLjDB1BdXo/bcE=
-code.cloudfoundry.org/archiver v0.0.0-20240622173936-7869beba5df1/go.mod h1:yao+fFJtwMYnpI48gGR8ZWl4w4GGJuPYJvXve23hkk8=
+code.cloudfoundry.org/archiver v0.0.0-20240625174243-6d58e629a167 h1:FCVMpW4dWtdFR2NppzhJvGZ+8/4MhJIwC0JGMurr3aM=
+code.cloudfoundry.org/archiver v0.0.0-20240625174243-6d58e629a167/go.mod h1:jdxKPSx2ACTITb68C9kQBThV6ExCeVpp26ZFwCoTURE=
 code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb h1:nNwc6sQl6AmPnHjdt/te/R1sFlu1OtV5kAbGTaC9Wdo=
 code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb/go.mod h1:Qd9BotvI6USegw/E15JK8xsnI0Jh+7dS0wAnW6gsh+M=
 code.cloudfoundry.org/groot v0.0.0-20240625154115-3e56fedd076f h1:359/lYJyPX7piK9aMLBGVIWm4vLSSWqV7tVIh5J5Py0=
 code.cloudfoundry.org/groot v0.0.0-20240625154115-3e56fedd076f/go.mod h1:fRJZanv+hskFB+aVj9L3XPdp/hb3PPKpKselUC6vIoA=
-code.cloudfoundry.org/hydrator v0.0.0-20240625154110-ee34c92d8220 h1:QuMrDfPdX6QqZC/UHjZwr6NB82ZigxLaIU4p+crOblE=
-code.cloudfoundry.org/hydrator v0.0.0-20240625154110-ee34c92d8220/go.mod h1:jTKWa7/FBe+YM2nbgKj2JTky3tORtkHPELaj0c4hjJU=
+code.cloudfoundry.org/hydrator v0.0.0-20240626154140-0ba36fd9a698 h1:wvlfXgoKS0glfbYwg7xvrjUUbHxJcD8hIF7/radCF7o=
+code.cloudfoundry.org/hydrator v0.0.0-20240626154140-0ba36fd9a698/go.mod h1:Ckx/CiPZ5KK1fKz4AUNXJ21rjnANMjdGubYBP2LWv+E=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
 code.cloudfoundry.org/lager/v3 v3.0.3/go.mod h1:Zn5q1SrIuuHjEUE7xerMKt3ztunrJQCZETAo7rV0CH8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
