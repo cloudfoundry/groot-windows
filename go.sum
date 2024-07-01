@@ -3,10 +3,10 @@ code.cloudfoundry.org/archiver v0.0.0-20240625174243-6d58e629a167 h1:FCVMpW4dWtd
 code.cloudfoundry.org/archiver v0.0.0-20240625174243-6d58e629a167/go.mod h1:jdxKPSx2ACTITb68C9kQBThV6ExCeVpp26ZFwCoTURE=
 code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb h1:nNwc6sQl6AmPnHjdt/te/R1sFlu1OtV5kAbGTaC9Wdo=
 code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb/go.mod h1:Qd9BotvI6USegw/E15JK8xsnI0Jh+7dS0wAnW6gsh+M=
-code.cloudfoundry.org/groot v0.0.0-20240627154218-66d0fee3926b h1:3UvTmY5fo9eHKKj66L/iP7GX4QGuxx6bk1YRTWgunIo=
-code.cloudfoundry.org/groot v0.0.0-20240627154218-66d0fee3926b/go.mod h1:Tsr11pxUGb6IOlBPLVM6sUhBL+USByWKEkNNQSEFnD4=
-code.cloudfoundry.org/hydrator v0.0.0-20240626154140-0ba36fd9a698 h1:wvlfXgoKS0glfbYwg7xvrjUUbHxJcD8hIF7/radCF7o=
-code.cloudfoundry.org/hydrator v0.0.0-20240626154140-0ba36fd9a698/go.mod h1:Ckx/CiPZ5KK1fKz4AUNXJ21rjnANMjdGubYBP2LWv+E=
+code.cloudfoundry.org/groot v0.0.0-20240701154557-98c8902e58bd h1:0pfvCj0WQHz8/5urxkE/W+Ut+qTZGX2nk6ehMeyHm7A=
+code.cloudfoundry.org/groot v0.0.0-20240701154557-98c8902e58bd/go.mod h1:jg+w+spu8yz+KPx8yYxTIlVAz+ofu+j+7cvIxmZwyrE=
+code.cloudfoundry.org/hydrator v0.0.0-20240701154544-e5d1df91ef43 h1:Ddk109zl/Y42XbT1iTq6EqjA114LbRR3tkUf9gW5kHQ=
+code.cloudfoundry.org/hydrator v0.0.0-20240701154544-e5d1df91ef43/go.mod h1:kjKkdhSsp1BkFVThlbxc2roRJGoSGPXeip45k035dr0=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
 code.cloudfoundry.org/lager/v3 v3.0.3/go.mod h1:Zn5q1SrIuuHjEUE7xerMKt3ztunrJQCZETAo7rV0CH8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
@@ -42,8 +42,8 @@ github.com/containers/image/v5 v5.31.1 h1:3x9soI6Biml/GiDLpkSmKrkRSwVGctxu/vONpo
 github.com/containers/image/v5 v5.31.1/go.mod h1:5QfOqSackPkSbF7Qxc1DnVNnPJKQ+KWLkfEfDpK590Q=
 github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 h1:Qzk5C6cYglewc+UyGf6lc8Mj2UaPTHy/iF2De0/77CA=
 github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01/go.mod h1:9rfv8iPl1ZP7aqh9YA68wnZv2NUDbXdcdPHVz0pFbPY=
-github.com/containers/ocicrypt v1.1.10 h1:r7UR6o8+lyhkEywetubUUgcKFjOWOaWz8cEBrCPX0ic=
-github.com/containers/ocicrypt v1.1.10/go.mod h1:YfzSSr06PTHQwSTUKqDSjish9BeW1E4HUmreluQcMd8=
+github.com/containers/ocicrypt v1.2.0 h1:X14EgRK3xNFvJEfI5O4Qn4T3E25ANudSOZz/sirVuPM=
+github.com/containers/ocicrypt v1.2.0/go.mod h1:ZNviigQajtdlxIZGibvblVuIFBKIuUI2M0QM12SD31U=
 github.com/containers/storage v1.54.0 h1:xwYAlf6n9OnIlURQLLg3FYHbO74fQ/2W2N6EtQEUM4I=
 github.com/containers/storage v1.54.0/go.mod h1:PlMOoinRrBSnhYODLxt4EXl0nmJt+X0kjG0Xdt9fMTw=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
@@ -61,8 +61,8 @@ github.com/docker/cli v26.1.3+incompatible h1:bUpXT/N0kDE3VUHI2r5VMsYQgi38kYuoC0
 github.com/docker/cli v26.1.3+incompatible/go.mod h1:JLrzqnKDaYBop7H2jaqPtU4hHvMKP+vjCwu2uszcLI8=
 github.com/docker/distribution v2.8.3+incompatible h1:AtKxIZ36LoNK51+Z6RpzLpddBirtxJnzDrHLEKxTAYk=
 github.com/docker/distribution v2.8.3+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
-github.com/docker/docker v27.0.2+incompatible h1:mNhCtgXNV1fIRns102grG7rdzIsGGCq1OlOD0KunZos=
-github.com/docker/docker v27.0.2+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/docker/docker v27.0.3+incompatible h1:aBGI9TeQ4MPlhquTQKq9XbK79rKFVwXNUAYz9aXyEBE=
+github.com/docker/docker v27.0.3+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/docker-credential-helpers v0.8.2 h1:bX3YxiGzFP5sOXWc3bTPEXdEaZSeVMrFgOr3T+zrFAo=
 github.com/docker/docker-credential-helpers v0.8.2/go.mod h1:P3ci7E3lwkZg6XiHdRKft1KckHiO9a2rNtyFbZ/ry9M=
 github.com/docker/go-connections v0.5.0 h1:USnMq7hx7gwdVZq1L49hLXaFtUdTADjXGp+uj1Br63c=

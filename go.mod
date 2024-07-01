@@ -8,8 +8,8 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb
-	code.cloudfoundry.org/groot v0.0.0-20240627154218-66d0fee3926b
-	code.cloudfoundry.org/hydrator v0.0.0-20240626154140-0ba36fd9a698
+	code.cloudfoundry.org/groot v0.0.0-20240701154557-98c8902e58bd
+	code.cloudfoundry.org/hydrator v0.0.0-20240701154544-e5d1df91ef43
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.4
@@ -26,12 +26,12 @@ require (
 	github.com/containerd/cgroups v1.1.0 // indirect
 	github.com/containers/image/v5 v5.31.1 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
-	github.com/containers/ocicrypt v1.1.10 // indirect
+	github.com/containers/ocicrypt v1.2.0 // indirect
 	github.com/containers/storage v1.54.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.0.2+incompatible // indirect
+	github.com/docker/docker v27.0.3+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
