@@ -7,9 +7,9 @@ toolchain go1.21.8
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb
-	code.cloudfoundry.org/groot v0.0.0-20240701154557-98c8902e58bd
-	code.cloudfoundry.org/hydrator v0.0.0-20240703154702-d6890a65f157
+	code.cloudfoundry.org/filelock v0.0.0-20240704154913-915c936c7db2
+	code.cloudfoundry.org/groot v0.0.0-20240704154919-2c1f4c341919
+	code.cloudfoundry.org/hydrator v0.0.0-20240704154921-f4b8fc041892
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.4
@@ -18,7 +18,7 @@ require (
 	github.com/opencontainers/image-spec v1.1.0
 	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/urfave/cli v1.22.15
-	golang.org/x/sys v0.21.0
+	golang.org/x/sys v0.22.0
 )
 
 require (

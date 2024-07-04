@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240625154104-9dfeddeb8fbb
+# code.cloudfoundry.org/filelock v0.0.0-20240704154913-915c936c7db2
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240701154557-98c8902e58bd
+# code.cloudfoundry.org/groot v0.0.0-20240704154919-2c1f4c341919
 ## explicit; go 1.21
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240703154702-d6890a65f157
+# code.cloudfoundry.org/hydrator v0.0.0-20240704154921-f4b8fc041892
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -256,7 +256,7 @@ golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
-# golang.org/x/sys v0.21.0
+# golang.org/x/sys v0.22.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
 golang.org/x/sys/windows
