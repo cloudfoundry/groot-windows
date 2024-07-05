@@ -7,9 +7,9 @@ toolchain go1.21.8
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240704154913-915c936c7db2
-	code.cloudfoundry.org/groot v0.0.0-20240704154919-2c1f4c341919
-	code.cloudfoundry.org/hydrator v0.0.0-20240704154921-f4b8fc041892
+	code.cloudfoundry.org/filelock v0.0.0-20240705155015-e5997ec78fec
+	code.cloudfoundry.org/groot v0.0.0-20240705155024-88c2d6fa74f5
+	code.cloudfoundry.org/hydrator v0.0.0-20240705155028-7058a8c50b08
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.4
@@ -52,7 +52,7 @@ require (
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8 // indirect
-	golang.org/x/net v0.26.0 // indirect
+	golang.org/x/net v0.27.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
