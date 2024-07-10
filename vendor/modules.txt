@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240709155342-bb32b9f450fe
+# code.cloudfoundry.org/hydrator v0.0.0-20240710155621-d0b7afad7a59
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
