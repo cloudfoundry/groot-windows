@@ -1,12 +1,12 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-code.cloudfoundry.org/archiver v0.0.0-20240721180611-c2584b8e38c2 h1:1AhFWnvffnz8ShggxLv5cGv+l9t7WHW5aagZRPmc/EA=
-code.cloudfoundry.org/archiver v0.0.0-20240721180611-c2584b8e38c2/go.mod h1:k8ztWDeJc0kIR4A8dwpN38BsVOCwiBkTlbRmY9NK17w=
+code.cloudfoundry.org/archiver v0.0.0-20240722180632-5229c1a5255a h1:z9IoXstcAdN+v37cVsl7bbQuejDMaYqFTdNW/ju1E4k=
+code.cloudfoundry.org/archiver v0.0.0-20240722180632-5229c1a5255a/go.mod h1:6yjzSvCfwuz2uXUIcnCfT9HTyVGAuzen+kfFC+zsb0M=
 code.cloudfoundry.org/filelock v0.0.0-20240722160912-61547654594f h1:fnomYuIhvlScQf4vMeTb+B5e77JPPmUYj5SFRORmXaw=
 code.cloudfoundry.org/filelock v0.0.0-20240722160912-61547654594f/go.mod h1:W123558M7Q5gHsHYL25J/g38PTwqlqAVnQhNJ+Grrm0=
 code.cloudfoundry.org/groot v0.0.0-20240722160938-e24824bbc8b5 h1:We49wpF2j8Nu0QNJ86veBC7itgBDlNKr3mfGYYmkl4c=
 code.cloudfoundry.org/groot v0.0.0-20240722160938-e24824bbc8b5/go.mod h1:Ab9Ueouc5o+MoEF+OhozDE7p741rhUF4v0sbBb3moVU=
-code.cloudfoundry.org/hydrator v0.0.0-20240722160925-9151dce84c0b h1:Ali6Rf2ofUeZJIU03oX++aYwwyVU7/wEh8XsJKL7ICM=
-code.cloudfoundry.org/hydrator v0.0.0-20240722160925-9151dce84c0b/go.mod h1:1wJG6tKrTMG3XuFADE5skV0q+v38zsBAkGfQ8dnps/k=
+code.cloudfoundry.org/hydrator v0.0.0-20240723161051-cae74fb0020a h1:5E9PHQdCipqs5DFYtJqo6FmhI41AMZ7Yy9OHVux7RpI=
+code.cloudfoundry.org/hydrator v0.0.0-20240723161051-cae74fb0020a/go.mod h1:lSyCTl0R4IaEnf35uHf6QsL5rZDPDOLQLcRNSfGtQyE=
 code.cloudfoundry.org/lager/v3 v3.0.3 h1:/UTmadZfIaKuT/whEinSxK1mzRfNu1uPfvjFfGqiwzM=
 code.cloudfoundry.org/lager/v3 v3.0.3/go.mod h1:Zn5q1SrIuuHjEUE7xerMKt3ztunrJQCZETAo7rV0CH8=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
@@ -49,8 +49,8 @@ github.com/containers/storage v1.54.0/go.mod h1:PlMOoinRrBSnhYODLxt4EXl0nmJt+X0k
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4 h1:wfIWP927BUkWJb2NmU/kNDYIBTh/ziUX91+lVfRxZq4=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
-github.com/cyphar/filepath-securejoin v0.3.0 h1:tXpmbiaeBrS/K2US8nhgwdKYnfAOnVfkcLPKFgFHeA0=
-github.com/cyphar/filepath-securejoin v0.3.0/go.mod h1:F7i41x/9cBF7lzCrVsYs9fuzwRZm4NQsGTBdpp6mETc=
+github.com/cyphar/filepath-securejoin v0.3.1 h1:1V7cHiaW+C+39wEfpH6XlLBQo3j/PciWFrgfCLS8XrE=
+github.com/cyphar/filepath-securejoin v0.3.1/go.mod h1:F7i41x/9cBF7lzCrVsYs9fuzwRZm4NQsGTBdpp6mETc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc h1:U9qPSI2PIWSS1VwoXQT9A3Wy9MM3WgvqSxFWenqJduM=
