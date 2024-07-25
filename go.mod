@@ -8,13 +8,13 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240722160912-61547654594f
-	code.cloudfoundry.org/groot v0.0.0-20240724161317-5a84862056ab
+	code.cloudfoundry.org/groot v0.0.0-20240725161515-983c8628584b
 	code.cloudfoundry.org/hydrator v0.0.0-20240724161305-d17913233b82
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.5
 	github.com/onsi/ginkgo/v2 v2.19.0
-	github.com/onsi/gomega v1.33.1
+	github.com/onsi/gomega v1.34.0
 	github.com/opencontainers/image-spec v1.1.0
 	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/urfave/cli v1.22.15
@@ -43,7 +43,7 @@ require (
 	github.com/google/pprof v0.0.0-20240722153945-304e4f0156b8 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/moby/sys/mountinfo v0.7.2 // indirect
-	github.com/moby/sys/user v0.1.0 // indirect
+	github.com/moby/sys/user v0.2.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/openzipkin/zipkin-go v0.4.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
