@@ -1,19 +1,19 @@
 module code.cloudfoundry.org/groot-windows
 
-go 1.21
+go 1.21.0
 
-toolchain go1.21.8
+toolchain go1.22.3
 
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240722160912-61547654594f
-	code.cloudfoundry.org/groot v0.0.0-20240725161515-983c8628584b
-	code.cloudfoundry.org/hydrator v0.0.0-20240724161305-d17913233b82
+	code.cloudfoundry.org/filelock v0.0.0-20240726161610-5a0562e492cc
+	code.cloudfoundry.org/groot v0.0.0-20240726161638-010018af2e72
+	code.cloudfoundry.org/hydrator v0.0.0-20240726161629-e1a6503b782a
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.5
-	github.com/onsi/ginkgo/v2 v2.19.0
+	github.com/onsi/ginkgo/v2 v2.19.1
 	github.com/onsi/gomega v1.34.0
 	github.com/opencontainers/image-spec v1.1.0
 	github.com/opencontainers/runtime-spec v1.2.0
@@ -24,10 +24,10 @@ require (
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
-	github.com/containers/image/v5 v5.31.1 // indirect
+	github.com/containers/image/v5 v5.32.0 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.2.0 // indirect
-	github.com/containers/storage v1.54.0 // indirect
+	github.com/containers/storage v1.55.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect

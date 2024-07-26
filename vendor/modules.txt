@@ -1,15 +1,15 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240722160912-61547654594f
+# code.cloudfoundry.org/filelock v0.0.0-20240726161610-5a0562e492cc
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240725161515-983c8628584b
-## explicit; go 1.21
+# code.cloudfoundry.org/groot v0.0.0-20240726161638-010018af2e72
+## explicit; go 1.21.0
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240724161305-d17913233b82
+# code.cloudfoundry.org/hydrator v0.0.0-20240726161629-e1a6503b782a
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -57,8 +57,8 @@ github.com/Microsoft/hcsshim/osversion
 # github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
-# github.com/containers/image/v5 v5.31.1
-## explicit; go 1.21
+# github.com/containers/image/v5 v5.32.0
+## explicit; go 1.21.0
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
 github.com/containers/image/v5/docker/policyconfiguration
@@ -104,7 +104,7 @@ github.com/containers/libtrust
 # github.com/containers/ocicrypt v1.2.0
 ## explicit; go 1.21
 github.com/containers/ocicrypt/spec
-# github.com/containers/storage v1.54.0
+# github.com/containers/storage v1.55.0
 ## explicit; go 1.21
 github.com/containers/storage/pkg/fileutils
 github.com/containers/storage/pkg/homedir
@@ -175,7 +175,7 @@ github.com/moby/sys/mountinfo
 # github.com/moby/sys/user v0.2.0
 ## explicit; go 1.21
 github.com/moby/sys/user
-# github.com/onsi/ginkgo/v2 v2.19.0
+# github.com/onsi/ginkgo/v2 v2.19.1
 ## explicit; go 1.20
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
