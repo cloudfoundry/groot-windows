@@ -7,9 +7,9 @@ toolchain go1.22.3
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.0.0-20240726161610-5a0562e492cc
-	code.cloudfoundry.org/groot v0.0.0-20240726161638-010018af2e72
-	code.cloudfoundry.org/hydrator v0.0.0-20240726161629-e1a6503b782a
+	code.cloudfoundry.org/filelock v0.0.0-20240727161713-ab9a4dc8918d
+	code.cloudfoundry.org/groot v0.0.0-20240727161728-b3d5300c3893
+	code.cloudfoundry.org/hydrator v0.0.0-20240727161718-8629f6f18943
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.5
@@ -40,7 +40,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20240722153945-304e4f0156b8 // indirect
+	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/moby/sys/mountinfo v0.7.2 // indirect
 	github.com/moby/sys/user v0.2.0 // indirect
