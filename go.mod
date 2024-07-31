@@ -9,7 +9,7 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 require (
 	code.cloudfoundry.org/filelock v0.0.0-20240730161935-76025cba563c
 	code.cloudfoundry.org/groot v0.0.0-20240729203624-9db1636d3670
-	code.cloudfoundry.org/hydrator v0.0.0-20240730161939-9284a826595f
+	code.cloudfoundry.org/hydrator v0.0.0-20240731162039-34320619173f
 	code.cloudfoundry.org/lager/v3 v3.0.3
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.5
