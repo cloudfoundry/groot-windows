@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.0.0-20240809162905-2d85401cacaa
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240808204558-f7b495029647
+# code.cloudfoundry.org/groot v0.0.0-20240809204607-a844f031d490
 ## explicit; go 1.21.0
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -57,7 +57,7 @@ github.com/Microsoft/hcsshim/osversion
 # github.com/containerd/cgroups v1.1.0
 ## explicit; go 1.17
 github.com/containerd/cgroups/stats/v1
-# github.com/containers/image/v5 v5.32.0
+# github.com/containers/image/v5 v5.32.1
 ## explicit; go 1.21.0
 github.com/containers/image/v5/directory/explicitfilepath
 github.com/containers/image/v5/docker
