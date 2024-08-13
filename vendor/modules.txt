@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.0.0-20240809162905-2d85401cacaa
+# code.cloudfoundry.org/filelock v0.1.0
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.0.0-20240809204607-a844f031d490
+# code.cloudfoundry.org/groot v0.1.0
 ## explicit; go 1.21.0
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,15 +9,15 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.0.0-20240812163439-98099384cfc2
+# code.cloudfoundry.org/hydrator v0.1.0
 ## explicit; go 1.21
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
 code.cloudfoundry.org/hydrator/imagefetcher
 code.cloudfoundry.org/hydrator/oci-directory
 code.cloudfoundry.org/hydrator/registry
-# code.cloudfoundry.org/lager/v3 v3.0.3
-## explicit; go 1.19
+# code.cloudfoundry.org/lager/v3 v3.1.0
+## explicit; go 1.20
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
 code.cloudfoundry.org/lager/v3/lagerctx
@@ -128,7 +128,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v27.1.1+incompatible
+# github.com/docker/docker v27.1.2+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.2
