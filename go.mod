@@ -9,10 +9,10 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 require (
 	code.cloudfoundry.org/filelock v0.1.0
 	code.cloudfoundry.org/groot v0.1.0
-	code.cloudfoundry.org/hydrator v0.2.0
+	code.cloudfoundry.org/hydrator v0.3.0
 	code.cloudfoundry.org/lager/v3 v3.1.0
 	github.com/Microsoft/go-winio v0.6.2
-	github.com/Microsoft/hcsshim v0.12.5
+	github.com/Microsoft/hcsshim v0.12.6
 	github.com/onsi/ginkgo/v2 v2.20.0
 	github.com/onsi/gomega v1.34.1
 	github.com/opencontainers/image-spec v1.1.0
@@ -24,7 +24,7 @@ require (
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
-	github.com/containers/image/v5 v5.32.1 // indirect
+	github.com/containers/image/v5 v5.32.2 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.2.0 // indirect
 	github.com/containers/storage v1.55.0 // indirect
