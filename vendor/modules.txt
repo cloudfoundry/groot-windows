@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.1.0
 ## explicit; go 1.20
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.1.0
+# code.cloudfoundry.org/groot v0.2.0
 ## explicit; go 1.21.0
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -175,7 +175,7 @@ github.com/moby/sys/mountinfo
 # github.com/moby/sys/user v0.3.0
 ## explicit; go 1.17
 github.com/moby/sys/user
-# github.com/onsi/ginkgo/v2 v2.20.0
+# github.com/onsi/ginkgo/v2 v2.20.1
 ## explicit; go 1.20
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
