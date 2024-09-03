@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.5.0
+# code.cloudfoundry.org/filelock v0.6.0
 ## explicit; go 1.22
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.9.0
+# code.cloudfoundry.org/groot v0.10.0
 ## explicit; go 1.22
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.9.0
+# code.cloudfoundry.org/hydrator v0.10.0
 ## explicit; go 1.22
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -163,7 +163,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20240829160300-da1f7e9f2b25
+# github.com/google/pprof v0.0.0-20240903155634-a8630aee4ab9
 ## explicit; go 1.22
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.1
