@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.7.0
 ## explicit; go 1.22
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.11.0
+# code.cloudfoundry.org/groot v0.12.0
 ## explicit; go 1.22
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.11.0
+# code.cloudfoundry.org/hydrator v0.12.0
 ## explicit; go 1.22
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -247,10 +247,10 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20240823005443-9b4947da3948
+# golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e
 ## explicit; go 1.20
 golang.org/x/exp/maps
-# golang.org/x/net v0.28.0
+# golang.org/x/net v0.29.0
 ## explicit; go 1.18
 golang.org/x/net/context
 golang.org/x/net/html
