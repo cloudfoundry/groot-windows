@@ -1,16 +1,16 @@
 module code.cloudfoundry.org/groot-windows
 
-go 1.22
+go 1.22.0
 
 toolchain go1.22.3
 
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.8.0
-	code.cloudfoundry.org/groot v0.13.0
-	code.cloudfoundry.org/hydrator v0.13.0
-	code.cloudfoundry.org/lager/v3 v3.3.0
+	code.cloudfoundry.org/filelock v0.9.0
+	code.cloudfoundry.org/groot v0.15.0
+	code.cloudfoundry.org/hydrator v0.14.0
+	code.cloudfoundry.org/lager/v3 v3.5.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.6
 	github.com/onsi/ginkgo/v2 v2.20.2
@@ -31,7 +31,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.2.0+incompatible // indirect
+	github.com/docker/docker v27.2.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -51,10 +51,10 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/syndtr/gocapability v0.0.0-20200815063812-42c35b437635 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e // indirect
+	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
-	golang.org/x/tools v0.24.0 // indirect
+	golang.org/x/tools v0.25.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
