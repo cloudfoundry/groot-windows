@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.10.0
+# code.cloudfoundry.org/filelock v0.11.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.17.0
+# code.cloudfoundry.org/groot v0.19.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,7 +9,7 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.16.0
+# code.cloudfoundry.org/hydrator v0.20.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
@@ -117,7 +117,7 @@ github.com/containers/storage/pkg/reexec
 github.com/containers/storage/pkg/regexp
 github.com/containers/storage/pkg/system
 github.com/containers/storage/pkg/unshare
-# github.com/cpuguy83/go-md2man/v2 v2.0.4
+# github.com/cpuguy83/go-md2man/v2 v2.0.5
 ## explicit; go 1.11
 github.com/cpuguy83/go-md2man/v2/md2man
 # github.com/distribution/reference v0.6.0
