@@ -29,6 +29,7 @@ func (d *BlobReader) Read(p []byte) (int, error) {
 }
 
 func (d *BlobReader) Close() error {
+	// #nosec G104 - ignore the Close() error here because we prefer to know if we could delete the file, and have no other logging options in the code
 	d.reader.Close()
 	return os.Remove(d.filePath)
 }

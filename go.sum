@@ -3,8 +3,8 @@ code.cloudfoundry.org/archiver v0.10.0 h1:vbfZpXQNSGpWd5fuDS33jlIj0u2xl1ZZz2itC2
 code.cloudfoundry.org/archiver v0.10.0/go.mod h1:F/cYt4u3odN4j+9vNPECqXId1GUWXI6bQf3BeSs57RM=
 code.cloudfoundry.org/filelock v0.11.0 h1:6N2zFBqETBDQtd/fgBW7BC3LH1Q33Sc7CyTbCJIgg6U=
 code.cloudfoundry.org/filelock v0.11.0/go.mod h1:nebfIfeUKvVY5Hm2YjCKtIzw3VFjHmg/T5fpqQlkNBU=
-code.cloudfoundry.org/groot v0.19.0 h1:rNLF77kR2qRgCTJamggOc7nFtQ/WpK8vAgHHFnBn2gk=
-code.cloudfoundry.org/groot v0.19.0/go.mod h1:+ay8TegFSRecrm/gqx4UnxehNtyxSEfnp2dsu9GYF/c=
+code.cloudfoundry.org/groot v0.20.0 h1:IQztL5+ESEFPuYQPi7MGhq+gbQVwRWuwNXvN4Tnik2k=
+code.cloudfoundry.org/groot v0.20.0/go.mod h1:+ay8TegFSRecrm/gqx4UnxehNtyxSEfnp2dsu9GYF/c=
 code.cloudfoundry.org/hydrator v0.20.0 h1:sBu+CowVCVl7pYUe+y3ZddCmMPPbTPfFugtKb+IMNeM=
 code.cloudfoundry.org/hydrator v0.20.0/go.mod h1:gr/4W/8AJU1T1cRF3eXWMhf7y8ka4VkMcfdBYY4WUoY=
 code.cloudfoundry.org/lager/v3 v3.6.0 h1:7SRXrt8N/QzR36yU45wd+oD1dAGhkNE3CrO+9wb6OJs=
@@ -62,8 +62,8 @@ github.com/docker/cli v27.1.1+incompatible h1:goaZxOqs4QKxznZjjBWKONQci/MywhtRv2
 github.com/docker/cli v27.1.1+incompatible/go.mod h1:JLrzqnKDaYBop7H2jaqPtU4hHvMKP+vjCwu2uszcLI8=
 github.com/docker/distribution v2.8.3+incompatible h1:AtKxIZ36LoNK51+Z6RpzLpddBirtxJnzDrHLEKxTAYk=
 github.com/docker/distribution v2.8.3+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
-github.com/docker/docker v27.2.1+incompatible h1:fQdiLfW7VLscyoeYEBz7/J8soYFDZV1u6VW6gJEjNMI=
-github.com/docker/docker v27.2.1+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/docker/docker v27.3.1+incompatible h1:KttF0XoteNTicmUtBO0L2tP+J7FGRFTjaEF4k6WdhfI=
+github.com/docker/docker v27.3.1+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/docker-credential-helpers v0.8.2 h1:bX3YxiGzFP5sOXWc3bTPEXdEaZSeVMrFgOr3T+zrFAo=
 github.com/docker/docker-credential-helpers v0.8.2/go.mod h1:P3ci7E3lwkZg6XiHdRKft1KckHiO9a2rNtyFbZ/ry9M=
 github.com/docker/go-connections v0.5.0 h1:USnMq7hx7gwdVZq1L49hLXaFtUdTADjXGp+uj1Br63c=

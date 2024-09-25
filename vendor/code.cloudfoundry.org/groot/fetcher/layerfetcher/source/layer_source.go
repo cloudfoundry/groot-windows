@@ -122,10 +122,16 @@ func (s *LayerSource) Blob(logger lager.Logger, layerInfo imagepuller.LayerInfo)
 	}
 
 	defer func() {
-		blobTempFile.Close()
+		closeErr := blobTempFile.Close()
+		if closeErr != nil {
+			logger.Debug("failed-to-close-blob-tempfile", lager.Data{"file": blobTempFile.Name(), "error": err})
+		}
 
 		if err != nil {
-			os.Remove(blobTempFile.Name())
+			remErr := os.Remove(blobTempFile.Name())
+			if remErr != nil {
+				logger.Debug("failed-to-remove-blob-tempfile", lager.Data{"file": blobTempFile.Name(), "error": err})
+			}
 		}
 	}()
 
