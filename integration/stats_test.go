@@ -13,9 +13,9 @@ import (
 
 var _ = Describe("Stats", func() {
 	const (
-		//NOTE: this is for 1709 version of container image
-		baseImageSizeBytes = (203295012 + 100010759 + 983964)
-		diskLimitSizeBytes = int64(350 * 1024 * 1024)
+		//NOTE: this is for 1809 version of container image
+		baseImageSizeBytes = 357317051
+		diskLimitSizeBytes = int64(500 * 1024 * 1024)
 		fileSize           = int64(30 * 1024 * 1024)
 	)
 
