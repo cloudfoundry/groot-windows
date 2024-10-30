@@ -261,12 +261,12 @@ var _ = Describe("Create", func() {
 				It("counts the base image size gainst the limit", func() {
 					output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 					Expect(err).NotTo(HaveOccurred(), string(output))
-					Expect(string(output)).To(MatchRegexp(`Limit:\s*50.01 MB \(Hard\)`))
+					Expect(string(output)).To(MatchRegexp(`Limit:\s*50.02 MB \(Hard\)`))
 				})
 
 				It("doesn't allow files larger than remaining quota to be created", func() {
 					largeFilePath := filepath.Join(volumeMountDir, "file.txt")
-					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+6*1024)).CombinedOutput()
+					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+10*1024)).CombinedOutput()
 					Expect(err).To(HaveOccurred(), string(o))
 					Expect(largeFilePath).ToNot(BeAnExistingFile())
 				})
