@@ -266,7 +266,7 @@ var _ = Describe("Create", func() {
 
 				It("doesn't allow files larger than remaining quota to be created", func() {
 					largeFilePath := filepath.Join(volumeMountDir, "file.txt")
-					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+60*1024)).CombinedOutput()
+					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+10*1024)).CombinedOutput()
 					Expect(err).To(HaveOccurred(), string(o))
 					Expect(largeFilePath).ToNot(BeAnExistingFile())
 				})
