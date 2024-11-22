@@ -34,7 +34,14 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 	if err := d.privilegeElevator.EnableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}); err != nil {
 		return 0, err
 	}
-	defer d.privilegeElevator.DisableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege})
+	defer func() {
+		logger.Debug("disabling-process-privileges")
+		err := d.privilegeElevator.DisableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege})
+		if err != nil {
+			logger.Error("error-disabling-process-privileges", err, lager.Data{"privs": []string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}})
+		}
+		logger.Debug("Disabled-process-privileges")
+	}()
 
 	outputDir := filepath.Join(d.LayerStore(), layerID)
 
@@ -71,10 +78,21 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 	if err != nil {
 		return 0, err
 	}
-	defer layerWriter.Close()
+	defer func() {
+		logger.Debug("closing-layer-writer")
+		err := layerWriter.Close()
+		if err != nil {
+			logger.Error("error-closing-layer-writer", err)
+		}
+		logger.Debug("closed-layer-writer")
+	}()
 
 	d.tarStreamer.SetReader(layerTar)
-	defer d.tarStreamer.SetReader(bytes.NewReader(nil))
+	defer func() {
+		logger.Debug("unsetting-tarstreamer-reader")
+		d.tarStreamer.SetReader(bytes.NewReader(nil))
+		logger.Debug("set-tarstreamer-reader-to-nil")
+	}()
 
 	var (
 		hdr         *tar.Header
@@ -82,10 +100,13 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 	)
 
 	var totalSize int64
+	logger.Debug("entering-tar-for-loop")
 	for {
 		if hdr == nil {
+			logger.Debug("hdr-is-nil")
 			hdr, nextFileErr = d.tarStreamer.Next()
 		} else if base := path.Base(hdr.Name); strings.HasPrefix(base, ".wh.") {
+			logger.Debug("base-has-prefix-.wh.")
 			name := filepath.Join(path.Dir(hdr.Name), base[len(".wh."):])
 			if err := layerWriter.Remove(name); err != nil {
 				return 0, err
@@ -93,21 +114,25 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 
 			hdr, nextFileErr = d.tarStreamer.Next()
 		} else if hdr.Typeflag == tar.TypeLink {
+			logger.Debug("hdr.Type-is-link")
 			if err := layerWriter.AddLink(filepath.FromSlash(hdr.Name), filepath.FromSlash(hdr.Linkname)); err != nil {
 				return 0, err
 			}
 
 			hdr, nextFileErr = d.tarStreamer.Next()
 		} else {
+			logger.Debug("hdr-catch-all")
 			name, size, fileInfo, err := d.tarStreamer.FileInfoFromHeader(hdr)
 			if err != nil {
 				return 0, err
 			}
 
+			logger.Debug("adding-path-to-layer", lager.Data{"name": name})
 			if err := layerWriter.Add(filepath.FromSlash(name), fileInfo); err != nil {
 				return 0, err
 			}
 
+			logger.Debug("write-backup-stream-from-tar")
 			hdr, nextFileErr = d.tarStreamer.WriteBackupStreamFromTarFile(layerWriter, hdr)
 			totalSize += size
 		}
@@ -116,11 +141,14 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 			break
 		}
 	}
+	logger.Debug("out-of-tar-for-loop")
 
 	if nextFileErr != io.EOF {
 		return 0, nextFileErr
 	}
 
+	logger.Debug("writing-out-layer-file", lager.Data{"file": d.layerSizeFile(layerID), "size": strconv.FormatInt(totalSize, 10)})
 	err = os.WriteFile(d.layerSizeFile(layerID), []byte(strconv.FormatInt(totalSize, 10)), 0644)
+	logger.Debug("wrote-layer-file")
 	return totalSize, err
 }
