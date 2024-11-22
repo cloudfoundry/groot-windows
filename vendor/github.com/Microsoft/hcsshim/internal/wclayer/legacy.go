@@ -818,18 +818,18 @@ func (w *legacyLayerWriter) Write(b []byte) (int, error) {
 func (w *legacyLayerWriter) Close() error {
 	fmt.Fprintf(os.Stderr, "MEOW: calling closeLegacyLayerWriter.Close\n")
 
-	fmt.Fprintf(os.Stderr, "MEOW: reset()")
+	fmt.Fprintf(os.Stderr, "MEOW: reset()\n")
 	if err := w.reset(); err != nil {
 		return err
 	}
-	fmt.Fprintf(os.Stderr, "MEOW: RemoveRelative()")
+	fmt.Fprintf(os.Stderr, "MEOW: RemoveRelative()\n")
 	if err := safefile.RemoveRelative("tombstones.txt", w.root); err != nil && !os.IsNotExist(err) {
 		return err
 	}
 
-	fmt.Fprintf(os.Stderr, "MEOW: looping pendingDirs()")
+	fmt.Fprintf(os.Stderr, "MEOW: looping pendingDirs()\n")
 	for _, pd := range w.pendingDirs {
-		fmt.Fprintf(os.Stderr, "MEOW: MkdirRelative()")
+		fmt.Fprintf(os.Stderr, "MEOW: MkdirRelative()\n")
 		err := safefile.MkdirRelative(pd.Path, pd.Root)
 		if err != nil {
 			return err

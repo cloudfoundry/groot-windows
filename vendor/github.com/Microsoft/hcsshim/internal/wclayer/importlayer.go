@@ -22,24 +22,39 @@ import (
 // be present on the system at the paths provided in parentLayerPaths.
 func ImportLayer(ctx context.Context, path string, importFolderPath string, parentLayerPaths []string) (err error) {
 	title := "hcsshim::ImportLayer"
+	fmt.Fprintf(os.Stderr, "MEOW: StartSpan()\n")
 	ctx, span := oc.StartSpan(ctx, title)
-	defer span.End()
-	defer func() { oc.SetSpanStatus(span, err) }()
+	defer func() {
+		fmt.Fprintf(os.Stderr, "MEOW: defer span.End\n")
+		span.End()
+	}()
+	defer func() {
+		fmt.Fprintf(os.Stderr, "MEOW: defer setspanstatus\n")
+		oc.SetSpanStatus(span, err)
+	}()
+	fmt.Fprintf(os.Stderr, "MEOW: addattributes\n")
 	span.AddAttributes(
 		trace.StringAttribute("path", path),
 		trace.StringAttribute("importFolderPath", importFolderPath),
 		trace.StringAttribute("parentLayerPaths", strings.Join(parentLayerPaths, ", ")))
 
 	// Generate layer descriptors
+	fmt.Fprintf(os.Stderr, "MEOW: layerpathsToDest\n")
 	layers, err := layerPathsToDescriptors(ctx, parentLayerPaths)
 	if err != nil {
 		return err
 	}
 
+	fmt.Fprintf(os.Stderr, "MEOW: importLayer()\n")
+	fmt.Fprintf(os.Stderr, "MEOW: driverInfo: %#v\n", stdDriverInfo)
+	fmt.Fprintf(os.Stderr, "MEOW: path: %s\n", path)
+	fmt.Fprintf(os.Stderr, "MEOW: importfolderpath: %s\n", importFolderPath)
+	fmt.Fprintf(os.Stderr, "MEOW: layers: %#v\n", layers)
 	err = importLayer(&stdDriverInfo, path, importFolderPath, layers)
 	if err != nil {
 		return hcserror.New(err, title, "")
 	}
+	fmt.Fprintf(os.Stderr, "MEOW: DONE - ImportLayer()\n")
 	return nil
 }
 
@@ -76,10 +91,10 @@ func (r *legacyLayerWriterWrapper) Close() (err error) {
 		fmt.Fprintf(os.Stderr, "MEOW: defer setspanstatus\n")
 		oc.SetSpanStatus(r.s, err)
 	}()
-	defer func() {
+	defer func(path string) {
 		fmt.Fprintf(os.Stderr, "MEOW: defer removeall\n")
-		os.RemoveAll(r.root.Name())
-	}()
+		os.RemoveAll(path)
+	}(r.root.Name())
 	defer func() {
 		fmt.Fprintf(os.Stderr, "MEOW: defer closeRoots\n")
 		r.legacyLayerWriter.CloseRoots()
@@ -92,6 +107,10 @@ func (r *legacyLayerWriterWrapper) Close() (err error) {
 	}
 
 	fmt.Fprintf(os.Stderr, "MEOW: Calling ImportLayer\n")
+	fmt.Fprintf(os.Stderr, "MEOW: ctx: %#v\n", r.ctx)
+	fmt.Fprintf(os.Stderr, "MEOW: root: %s\n", r.destRoot.Name())
+	fmt.Fprintf(os.Stderr, "MEOW: path: %s\n", r.path)
+	fmt.Fprintf(os.Stderr, "MEOW: parentPaths: %#v\n", r.parentLayerPaths)
 	if err = ImportLayer(r.ctx, r.destRoot.Name(), r.path, r.parentLayerPaths); err != nil {
 		return err
 	}
