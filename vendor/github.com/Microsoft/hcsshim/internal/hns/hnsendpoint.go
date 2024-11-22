@@ -1,3 +1,5 @@
+//go:build windows
+
 package hns
 
 import (
@@ -8,6 +10,28 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// EndpointState represents the states of an HNS Endpoint lifecycle.
+type EndpointState uint16
+
+// EndpointState const
+// The lifecycle of an Endpoint goes through created, attached, AttachedSharing - endpoint is being shared with other containers,
+// detached, after being attached, degraded and finally destroyed.
+// Note: This attribute is used by calico to define stale containers and is dependent on HNS v1 api, if we move to HNS v2 api we will need
+// to update the current calico code and cordinate the change with calico. Reach out to Microsoft to facilate the change via HNS.
+const (
+	Uninitialized   EndpointState = iota
+	Created         EndpointState = 1
+	Attached        EndpointState = 2
+	AttachedSharing EndpointState = 3
+	Detached        EndpointState = 4
+	Degraded        EndpointState = 5
+	Destroyed       EndpointState = 6
+)
+
+func (es EndpointState) String() string {
+	return [...]string{"Uninitialized", "Created", "Attached", "AttachedSharing", "Detached", "Degraded", "Destroyed"}[es]
+}
+
 // HNSEndpoint represents a network endpoint in HNS
 type HNSEndpoint struct {
 	Id                 string            `json:"ID,omitempty"`
@@ -17,19 +41,25 @@ type HNSEndpoint struct {
 	Policies           []json.RawMessage `json:",omitempty"`
 	MacAddress         string            `json:",omitempty"`
 	IPAddress          net.IP            `json:",omitempty"`
+	IPv6Address        net.IP            `json:",omitempty"`
 	DNSSuffix          string            `json:",omitempty"`
 	DNSServerList      string            `json:",omitempty"`
+	DNSDomain          string            `json:",omitempty"`
 	GatewayAddress     string            `json:",omitempty"`
+	GatewayAddressV6   string            `json:",omitempty"`
 	EnableInternalDNS  bool              `json:",omitempty"`
 	DisableICC         bool              `json:",omitempty"`
 	PrefixLength       uint8             `json:",omitempty"`
+	IPv6PrefixLength   uint8             `json:",omitempty"`
 	IsRemoteEndpoint   bool              `json:",omitempty"`
 	EnableLowMetric    bool              `json:",omitempty"`
 	Namespace          *Namespace        `json:",omitempty"`
 	EncapOverhead      uint16            `json:",omitempty"`
+	SharedContainers   []string          `json:",omitempty"`
+	State              EndpointState     `json:",omitempty"`
 }
 
-//SystemType represents the type of the system on which actions are done
+// SystemType represents the type of the system on which actions are done
 type SystemType string
 
 // SystemType const
@@ -54,6 +84,18 @@ type EndpointResquestResponse struct {
 	Error   string
 }
 
+// EndpointStats is the object that has stats for a given endpoint
+type EndpointStats struct {
+	BytesReceived          uint64 `json:"BytesReceived"`
+	BytesSent              uint64 `json:"BytesSent"`
+	DroppedPacketsIncoming uint64 `json:"DroppedPacketsIncoming"`
+	DroppedPacketsOutgoing uint64 `json:"DroppedPacketsOutgoing"`
+	EndpointID             string `json:"EndpointId"`
+	InstanceID             string `json:"InstanceId"`
+	PacketsReceived        uint64 `json:"PacketsReceived"`
+	PacketsSent            uint64 `json:"PacketsSent"`
+}
+
 // HNSEndpointRequest makes a HNS call to modify/query a network endpoint
 func HNSEndpointRequest(method, path, request string) (*HNSEndpoint, error) {
 	endpoint := &HNSEndpoint{}
@@ -76,9 +118,25 @@ func HNSListEndpointRequest() ([]HNSEndpoint, error) {
 	return endpoint, nil
 }
 
+// hnsEndpointStatsRequest makes a HNS call to query the stats for a given endpoint ID
+func hnsEndpointStatsRequest(id string) (*EndpointStats, error) {
+	var stats EndpointStats
+	err := hnsCall("GET", "/endpointstats/"+id, "", &stats)
+	if err != nil {
+		return nil, err
+	}
+
+	return &stats, nil
+}
+
 // GetHNSEndpointByID get the Endpoint by ID
 func GetHNSEndpointByID(endpointID string) (*HNSEndpoint, error) {
 	return HNSEndpointRequest("GET", endpointID, "")
+}
+
+// GetHNSEndpointStats get the stats for a n Endpoint by ID
+func GetHNSEndpointStats(endpointID string) (*EndpointStats, error) {
+	return hnsEndpointStatsRequest(endpointID)
 }
 
 // GetHNSEndpointByName gets the endpoint filtered by Name
@@ -113,7 +171,6 @@ func (endpoint *HNSEndpoint) IsAttached(vID string) (bool, error) {
 	}
 
 	return false, nil
-
 }
 
 // Create Endpoint by sending EndpointRequest to HNS. TODO: Create a separate HNS interface to place all these methods
@@ -155,6 +212,27 @@ func (endpoint *HNSEndpoint) Update() (*HNSEndpoint, error) {
 // ApplyACLPolicy applies a set of ACL Policies on the Endpoint
 func (endpoint *HNSEndpoint) ApplyACLPolicy(policies ...*ACLPolicy) error {
 	operation := "ApplyACLPolicy"
+	title := "hcsshim::HNSEndpoint::" + operation
+	logrus.Debugf(title+" id=%s", endpoint.Id)
+
+	for _, policy := range policies {
+		if policy == nil {
+			continue
+		}
+		jsonString, err := json.Marshal(policy)
+		if err != nil {
+			return err
+		}
+		endpoint.Policies = append(endpoint.Policies, jsonString)
+	}
+
+	_, err := endpoint.Update()
+	return err
+}
+
+// ApplyProxyPolicy applies a set of Proxy Policies on the Endpoint
+func (endpoint *HNSEndpoint) ApplyProxyPolicy(policies ...*ProxyPolicy) error {
+	operation := "ApplyProxyPolicy"
 	title := "hcsshim::HNSEndpoint::" + operation
 	logrus.Debugf(title+" id=%s", endpoint.Id)
 
@@ -227,7 +305,6 @@ func (endpoint *HNSEndpoint) HostAttach(compartmentID uint16) error {
 		return err
 	}
 	return hnsCall("POST", "/endpoints/"+endpoint.Id+"/attach", string(jsonString), &response)
-
 }
 
 // HostDetach detaches a nic on the host

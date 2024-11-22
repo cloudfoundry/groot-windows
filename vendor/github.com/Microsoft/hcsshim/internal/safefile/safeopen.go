@@ -1,3 +1,5 @@
+//go:build windows
+
 package safefile
 
 import (
@@ -11,70 +13,9 @@ import (
 	"unsafe"
 
 	"github.com/Microsoft/hcsshim/internal/longpath"
+	"github.com/Microsoft/hcsshim/internal/winapi"
 
 	winio "github.com/Microsoft/go-winio"
-)
-
-//go:generate go run $GOROOT\src\syscall\mksyscall_windows.go -output zsyscall_windows.go safeopen.go
-
-//sys ntCreateFile(handle *uintptr, accessMask uint32, oa *objectAttributes, iosb *ioStatusBlock, allocationSize *uint64, fileAttributes uint32, shareAccess uint32, createDisposition uint32, createOptions uint32, eaBuffer *byte, eaLength uint32) (status uint32) = ntdll.NtCreateFile
-//sys ntSetInformationFile(handle uintptr, iosb *ioStatusBlock, information uintptr, length uint32, class uint32) (status uint32) = ntdll.NtSetInformationFile
-//sys rtlNtStatusToDosError(status uint32) (winerr error) = ntdll.RtlNtStatusToDosErrorNoTeb
-//sys localAlloc(flags uint32, size int) (ptr uintptr) = kernel32.LocalAlloc
-//sys localFree(ptr uintptr) = kernel32.LocalFree
-
-type ioStatusBlock struct {
-	Status, Information uintptr
-}
-
-type objectAttributes struct {
-	Length             uintptr
-	RootDirectory      uintptr
-	ObjectName         uintptr
-	Attributes         uintptr
-	SecurityDescriptor uintptr
-	SecurityQoS        uintptr
-}
-
-type unicodeString struct {
-	Length        uint16
-	MaximumLength uint16
-	Buffer        uintptr
-}
-
-type fileLinkInformation struct {
-	ReplaceIfExists bool
-	RootDirectory   uintptr
-	FileNameLength  uint32
-	FileName        [1]uint16
-}
-
-type fileDispositionInformationEx struct {
-	Flags uintptr
-}
-
-const (
-	_FileLinkInformation          = 11
-	_FileDispositionInformationEx = 64
-
-	FILE_READ_ATTRIBUTES  = 0x0080
-	FILE_WRITE_ATTRIBUTES = 0x0100
-	DELETE                = 0x10000
-
-	FILE_OPEN   = 1
-	FILE_CREATE = 2
-
-	FILE_DIRECTORY_FILE          = 0x00000001
-	FILE_SYNCHRONOUS_IO_NONALERT = 0x00000020
-	FILE_DELETE_ON_CLOSE         = 0x00001000
-	FILE_OPEN_FOR_BACKUP_INTENT  = 0x00004000
-	FILE_OPEN_REPARSE_POINT      = 0x00200000
-
-	FILE_DISPOSITION_DELETE = 0x00000001
-
-	_OBJ_DONT_REPARSE = 0x1000
-
-	_STATUS_REPARSE_POINT_ENCOUNTERED = 0xC000050B
 )
 
 func OpenRoot(path string) (*os.File, error) {
@@ -85,16 +26,24 @@ func OpenRoot(path string) (*os.File, error) {
 	return winio.OpenForBackup(longpath, syscall.GENERIC_READ, syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE, syscall.OPEN_EXISTING)
 }
 
-func ntRelativePath(path string) ([]uint16, error) {
+func cleanGoStringRelativePath(path string) (string, error) {
 	path = filepath.Clean(path)
 	if strings.Contains(path, ":") {
 		// Since alternate data streams must follow the file they
 		// are attached to, finding one here (out of order) is invalid.
-		return nil, errors.New("path contains invalid character `:`")
+		return "", errors.New("path contains invalid character `:`")
 	}
 	fspath := filepath.FromSlash(path)
 	if len(fspath) > 0 && fspath[0] == '\\' {
-		return nil, errors.New("expected relative path")
+		return "", errors.New("expected relative path")
+	}
+	return fspath, nil
+}
+
+func ntRelativePath(path string) ([]uint16, error) {
+	fspath, err := cleanGoStringRelativePath(path)
+	if err != nil {
+		return nil, err
 	}
 
 	path16 := utf16.Encode(([]rune)(fspath))
@@ -110,11 +59,11 @@ func ntRelativePath(path string) ([]uint16, error) {
 func openRelativeInternal(path string, root *os.File, accessMask uint32, shareFlags uint32, createDisposition uint32, flags uint32) (*os.File, error) {
 	var (
 		h    uintptr
-		iosb ioStatusBlock
-		oa   objectAttributes
+		iosb winapi.IOStatusBlock
+		oa   winapi.ObjectAttributes
 	)
 
-	path16, err := ntRelativePath(path)
+	cleanRelativePath, err := cleanGoStringRelativePath(path)
 	if err != nil {
 		return nil, err
 	}
@@ -123,20 +72,16 @@ func openRelativeInternal(path string, root *os.File, accessMask uint32, shareFl
 		return nil, errors.New("missing root directory")
 	}
 
-	upathBuffer := localAlloc(0, int(unsafe.Sizeof(unicodeString{}))+len(path16)*2)
-	defer localFree(upathBuffer)
-
-	upath := (*unicodeString)(unsafe.Pointer(upathBuffer))
-	upath.Length = uint16(len(path16) * 2)
-	upath.MaximumLength = upath.Length
-	upath.Buffer = upathBuffer + unsafe.Sizeof(*upath)
-	copy((*[32768]uint16)(unsafe.Pointer(upath.Buffer))[:], path16)
+	pathUnicode, err := winapi.NewUnicodeString(cleanRelativePath)
+	if err != nil {
+		return nil, err
+	}
 
 	oa.Length = unsafe.Sizeof(oa)
-	oa.ObjectName = upathBuffer
+	oa.ObjectName = pathUnicode
 	oa.RootDirectory = uintptr(root.Fd())
-	oa.Attributes = _OBJ_DONT_REPARSE
-	status := ntCreateFile(
+	oa.Attributes = winapi.OBJ_DONT_REPARSE
+	status := winapi.NtCreateFile(
 		&h,
 		accessMask|syscall.SYNCHRONIZE,
 		&oa,
@@ -145,12 +90,12 @@ func openRelativeInternal(path string, root *os.File, accessMask uint32, shareFl
 		0,
 		shareFlags,
 		createDisposition,
-		FILE_OPEN_FOR_BACKUP_INTENT|FILE_SYNCHRONOUS_IO_NONALERT|flags,
+		winapi.FILE_OPEN_FOR_BACKUP_INTENT|winapi.FILE_SYNCHRONOUS_IO_NONALERT|flags,
 		nil,
 		0,
 	)
 	if status != 0 {
-		return nil, rtlNtStatusToDosError(status)
+		return nil, winapi.RtlNtStatusToDosError(status)
 	}
 
 	fullPath, err := longpath.LongAbs(filepath.Join(root.Name(), path))
@@ -182,7 +127,7 @@ func LinkRelative(oldname string, oldroot *os.File, newname string, newroot *os.
 		oldroot,
 		syscall.FILE_WRITE_ATTRIBUTES,
 		syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE,
-		FILE_OPEN,
+		winapi.FILE_OPEN,
 		0,
 	)
 	if err != nil {
@@ -199,8 +144,8 @@ func LinkRelative(oldname string, oldroot *os.File, newname string, newroot *os.
 			newroot,
 			syscall.GENERIC_READ,
 			syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE,
-			FILE_OPEN,
-			FILE_DIRECTORY_FILE)
+			winapi.FILE_OPEN,
+			winapi.FILE_DIRECTORY_FILE)
 		if err != nil {
 			return &os.LinkError{Op: "link", Old: oldf.Name(), New: filepath.Join(newroot.Name(), newname), Err: err}
 		}
@@ -211,9 +156,8 @@ func LinkRelative(oldname string, oldroot *os.File, newname string, newroot *os.
 			return err
 		}
 		if (fi.FileAttributes & syscall.FILE_ATTRIBUTE_REPARSE_POINT) != 0 {
-			return &os.LinkError{Op: "link", Old: oldf.Name(), New: filepath.Join(newroot.Name(), newname), Err: rtlNtStatusToDosError(_STATUS_REPARSE_POINT_ENCOUNTERED)}
+			return &os.LinkError{Op: "link", Old: oldf.Name(), New: filepath.Join(newroot.Name(), newname), Err: winapi.RtlNtStatusToDosError(winapi.STATUS_REPARSE_POINT_ENCOUNTERED)}
 		}
-
 	} else {
 		parent = newroot
 	}
@@ -227,24 +171,25 @@ func LinkRelative(oldname string, oldroot *os.File, newname string, newroot *os.
 		return err
 	}
 
-	size := int(unsafe.Offsetof(fileLinkInformation{}.FileName)) + len(newbase16)*2
-	linkinfoBuffer := localAlloc(0, size)
-	defer localFree(linkinfoBuffer)
-	linkinfo := (*fileLinkInformation)(unsafe.Pointer(linkinfoBuffer))
+	size := int(unsafe.Offsetof(winapi.FileLinkInformation{}.FileName)) + len(newbase16)*2
+	linkinfoBuffer := winapi.LocalAlloc(0, size)
+	defer winapi.LocalFree(linkinfoBuffer)
+
+	linkinfo := (*winapi.FileLinkInformation)(unsafe.Pointer(linkinfoBuffer))
 	linkinfo.RootDirectory = parent.Fd()
 	linkinfo.FileNameLength = uint32(len(newbase16) * 2)
-	copy((*[32768]uint16)(unsafe.Pointer(&linkinfo.FileName[0]))[:], newbase16)
+	copy(winapi.Uint16BufferToSlice(&linkinfo.FileName[0], len(newbase16)), newbase16)
 
-	var iosb ioStatusBlock
-	status := ntSetInformationFile(
+	var iosb winapi.IOStatusBlock
+	status := winapi.NtSetInformationFile(
 		oldf.Fd(),
 		&iosb,
 		linkinfoBuffer,
 		uint32(size),
-		_FileLinkInformation,
+		winapi.FileLinkInformationClass,
 	)
 	if status != 0 {
-		return &os.LinkError{Op: "link", Old: oldf.Name(), New: filepath.Join(parent.Name(), newbase), Err: rtlNtStatusToDosError(status)}
+		return &os.LinkError{Op: "link", Old: oldf.Name(), New: filepath.Join(parent.Name(), newbase), Err: winapi.RtlNtStatusToDosError(status)}
 	}
 
 	return nil
@@ -252,17 +197,17 @@ func LinkRelative(oldname string, oldroot *os.File, newname string, newroot *os.
 
 // deleteOnClose marks a file to be deleted when the handle is closed.
 func deleteOnClose(f *os.File) error {
-	disposition := fileDispositionInformationEx{Flags: FILE_DISPOSITION_DELETE}
-	var iosb ioStatusBlock
-	status := ntSetInformationFile(
+	disposition := winapi.FileDispositionInformationEx{Flags: winapi.FILE_DISPOSITION_DELETE}
+	var iosb winapi.IOStatusBlock
+	status := winapi.NtSetInformationFile(
 		f.Fd(),
 		&iosb,
 		uintptr(unsafe.Pointer(&disposition)),
 		uint32(unsafe.Sizeof(disposition)),
-		_FileDispositionInformationEx,
+		winapi.FileDispositionInformationExClass,
 	)
 	if status != 0 {
-		return rtlNtStatusToDosError(status)
+		return winapi.RtlNtStatusToDosError(status)
 	}
 	return nil
 }
@@ -291,16 +236,16 @@ func RemoveRelative(path string, root *os.File) error {
 	f, err := openRelativeInternal(
 		path,
 		root,
-		FILE_READ_ATTRIBUTES|FILE_WRITE_ATTRIBUTES|DELETE,
+		winapi.FILE_READ_ATTRIBUTES|winapi.FILE_WRITE_ATTRIBUTES|winapi.DELETE,
 		syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE,
-		FILE_OPEN,
-		FILE_OPEN_REPARSE_POINT)
+		winapi.FILE_OPEN,
+		winapi.FILE_OPEN_REPARSE_POINT)
 	if err == nil {
 		defer f.Close()
 		err = deleteOnClose(f)
-		if err == syscall.ERROR_ACCESS_DENIED {
+		if err == syscall.ERROR_ACCESS_DENIED { //nolint:errorlint
 			// Maybe the file is marked readonly. Clear the bit and retry.
-			clearReadOnly(f)
+			_ = clearReadOnly(f)
 			err = deleteOnClose(f)
 		}
 	}
@@ -331,7 +276,7 @@ func RemoveAllRelative(path string, root *os.File) error {
 	}
 
 	// It is necessary to use os.Open as Readdirnames does not work with
-	// OpenRelative. This is safe because the above lstatrelative fails
+	// OpenRelative. This is safe because the above LstatRelative fails
 	// if the target is outside the root, and we know this is not a
 	// symlink from the above FILE_ATTRIBUTE_REPARSE_POINT check.
 	fd, err := os.Open(filepath.Join(root.Name(), path))
@@ -348,12 +293,12 @@ func RemoveAllRelative(path string, root *os.File) error {
 	for {
 		names, err1 := fd.Readdirnames(100)
 		for _, name := range names {
-			err1 := RemoveAllRelative(path+string(os.PathSeparator)+name, root)
-			if err == nil {
-				err = err1
+			if err2 := RemoveAllRelative(path+string(os.PathSeparator)+name, root); err == nil {
+				err = err2
 			}
 		}
 		if err1 == io.EOF {
+			// Readdirnames has no more files to return
 			break
 		}
 		// If Readdirnames returned an error, use it.
@@ -385,8 +330,8 @@ func MkdirRelative(path string, root *os.File) error {
 		root,
 		0,
 		syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE,
-		FILE_CREATE,
-		FILE_DIRECTORY_FILE)
+		winapi.FILE_CREATE,
+		winapi.FILE_DIRECTORY_FILE)
 	if err == nil {
 		f.Close()
 	} else {
@@ -395,16 +340,43 @@ func MkdirRelative(path string, root *os.File) error {
 	return err
 }
 
+// MkdirAllRelative creates each directory in the path relative to a root, failing if
+// any existing intermediate path components are reparse points.
+func MkdirAllRelative(path string, root *os.File) error {
+	pathParts := strings.Split(filepath.Clean(path), (string)(filepath.Separator))
+	for index := range pathParts {
+		partialPath := filepath.Join(pathParts[0 : index+1]...)
+		stat, err := LstatRelative(partialPath, root)
+
+		if err != nil {
+			if os.IsNotExist(err) {
+				if err := MkdirRelative(partialPath, root); err != nil {
+					return err
+				}
+				continue
+			}
+			return err
+		}
+
+		if !stat.IsDir() {
+			fullPath := filepath.Join(root.Name(), partialPath)
+			return &os.PathError{Op: "mkdir", Path: fullPath, Err: syscall.ENOTDIR}
+		}
+	}
+
+	return nil
+}
+
 // LstatRelative performs a stat operation on a file relative to a root, failing
 // if any intermediate path components are reparse points.
 func LstatRelative(path string, root *os.File) (os.FileInfo, error) {
 	f, err := openRelativeInternal(
 		path,
 		root,
-		FILE_READ_ATTRIBUTES,
+		winapi.FILE_READ_ATTRIBUTES,
 		syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE,
-		FILE_OPEN,
-		FILE_OPEN_REPARSE_POINT)
+		winapi.FILE_OPEN,
+		winapi.FILE_OPEN_REPARSE_POINT)
 	if err != nil {
 		return nil, &os.PathError{Op: "stat", Path: filepath.Join(root.Name(), path), Err: err}
 	}
@@ -421,7 +393,7 @@ func EnsureNotReparsePointRelative(path string, root *os.File) error {
 		root,
 		0,
 		syscall.FILE_SHARE_READ|syscall.FILE_SHARE_WRITE|syscall.FILE_SHARE_DELETE,
-		FILE_OPEN,
+		winapi.FILE_OPEN,
 		0)
 	if err != nil {
 		return err
