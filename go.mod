@@ -2,8 +2,6 @@ module code.cloudfoundry.org/groot-windows
 
 go 1.22.7
 
-toolchain go1.23.3
-
 require (
 	code.cloudfoundry.org/filelock v0.19.0
 	code.cloudfoundry.org/groot v0.33.0
