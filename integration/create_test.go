@@ -244,9 +244,9 @@ var _ = Describe("Create", func() {
 		var baseImageSizeBytes, diskLimitSizeBytes, remainingQuota int
 
 		BeforeEach(func() {
-			imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
+			imageURI = pathToOCIUdockRI(filepath.Join(ociImagesDir, "regularfile"))
 			//NOTE: this is for 1809 version of container image
-			baseImageSizeBytes = 357381547
+			baseImageSizeBytes = 357566305
 			diskLimitSizeBytes = baseImageSizeBytes + 50*1024*1024
 			remainingQuota = diskLimitSizeBytes - baseImageSizeBytes
 		})
@@ -261,7 +261,7 @@ var _ = Describe("Create", func() {
 				It("counts the base image size gainst the limit", func() {
 					output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 					Expect(err).NotTo(HaveOccurred(), string(output))
-					Expect(string(output)).To(MatchRegexp(`Limit:\s*50.01 MB \(Hard\)`))
+					Expect(string(output)).To(MatchRegexp(`Limit:\s*49.83 MB \(Hard\)`))
 				})
 
 				It("doesn't allow files larger than remaining quota to be created", func() {
