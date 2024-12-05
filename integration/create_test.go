@@ -261,7 +261,7 @@ var _ = Describe("Create", func() {
 				It("counts the base image size gainst the limit", func() {
 					output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 					Expect(err).NotTo(HaveOccurred(), string(output))
-					Expect(string(output)).To(MatchRegexp(`Limit:\s*49.83 MB \(Hard\)`))
+					Expect(string(output)).To(MatchRegexp(`Limit:\s*50.01 MB \(Hard\)`))
 				})
 
 				It("doesn't allow files larger than remaining quota to be created", func() {
@@ -292,7 +292,7 @@ var _ = Describe("Create", func() {
 				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 				Expect(err).NotTo(HaveOccurred(), string(output))
 				//NOTE: this is for 1809 version of container image
-				Expect(string(output)).To(MatchRegexp(`Limit:\s*390.84 MB \(Hard\)`))
+				Expect(string(output)).To(MatchRegexp(`Limit:\s*391.01 MB \(Hard\)`))
 			})
 
 			It("doesn't allow files larger than remaining quota to be created", func() {
