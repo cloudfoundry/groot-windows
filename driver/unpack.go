@@ -25,12 +25,15 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 		return 0, &EmptyDriverStoreError{}
 	}
 
+	logger.Debug("building-driver-info")
 	di := hcsshim.DriverInfo{HomeDir: d.LayerStore(), Flavour: 1}
+	logger.Debug("checking-if-layer-exists")
 	exists, err := d.hcsClient.LayerExists(di, layerID)
 	if err != nil {
 		return 0, err
 	}
 
+	logger.Debug("elevating-privileges")
 	if err := d.privilegeElevator.EnableProcessPrivileges([]string{winio.SeBackupPrivilege, winio.SeRestorePrivilege}); err != nil {
 		return 0, err
 	}

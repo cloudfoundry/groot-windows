@@ -5,6 +5,8 @@
 package wclayer
 
 import (
+	"fmt"
+	"os"
 	"syscall"
 	"unsafe"
 
@@ -394,12 +396,16 @@ func _grantVmAccess(vmid *uint16, filepath *uint16) (hr error) {
 }
 
 func importLayer(info *driverInfo, id string, path string, descriptors []WC_LAYER_DESCRIPTOR) (hr error) {
+	fmt.Fprintf(os.Stderr, "MEOW: calling importLayer()\n")
+	defer fmt.Fprintf(os.Stderr, "MEOW: DONE calling importLayer()\n")
 	var _p0 *uint16
+	fmt.Fprintf(os.Stderr, "MEOW: utf16ptrfromstring(%s)\n", id)
 	_p0, hr = syscall.UTF16PtrFromString(id)
 	if hr != nil {
 		return
 	}
 	var _p1 *uint16
+	fmt.Fprintf(os.Stderr, "MEOW: utf16ptrfromstring(%s)\n", path)
 	_p1, hr = syscall.UTF16PtrFromString(path)
 	if hr != nil {
 		return
@@ -408,21 +414,29 @@ func importLayer(info *driverInfo, id string, path string, descriptors []WC_LAYE
 }
 
 func _importLayer(info *driverInfo, id *uint16, path *uint16, descriptors []WC_LAYER_DESCRIPTOR) (hr error) {
+	fmt.Fprintf(os.Stderr, "MEOW: calling _importLayer()\n")
+	defer fmt.Fprintf(os.Stderr, "MEOW: DONE calling _importLayer()\n")
+
+	fmt.Fprintf(os.Stderr, "MEOW: procImportLayer.Find()\n")
 	hr = procImportLayer.Find()
 	if hr != nil {
 		return
 	}
 	var _p2 *WC_LAYER_DESCRIPTOR
 	if len(descriptors) > 0 {
+		fmt.Fprintf(os.Stderr, "MEOW: descriptors has nonzero length\n")
 		_p2 = &descriptors[0]
 	}
+	fmt.Fprintf(os.Stderr, "MEOW: syscallN\n")
 	r0, _, _ := syscall.SyscallN(procImportLayer.Addr(), uintptr(unsafe.Pointer(info)), uintptr(unsafe.Pointer(id)), uintptr(unsafe.Pointer(path)), uintptr(unsafe.Pointer(_p2)), uintptr(len(descriptors)))
+	fmt.Fprintf(os.Stderr, "MEOW: r0: %d\n", int32(r0))
 	if int32(r0) < 0 {
 		if r0&0x1fff0000 == 0x00070000 {
 			r0 &= 0xffff
 		}
 		hr = syscall.Errno(r0)
 	}
+	fmt.Fprintf(os.Stderr, "MEOW: hr: %s\n", hr)
 	return
 }
 

@@ -121,7 +121,7 @@ func (p *ImagePuller) buildLayer(logger lager.Logger, layerInfo LayerInfo, paren
 				return nil, errors.Wrapf(err, "opening stream for blob `%s`", layerInfo.BlobID)
 			}
 
-			logger.Debug("got-stream-for-blob", lager.Data{"size": blobSize})
+			logger.Debug("created-stream-for-blob", lager.Data{"size": blobSize})
 			return stream, nil
 		},
 	}
