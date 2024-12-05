@@ -7,7 +7,7 @@ toolchain go1.23.3
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.20.0
+	code.cloudfoundry.org/filelock v0.21.0
 	code.cloudfoundry.org/groot v0.36.0
 	code.cloudfoundry.org/hydrator v0.31.0
 	code.cloudfoundry.org/lager/v3 v3.17.0
@@ -18,7 +18,7 @@ require (
 	github.com/opencontainers/image-spec v1.1.0
 	github.com/opencontainers/runtime-spec v1.2.0
 	github.com/urfave/cli v1.22.16
-	golang.org/x/sys v0.27.0
+	golang.org/x/sys v0.28.0
 )
 
 require (
@@ -51,10 +51,10 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f // indirect
-	golang.org/x/net v0.31.0 // indirect
-	golang.org/x/text v0.20.0 // indirect
-	golang.org/x/tools v0.27.0 // indirect
+	golang.org/x/exp v0.0.0-20241204233417-43b7b7cde48d // indirect
+	golang.org/x/net v0.32.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/tools v0.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
