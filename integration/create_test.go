@@ -244,7 +244,7 @@ var _ = Describe("Create", func() {
 		var baseImageSizeBytes, diskLimitSizeBytes, remainingQuota int
 
 		BeforeEach(func() {
-			imageURI = pathToOCIUdockRI(filepath.Join(ociImagesDir, "regularfile"))
+			imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
 			//NOTE: this is for 1809 version of container image
 			baseImageSizeBytes = 357566305
 			diskLimitSizeBytes = baseImageSizeBytes + 50*1024*1024
