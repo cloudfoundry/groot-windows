@@ -8,9 +8,9 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.22.0
-	code.cloudfoundry.org/groot v0.37.0
+	code.cloudfoundry.org/groot v0.38.0
 	code.cloudfoundry.org/hydrator v0.32.0
-	code.cloudfoundry.org/lager/v3 v3.18.0
+	code.cloudfoundry.org/lager/v3 v3.19.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.9
 	github.com/onsi/ginkgo/v2 v2.22.0
@@ -26,9 +26,9 @@ require (
 	github.com/containerd/cgroups v1.1.0 // indirect
 	github.com/containers/image/v5 v5.33.0 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
-	github.com/containers/ocicrypt v1.2.0 // indirect
+	github.com/containers/ocicrypt v1.2.1 // indirect
 	github.com/containers/storage v1.56.0 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v27.4.0+incompatible // indirect
@@ -51,7 +51,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20241210194714-1829a127f884 // indirect
+	golang.org/x/exp v0.0.0-20241215155358-4a5509556b9e // indirect
 	golang.org/x/net v0.32.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/tools v0.28.0 // indirect
