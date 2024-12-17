@@ -17,7 +17,7 @@ type TarStreamer interface {
 	SetReader(io.Reader)
 	Next() (*tar.Header, error)
 	FileInfoFromHeader(*tar.Header) (string, int64, *winio.FileBasicInfo, error)
-	WriteBackupStreamFromTarFile(io.Writer, *tar.Header) (*tar.Header, error)
+	WriteBackupStreamFromTarFile(io.Writer, *tar.Header, string) (*tar.Header, error)
 }
 
 //go:generate counterfeiter -o fakes/hcs_client.go --fake-name HCSClient . HCSClient
