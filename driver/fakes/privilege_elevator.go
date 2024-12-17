@@ -8,17 +8,6 @@ import (
 )
 
 type PrivilegeElevator struct {
-	EnableProcessPrivilegesStub        func([]string) error
-	enableProcessPrivilegesMutex       sync.RWMutex
-	enableProcessPrivilegesArgsForCall []struct {
-		arg1 []string
-	}
-	enableProcessPrivilegesReturns struct {
-		result1 error
-	}
-	enableProcessPrivilegesReturnsOnCall map[int]struct {
-		result1 error
-	}
 	DisableProcessPrivilegesStub        func([]string) error
 	disableProcessPrivilegesMutex       sync.RWMutex
 	disableProcessPrivilegesArgsForCall []struct {
@@ -30,61 +19,19 @@ type PrivilegeElevator struct {
 	disableProcessPrivilegesReturnsOnCall map[int]struct {
 		result1 error
 	}
+	EnableProcessPrivilegesStub        func([]string) error
+	enableProcessPrivilegesMutex       sync.RWMutex
+	enableProcessPrivilegesArgsForCall []struct {
+		arg1 []string
+	}
+	enableProcessPrivilegesReturns struct {
+		result1 error
+	}
+	enableProcessPrivilegesReturnsOnCall map[int]struct {
+		result1 error
+	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
-}
-
-func (fake *PrivilegeElevator) EnableProcessPrivileges(arg1 []string) error {
-	var arg1Copy []string
-	if arg1 != nil {
-		arg1Copy = make([]string, len(arg1))
-		copy(arg1Copy, arg1)
-	}
-	fake.enableProcessPrivilegesMutex.Lock()
-	ret, specificReturn := fake.enableProcessPrivilegesReturnsOnCall[len(fake.enableProcessPrivilegesArgsForCall)]
-	fake.enableProcessPrivilegesArgsForCall = append(fake.enableProcessPrivilegesArgsForCall, struct {
-		arg1 []string
-	}{arg1Copy})
-	fake.recordInvocation("EnableProcessPrivileges", []interface{}{arg1Copy})
-	fake.enableProcessPrivilegesMutex.Unlock()
-	if fake.EnableProcessPrivilegesStub != nil {
-		return fake.EnableProcessPrivilegesStub(arg1)
-	}
-	if specificReturn {
-		return ret.result1
-	}
-	return fake.enableProcessPrivilegesReturns.result1
-}
-
-func (fake *PrivilegeElevator) EnableProcessPrivilegesCallCount() int {
-	fake.enableProcessPrivilegesMutex.RLock()
-	defer fake.enableProcessPrivilegesMutex.RUnlock()
-	return len(fake.enableProcessPrivilegesArgsForCall)
-}
-
-func (fake *PrivilegeElevator) EnableProcessPrivilegesArgsForCall(i int) []string {
-	fake.enableProcessPrivilegesMutex.RLock()
-	defer fake.enableProcessPrivilegesMutex.RUnlock()
-	return fake.enableProcessPrivilegesArgsForCall[i].arg1
-}
-
-func (fake *PrivilegeElevator) EnableProcessPrivilegesReturns(result1 error) {
-	fake.EnableProcessPrivilegesStub = nil
-	fake.enableProcessPrivilegesReturns = struct {
-		result1 error
-	}{result1}
-}
-
-func (fake *PrivilegeElevator) EnableProcessPrivilegesReturnsOnCall(i int, result1 error) {
-	fake.EnableProcessPrivilegesStub = nil
-	if fake.enableProcessPrivilegesReturnsOnCall == nil {
-		fake.enableProcessPrivilegesReturnsOnCall = make(map[int]struct {
-			result1 error
-		})
-	}
-	fake.enableProcessPrivilegesReturnsOnCall[i] = struct {
-		result1 error
-	}{result1}
 }
 
 func (fake *PrivilegeElevator) DisableProcessPrivileges(arg1 []string) error {
@@ -98,15 +45,17 @@ func (fake *PrivilegeElevator) DisableProcessPrivileges(arg1 []string) error {
 	fake.disableProcessPrivilegesArgsForCall = append(fake.disableProcessPrivilegesArgsForCall, struct {
 		arg1 []string
 	}{arg1Copy})
+	stub := fake.DisableProcessPrivilegesStub
+	fakeReturns := fake.disableProcessPrivilegesReturns
 	fake.recordInvocation("DisableProcessPrivileges", []interface{}{arg1Copy})
 	fake.disableProcessPrivilegesMutex.Unlock()
-	if fake.DisableProcessPrivilegesStub != nil {
-		return fake.DisableProcessPrivilegesStub(arg1)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	return fake.disableProcessPrivilegesReturns.result1
+	return fakeReturns.result1
 }
 
 func (fake *PrivilegeElevator) DisableProcessPrivilegesCallCount() int {
@@ -115,13 +64,22 @@ func (fake *PrivilegeElevator) DisableProcessPrivilegesCallCount() int {
 	return len(fake.disableProcessPrivilegesArgsForCall)
 }
 
+func (fake *PrivilegeElevator) DisableProcessPrivilegesCalls(stub func([]string) error) {
+	fake.disableProcessPrivilegesMutex.Lock()
+	defer fake.disableProcessPrivilegesMutex.Unlock()
+	fake.DisableProcessPrivilegesStub = stub
+}
+
 func (fake *PrivilegeElevator) DisableProcessPrivilegesArgsForCall(i int) []string {
 	fake.disableProcessPrivilegesMutex.RLock()
 	defer fake.disableProcessPrivilegesMutex.RUnlock()
-	return fake.disableProcessPrivilegesArgsForCall[i].arg1
+	argsForCall := fake.disableProcessPrivilegesArgsForCall[i]
+	return argsForCall.arg1
 }
 
 func (fake *PrivilegeElevator) DisableProcessPrivilegesReturns(result1 error) {
+	fake.disableProcessPrivilegesMutex.Lock()
+	defer fake.disableProcessPrivilegesMutex.Unlock()
 	fake.DisableProcessPrivilegesStub = nil
 	fake.disableProcessPrivilegesReturns = struct {
 		result1 error
@@ -129,6 +87,8 @@ func (fake *PrivilegeElevator) DisableProcessPrivilegesReturns(result1 error) {
 }
 
 func (fake *PrivilegeElevator) DisableProcessPrivilegesReturnsOnCall(i int, result1 error) {
+	fake.disableProcessPrivilegesMutex.Lock()
+	defer fake.disableProcessPrivilegesMutex.Unlock()
 	fake.DisableProcessPrivilegesStub = nil
 	if fake.disableProcessPrivilegesReturnsOnCall == nil {
 		fake.disableProcessPrivilegesReturnsOnCall = make(map[int]struct {
@@ -140,13 +100,79 @@ func (fake *PrivilegeElevator) DisableProcessPrivilegesReturnsOnCall(i int, resu
 	}{result1}
 }
 
+func (fake *PrivilegeElevator) EnableProcessPrivileges(arg1 []string) error {
+	var arg1Copy []string
+	if arg1 != nil {
+		arg1Copy = make([]string, len(arg1))
+		copy(arg1Copy, arg1)
+	}
+	fake.enableProcessPrivilegesMutex.Lock()
+	ret, specificReturn := fake.enableProcessPrivilegesReturnsOnCall[len(fake.enableProcessPrivilegesArgsForCall)]
+	fake.enableProcessPrivilegesArgsForCall = append(fake.enableProcessPrivilegesArgsForCall, struct {
+		arg1 []string
+	}{arg1Copy})
+	stub := fake.EnableProcessPrivilegesStub
+	fakeReturns := fake.enableProcessPrivilegesReturns
+	fake.recordInvocation("EnableProcessPrivileges", []interface{}{arg1Copy})
+	fake.enableProcessPrivilegesMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
+}
+
+func (fake *PrivilegeElevator) EnableProcessPrivilegesCallCount() int {
+	fake.enableProcessPrivilegesMutex.RLock()
+	defer fake.enableProcessPrivilegesMutex.RUnlock()
+	return len(fake.enableProcessPrivilegesArgsForCall)
+}
+
+func (fake *PrivilegeElevator) EnableProcessPrivilegesCalls(stub func([]string) error) {
+	fake.enableProcessPrivilegesMutex.Lock()
+	defer fake.enableProcessPrivilegesMutex.Unlock()
+	fake.EnableProcessPrivilegesStub = stub
+}
+
+func (fake *PrivilegeElevator) EnableProcessPrivilegesArgsForCall(i int) []string {
+	fake.enableProcessPrivilegesMutex.RLock()
+	defer fake.enableProcessPrivilegesMutex.RUnlock()
+	argsForCall := fake.enableProcessPrivilegesArgsForCall[i]
+	return argsForCall.arg1
+}
+
+func (fake *PrivilegeElevator) EnableProcessPrivilegesReturns(result1 error) {
+	fake.enableProcessPrivilegesMutex.Lock()
+	defer fake.enableProcessPrivilegesMutex.Unlock()
+	fake.EnableProcessPrivilegesStub = nil
+	fake.enableProcessPrivilegesReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *PrivilegeElevator) EnableProcessPrivilegesReturnsOnCall(i int, result1 error) {
+	fake.enableProcessPrivilegesMutex.Lock()
+	defer fake.enableProcessPrivilegesMutex.Unlock()
+	fake.EnableProcessPrivilegesStub = nil
+	if fake.enableProcessPrivilegesReturnsOnCall == nil {
+		fake.enableProcessPrivilegesReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.enableProcessPrivilegesReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
 func (fake *PrivilegeElevator) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.enableProcessPrivilegesMutex.RLock()
-	defer fake.enableProcessPrivilegesMutex.RUnlock()
 	fake.disableProcessPrivilegesMutex.RLock()
 	defer fake.disableProcessPrivilegesMutex.RUnlock()
+	fake.enableProcessPrivilegesMutex.RLock()
+	defer fake.enableProcessPrivilegesMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

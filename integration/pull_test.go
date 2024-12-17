@@ -1,6 +1,7 @@
 package integration_test
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -96,6 +97,24 @@ var _ = Describe("Pull", func() {
 			for _, chainID := range chainIDs {
 				Expect(filepath.Join(layerStore, chainID, "Files")).To(BeADirectory())
 			}
+
+			foundMutatedFiles := map[string]bool{
+				"bcd.bak":      false,
+				"bcd.log.bak":  false,
+				"bcd.log1.bak": false,
+				"bcd.log2.bak": false,
+			}
+			for _, chainId := range chainIDs {
+				for key := range foundMutatedFiles {
+					if _, err := os.Stat(filepath.Join(layerStore, chainId, key)); err == nil {
+						foundMutatedFiles[key] = true
+					}
+				}
+			}
+			for key, value := range foundMutatedFiles {
+				Expect(value).To(BeTrue(), fmt.Sprintf("Expect %s to be true, but it was false", key))
+			}
+
 		})
 
 		Context("when the image has already been unpacked", func() {
