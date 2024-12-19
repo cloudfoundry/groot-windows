@@ -108,7 +108,7 @@ func (d *Driver) Unpack(logger lager.Logger, layerID string, parentIDs []string,
 				return 0, err
 			}
 
-			hdr, nextFileErr = d.tarStreamer.WriteBackupStreamFromTarFile(layerWriter, hdr)
+			hdr, nextFileErr = d.tarStreamer.WriteBackupStreamFromTarFile(layerWriter, hdr, filepath.Join(d.LayerStore(), layerID))
 			totalSize += size
 		}
 

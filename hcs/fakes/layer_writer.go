@@ -5,15 +5,15 @@ import (
 	"sync"
 
 	"code.cloudfoundry.org/groot-windows/hcs"
-	"github.com/Microsoft/go-winio"
+	winio "github.com/Microsoft/go-winio"
 )
 
 type LayerWriter struct {
-	AddStub        func(name string, fileInfo *winio.FileBasicInfo) error
+	AddStub        func(string, *winio.FileBasicInfo) error
 	addMutex       sync.RWMutex
 	addArgsForCall []struct {
-		name     string
-		fileInfo *winio.FileBasicInfo
+		arg1 string
+		arg2 *winio.FileBasicInfo
 	}
 	addReturns struct {
 		result1 error
@@ -21,11 +21,11 @@ type LayerWriter struct {
 	addReturnsOnCall map[int]struct {
 		result1 error
 	}
-	AddLinkStub        func(name string, target string) error
+	AddLinkStub        func(string, string) error
 	addLinkMutex       sync.RWMutex
 	addLinkArgsForCall []struct {
-		name   string
-		target string
+		arg1 string
+		arg2 string
 	}
 	addLinkReturns struct {
 		result1 error
@@ -33,10 +33,20 @@ type LayerWriter struct {
 	addLinkReturnsOnCall map[int]struct {
 		result1 error
 	}
-	RemoveStub        func(name string) error
+	CloseStub        func() error
+	closeMutex       sync.RWMutex
+	closeArgsForCall []struct {
+	}
+	closeReturns struct {
+		result1 error
+	}
+	closeReturnsOnCall map[int]struct {
+		result1 error
+	}
+	RemoveStub        func(string) error
 	removeMutex       sync.RWMutex
 	removeArgsForCall []struct {
-		name string
+		arg1 string
 	}
 	removeReturns struct {
 		result1 error
@@ -44,10 +54,10 @@ type LayerWriter struct {
 	removeReturnsOnCall map[int]struct {
 		result1 error
 	}
-	WriteStub        func(b []byte) (int, error)
+	WriteStub        func([]byte) (int, error)
 	writeMutex       sync.RWMutex
 	writeArgsForCall []struct {
-		b []byte
+		arg1 []byte
 	}
 	writeReturns struct {
 		result1 int
@@ -57,35 +67,28 @@ type LayerWriter struct {
 		result1 int
 		result2 error
 	}
-	CloseStub        func() error
-	closeMutex       sync.RWMutex
-	closeArgsForCall []struct{}
-	closeReturns     struct {
-		result1 error
-	}
-	closeReturnsOnCall map[int]struct {
-		result1 error
-	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *LayerWriter) Add(name string, fileInfo *winio.FileBasicInfo) error {
+func (fake *LayerWriter) Add(arg1 string, arg2 *winio.FileBasicInfo) error {
 	fake.addMutex.Lock()
 	ret, specificReturn := fake.addReturnsOnCall[len(fake.addArgsForCall)]
 	fake.addArgsForCall = append(fake.addArgsForCall, struct {
-		name     string
-		fileInfo *winio.FileBasicInfo
-	}{name, fileInfo})
-	fake.recordInvocation("Add", []interface{}{name, fileInfo})
+		arg1 string
+		arg2 *winio.FileBasicInfo
+	}{arg1, arg2})
+	stub := fake.AddStub
+	fakeReturns := fake.addReturns
+	fake.recordInvocation("Add", []interface{}{arg1, arg2})
 	fake.addMutex.Unlock()
-	if fake.AddStub != nil {
-		return fake.AddStub(name, fileInfo)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	return fake.addReturns.result1
+	return fakeReturns.result1
 }
 
 func (fake *LayerWriter) AddCallCount() int {
@@ -94,13 +97,22 @@ func (fake *LayerWriter) AddCallCount() int {
 	return len(fake.addArgsForCall)
 }
 
+func (fake *LayerWriter) AddCalls(stub func(string, *winio.FileBasicInfo) error) {
+	fake.addMutex.Lock()
+	defer fake.addMutex.Unlock()
+	fake.AddStub = stub
+}
+
 func (fake *LayerWriter) AddArgsForCall(i int) (string, *winio.FileBasicInfo) {
 	fake.addMutex.RLock()
 	defer fake.addMutex.RUnlock()
-	return fake.addArgsForCall[i].name, fake.addArgsForCall[i].fileInfo
+	argsForCall := fake.addArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *LayerWriter) AddReturns(result1 error) {
+	fake.addMutex.Lock()
+	defer fake.addMutex.Unlock()
 	fake.AddStub = nil
 	fake.addReturns = struct {
 		result1 error
@@ -108,6 +120,8 @@ func (fake *LayerWriter) AddReturns(result1 error) {
 }
 
 func (fake *LayerWriter) AddReturnsOnCall(i int, result1 error) {
+	fake.addMutex.Lock()
+	defer fake.addMutex.Unlock()
 	fake.AddStub = nil
 	if fake.addReturnsOnCall == nil {
 		fake.addReturnsOnCall = make(map[int]struct {
@@ -119,22 +133,24 @@ func (fake *LayerWriter) AddReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *LayerWriter) AddLink(name string, target string) error {
+func (fake *LayerWriter) AddLink(arg1 string, arg2 string) error {
 	fake.addLinkMutex.Lock()
 	ret, specificReturn := fake.addLinkReturnsOnCall[len(fake.addLinkArgsForCall)]
 	fake.addLinkArgsForCall = append(fake.addLinkArgsForCall, struct {
-		name   string
-		target string
-	}{name, target})
-	fake.recordInvocation("AddLink", []interface{}{name, target})
+		arg1 string
+		arg2 string
+	}{arg1, arg2})
+	stub := fake.AddLinkStub
+	fakeReturns := fake.addLinkReturns
+	fake.recordInvocation("AddLink", []interface{}{arg1, arg2})
 	fake.addLinkMutex.Unlock()
-	if fake.AddLinkStub != nil {
-		return fake.AddLinkStub(name, target)
+	if stub != nil {
+		return stub(arg1, arg2)
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	return fake.addLinkReturns.result1
+	return fakeReturns.result1
 }
 
 func (fake *LayerWriter) AddLinkCallCount() int {
@@ -143,13 +159,22 @@ func (fake *LayerWriter) AddLinkCallCount() int {
 	return len(fake.addLinkArgsForCall)
 }
 
+func (fake *LayerWriter) AddLinkCalls(stub func(string, string) error) {
+	fake.addLinkMutex.Lock()
+	defer fake.addLinkMutex.Unlock()
+	fake.AddLinkStub = stub
+}
+
 func (fake *LayerWriter) AddLinkArgsForCall(i int) (string, string) {
 	fake.addLinkMutex.RLock()
 	defer fake.addLinkMutex.RUnlock()
-	return fake.addLinkArgsForCall[i].name, fake.addLinkArgsForCall[i].target
+	argsForCall := fake.addLinkArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
 }
 
 func (fake *LayerWriter) AddLinkReturns(result1 error) {
+	fake.addLinkMutex.Lock()
+	defer fake.addLinkMutex.Unlock()
 	fake.AddLinkStub = nil
 	fake.addLinkReturns = struct {
 		result1 error
@@ -157,6 +182,8 @@ func (fake *LayerWriter) AddLinkReturns(result1 error) {
 }
 
 func (fake *LayerWriter) AddLinkReturnsOnCall(i int, result1 error) {
+	fake.addLinkMutex.Lock()
+	defer fake.addLinkMutex.Unlock()
 	fake.AddLinkStub = nil
 	if fake.addLinkReturnsOnCall == nil {
 		fake.addLinkReturnsOnCall = make(map[int]struct {
@@ -168,21 +195,76 @@ func (fake *LayerWriter) AddLinkReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *LayerWriter) Remove(name string) error {
-	fake.removeMutex.Lock()
-	ret, specificReturn := fake.removeReturnsOnCall[len(fake.removeArgsForCall)]
-	fake.removeArgsForCall = append(fake.removeArgsForCall, struct {
-		name string
-	}{name})
-	fake.recordInvocation("Remove", []interface{}{name})
-	fake.removeMutex.Unlock()
-	if fake.RemoveStub != nil {
-		return fake.RemoveStub(name)
+func (fake *LayerWriter) Close() error {
+	fake.closeMutex.Lock()
+	ret, specificReturn := fake.closeReturnsOnCall[len(fake.closeArgsForCall)]
+	fake.closeArgsForCall = append(fake.closeArgsForCall, struct {
+	}{})
+	stub := fake.CloseStub
+	fakeReturns := fake.closeReturns
+	fake.recordInvocation("Close", []interface{}{})
+	fake.closeMutex.Unlock()
+	if stub != nil {
+		return stub()
 	}
 	if specificReturn {
 		return ret.result1
 	}
-	return fake.removeReturns.result1
+	return fakeReturns.result1
+}
+
+func (fake *LayerWriter) CloseCallCount() int {
+	fake.closeMutex.RLock()
+	defer fake.closeMutex.RUnlock()
+	return len(fake.closeArgsForCall)
+}
+
+func (fake *LayerWriter) CloseCalls(stub func() error) {
+	fake.closeMutex.Lock()
+	defer fake.closeMutex.Unlock()
+	fake.CloseStub = stub
+}
+
+func (fake *LayerWriter) CloseReturns(result1 error) {
+	fake.closeMutex.Lock()
+	defer fake.closeMutex.Unlock()
+	fake.CloseStub = nil
+	fake.closeReturns = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *LayerWriter) CloseReturnsOnCall(i int, result1 error) {
+	fake.closeMutex.Lock()
+	defer fake.closeMutex.Unlock()
+	fake.CloseStub = nil
+	if fake.closeReturnsOnCall == nil {
+		fake.closeReturnsOnCall = make(map[int]struct {
+			result1 error
+		})
+	}
+	fake.closeReturnsOnCall[i] = struct {
+		result1 error
+	}{result1}
+}
+
+func (fake *LayerWriter) Remove(arg1 string) error {
+	fake.removeMutex.Lock()
+	ret, specificReturn := fake.removeReturnsOnCall[len(fake.removeArgsForCall)]
+	fake.removeArgsForCall = append(fake.removeArgsForCall, struct {
+		arg1 string
+	}{arg1})
+	stub := fake.RemoveStub
+	fakeReturns := fake.removeReturns
+	fake.recordInvocation("Remove", []interface{}{arg1})
+	fake.removeMutex.Unlock()
+	if stub != nil {
+		return stub(arg1)
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	return fakeReturns.result1
 }
 
 func (fake *LayerWriter) RemoveCallCount() int {
@@ -191,13 +273,22 @@ func (fake *LayerWriter) RemoveCallCount() int {
 	return len(fake.removeArgsForCall)
 }
 
+func (fake *LayerWriter) RemoveCalls(stub func(string) error) {
+	fake.removeMutex.Lock()
+	defer fake.removeMutex.Unlock()
+	fake.RemoveStub = stub
+}
+
 func (fake *LayerWriter) RemoveArgsForCall(i int) string {
 	fake.removeMutex.RLock()
 	defer fake.removeMutex.RUnlock()
-	return fake.removeArgsForCall[i].name
+	argsForCall := fake.removeArgsForCall[i]
+	return argsForCall.arg1
 }
 
 func (fake *LayerWriter) RemoveReturns(result1 error) {
+	fake.removeMutex.Lock()
+	defer fake.removeMutex.Unlock()
 	fake.RemoveStub = nil
 	fake.removeReturns = struct {
 		result1 error
@@ -205,6 +296,8 @@ func (fake *LayerWriter) RemoveReturns(result1 error) {
 }
 
 func (fake *LayerWriter) RemoveReturnsOnCall(i int, result1 error) {
+	fake.removeMutex.Lock()
+	defer fake.removeMutex.Unlock()
 	fake.RemoveStub = nil
 	if fake.removeReturnsOnCall == nil {
 		fake.removeReturnsOnCall = make(map[int]struct {
@@ -216,26 +309,28 @@ func (fake *LayerWriter) RemoveReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *LayerWriter) Write(b []byte) (int, error) {
-	var bCopy []byte
-	if b != nil {
-		bCopy = make([]byte, len(b))
-		copy(bCopy, b)
+func (fake *LayerWriter) Write(arg1 []byte) (int, error) {
+	var arg1Copy []byte
+	if arg1 != nil {
+		arg1Copy = make([]byte, len(arg1))
+		copy(arg1Copy, arg1)
 	}
 	fake.writeMutex.Lock()
 	ret, specificReturn := fake.writeReturnsOnCall[len(fake.writeArgsForCall)]
 	fake.writeArgsForCall = append(fake.writeArgsForCall, struct {
-		b []byte
-	}{bCopy})
-	fake.recordInvocation("Write", []interface{}{bCopy})
+		arg1 []byte
+	}{arg1Copy})
+	stub := fake.WriteStub
+	fakeReturns := fake.writeReturns
+	fake.recordInvocation("Write", []interface{}{arg1Copy})
 	fake.writeMutex.Unlock()
-	if fake.WriteStub != nil {
-		return fake.WriteStub(b)
+	if stub != nil {
+		return stub(arg1)
 	}
 	if specificReturn {
 		return ret.result1, ret.result2
 	}
-	return fake.writeReturns.result1, fake.writeReturns.result2
+	return fakeReturns.result1, fakeReturns.result2
 }
 
 func (fake *LayerWriter) WriteCallCount() int {
@@ -244,13 +339,22 @@ func (fake *LayerWriter) WriteCallCount() int {
 	return len(fake.writeArgsForCall)
 }
 
+func (fake *LayerWriter) WriteCalls(stub func([]byte) (int, error)) {
+	fake.writeMutex.Lock()
+	defer fake.writeMutex.Unlock()
+	fake.WriteStub = stub
+}
+
 func (fake *LayerWriter) WriteArgsForCall(i int) []byte {
 	fake.writeMutex.RLock()
 	defer fake.writeMutex.RUnlock()
-	return fake.writeArgsForCall[i].b
+	argsForCall := fake.writeArgsForCall[i]
+	return argsForCall.arg1
 }
 
 func (fake *LayerWriter) WriteReturns(result1 int, result2 error) {
+	fake.writeMutex.Lock()
+	defer fake.writeMutex.Unlock()
 	fake.WriteStub = nil
 	fake.writeReturns = struct {
 		result1 int
@@ -259,6 +363,8 @@ func (fake *LayerWriter) WriteReturns(result1 int, result2 error) {
 }
 
 func (fake *LayerWriter) WriteReturnsOnCall(i int, result1 int, result2 error) {
+	fake.writeMutex.Lock()
+	defer fake.writeMutex.Unlock()
 	fake.WriteStub = nil
 	if fake.writeReturnsOnCall == nil {
 		fake.writeReturnsOnCall = make(map[int]struct {
@@ -272,46 +378,6 @@ func (fake *LayerWriter) WriteReturnsOnCall(i int, result1 int, result2 error) {
 	}{result1, result2}
 }
 
-func (fake *LayerWriter) Close() error {
-	fake.closeMutex.Lock()
-	ret, specificReturn := fake.closeReturnsOnCall[len(fake.closeArgsForCall)]
-	fake.closeArgsForCall = append(fake.closeArgsForCall, struct{}{})
-	fake.recordInvocation("Close", []interface{}{})
-	fake.closeMutex.Unlock()
-	if fake.CloseStub != nil {
-		return fake.CloseStub()
-	}
-	if specificReturn {
-		return ret.result1
-	}
-	return fake.closeReturns.result1
-}
-
-func (fake *LayerWriter) CloseCallCount() int {
-	fake.closeMutex.RLock()
-	defer fake.closeMutex.RUnlock()
-	return len(fake.closeArgsForCall)
-}
-
-func (fake *LayerWriter) CloseReturns(result1 error) {
-	fake.CloseStub = nil
-	fake.closeReturns = struct {
-		result1 error
-	}{result1}
-}
-
-func (fake *LayerWriter) CloseReturnsOnCall(i int, result1 error) {
-	fake.CloseStub = nil
-	if fake.closeReturnsOnCall == nil {
-		fake.closeReturnsOnCall = make(map[int]struct {
-			result1 error
-		})
-	}
-	fake.closeReturnsOnCall[i] = struct {
-		result1 error
-	}{result1}
-}
-
 func (fake *LayerWriter) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
@@ -319,12 +385,12 @@ func (fake *LayerWriter) Invocations() map[string][][]interface{} {
 	defer fake.addMutex.RUnlock()
 	fake.addLinkMutex.RLock()
 	defer fake.addLinkMutex.RUnlock()
+	fake.closeMutex.RLock()
+	defer fake.closeMutex.RUnlock()
 	fake.removeMutex.RLock()
 	defer fake.removeMutex.RUnlock()
 	fake.writeMutex.RLock()
 	defer fake.writeMutex.RUnlock()
-	fake.closeMutex.RLock()
-	defer fake.closeMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

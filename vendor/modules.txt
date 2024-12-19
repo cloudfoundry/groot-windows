@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.21.0
+# code.cloudfoundry.org/filelock v0.22.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.36.0
+# code.cloudfoundry.org/groot v0.39.0
 ## explicit; go 1.22.6
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,14 +9,14 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.31.0
+# code.cloudfoundry.org/hydrator v0.33.0
 ## explicit; go 1.22.7
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
 code.cloudfoundry.org/hydrator/imagefetcher
 code.cloudfoundry.org/hydrator/oci-directory
 code.cloudfoundry.org/hydrator/registry
-# code.cloudfoundry.org/lager/v3 v3.17.0
+# code.cloudfoundry.org/lager/v3 v3.19.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
@@ -120,8 +120,8 @@ github.com/containers/image/v5/version
 # github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01
 ## explicit
 github.com/containers/libtrust
-# github.com/containers/ocicrypt v1.2.0
-## explicit; go 1.21
+# github.com/containers/ocicrypt v1.2.1
+## explicit; go 1.22
 github.com/containers/ocicrypt/spec
 # github.com/containers/storage v1.56.0
 ## explicit; go 1.22.0
@@ -136,8 +136,8 @@ github.com/containers/storage/pkg/reexec
 github.com/containers/storage/pkg/regexp
 github.com/containers/storage/pkg/system
 github.com/containers/storage/pkg/unshare
-# github.com/cpuguy83/go-md2man/v2 v2.0.5
-## explicit; go 1.11
+# github.com/cpuguy83/go-md2man/v2 v2.0.6
+## explicit; go 1.12
 github.com/cpuguy83/go-md2man/v2/md2man
 # github.com/distribution/reference v0.6.0
 ## explicit; go 1.20
@@ -147,7 +147,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v27.3.1+incompatible
+# github.com/docker/docker v27.4.0+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.2
@@ -180,7 +180,7 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
-# github.com/google/pprof v0.0.0-20241203143554-1e3fdc7de467
+# github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad
 ## explicit; go 1.22
 github.com/google/pprof/profile
 # github.com/gorilla/mux v1.8.1
@@ -217,7 +217,7 @@ github.com/onsi/ginkgo/v2/internal/parallel_support
 github.com/onsi/ginkgo/v2/internal/testingtproxy
 github.com/onsi/ginkgo/v2/reporters
 github.com/onsi/ginkgo/v2/types
-# github.com/onsi/gomega v1.36.0
+# github.com/onsi/gomega v1.36.1
 ## explicit; go 1.22
 github.com/onsi/gomega
 github.com/onsi/gomega/format
@@ -265,7 +265,7 @@ go.opencensus.io/internal
 go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/tracestate
-# golang.org/x/exp v0.0.0-20241204233417-43b7b7cde48d
+# golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67
 ## explicit; go 1.22.0
 golang.org/x/exp/maps
 # golang.org/x/net v0.32.0

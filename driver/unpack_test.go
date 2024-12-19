@@ -275,12 +275,14 @@ var _ = Describe("Unpack", func() {
 			var (
 				tarHeader *tar.Header
 				fileInfo  *winio.FileBasicInfo
+				layerPath string
 			)
 
 			BeforeEach(func() {
 				tarHeader = &tar.Header{
 					Name: "regular/file/name",
 				}
+				layerPath = filepath.Join(d.LayerStore(), layerID)
 				tarStreamerFake.NextReturnsOnCall(0, tarHeader, nil)
 				fileInfo = &winio.FileBasicInfo{}
 				tarStreamerFake.FileInfoFromHeaderReturns("regular/file/name", 100, fileInfo, nil)
@@ -301,9 +303,10 @@ var _ = Describe("Unpack", func() {
 				Expect(actualFileInfo).To(Equal(fileInfo))
 
 				Expect(tarStreamerFake.WriteBackupStreamFromTarFileCallCount()).To(Equal(1))
-				actualWriter, actualTarHeader := tarStreamerFake.WriteBackupStreamFromTarFileArgsForCall(0)
+				actualWriter, actualTarHeader, actualLayerPath := tarStreamerFake.WriteBackupStreamFromTarFileArgsForCall(0)
 				Expect(actualWriter).To(Equal(layerWriterFake))
 				Expect(actualTarHeader).To(Equal(tarHeader))
+				Expect(actualLayerPath).To(Equal(layerPath))
 			})
 
 			It("returns the size of the layer", func() {
