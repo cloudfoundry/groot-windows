@@ -1,7 +1,7 @@
-# code.cloudfoundry.org/filelock v0.22.0
+# code.cloudfoundry.org/filelock v0.23.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.39.0
+# code.cloudfoundry.org/groot v0.41.0
 ## explicit; go 1.22.6
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
@@ -9,14 +9,14 @@ code.cloudfoundry.org/groot/fetcher/layerfetcher
 code.cloudfoundry.org/groot/fetcher/layerfetcher/source
 code.cloudfoundry.org/groot/imagepuller
 code.cloudfoundry.org/groot/imagepuller/ondemand
-# code.cloudfoundry.org/hydrator v0.33.0
+# code.cloudfoundry.org/hydrator v0.34.0
 ## explicit; go 1.22.7
 code.cloudfoundry.org/hydrator/compress
 code.cloudfoundry.org/hydrator/downloader
 code.cloudfoundry.org/hydrator/imagefetcher
 code.cloudfoundry.org/hydrator/oci-directory
 code.cloudfoundry.org/hydrator/registry
-# code.cloudfoundry.org/lager/v3 v3.19.0
+# code.cloudfoundry.org/lager/v3 v3.20.0
 ## explicit; go 1.22.0
 code.cloudfoundry.org/lager/v3
 code.cloudfoundry.org/lager/v3/internal/truncate
@@ -128,7 +128,7 @@ github.com/distribution/reference
 github.com/docker/distribution/registry/api/errcode
 github.com/docker/distribution/registry/api/v2
 github.com/docker/distribution/registry/client/auth/challenge
-# github.com/docker/docker v27.4.0+incompatible
+# github.com/docker/docker v27.4.1+incompatible
 ## explicit
 github.com/docker/docker/api/types/versions
 # github.com/docker/docker-credential-helpers v0.8.2
@@ -178,7 +178,7 @@ github.com/moby/sys/mountinfo
 # github.com/moby/sys/user v0.3.0
 ## explicit; go 1.17
 github.com/moby/sys/user
-# github.com/onsi/ginkgo/v2 v2.22.0
+# github.com/onsi/ginkgo/v2 v2.22.1
 ## explicit; go 1.22.0
 github.com/onsi/ginkgo/v2
 github.com/onsi/ginkgo/v2/config
@@ -200,8 +200,8 @@ github.com/onsi/ginkgo/v2/internal/parallel_support
 github.com/onsi/ginkgo/v2/internal/testingtproxy
 github.com/onsi/ginkgo/v2/reporters
 github.com/onsi/ginkgo/v2/types
-# github.com/onsi/gomega v1.36.1
-## explicit; go 1.22
+# github.com/onsi/gomega v1.36.2
+## explicit; go 1.22.0
 github.com/onsi/gomega
 github.com/onsi/gomega/format
 github.com/onsi/gomega/gbytes
@@ -251,9 +251,8 @@ go.opencensus.io/trace/tracestate
 # golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67
 ## explicit; go 1.22.0
 golang.org/x/exp/maps
-# golang.org/x/net v0.32.0
+# golang.org/x/net v0.33.0
 ## explicit; go 1.18
-golang.org/x/net/context
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
