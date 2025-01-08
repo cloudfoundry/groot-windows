@@ -5,10 +5,10 @@ go 1.22.7
 toolchain go1.23.3
 
 require (
-	code.cloudfoundry.org/filelock v0.24.0
+	code.cloudfoundry.org/filelock v0.25.0
 	code.cloudfoundry.org/groot v0.42.0
-	code.cloudfoundry.org/hydrator v0.35.0
-	code.cloudfoundry.org/lager/v3 v3.21.0
+	code.cloudfoundry.org/hydrator v0.36.0
+	code.cloudfoundry.org/lager/v3 v3.22.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.9
 	github.com/onsi/ginkgo/v2 v2.22.2
@@ -52,10 +52,9 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20250103183323-7d7fa50e5329 // indirect
-	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
+	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
-	golang.org/x/tools v0.28.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20241216192217-9240e9c98484 // indirect
 	google.golang.org/grpc v1.69.0 // indirect
 	google.golang.org/protobuf v1.36.0 // indirect
