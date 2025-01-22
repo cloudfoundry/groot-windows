@@ -1,16 +1,16 @@
 module code.cloudfoundry.org/groot-windows
 
-go 1.22.7
+go 1.23.0
 
-toolchain go1.23.3
+toolchain go1.23.4
 
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.25.0
-	code.cloudfoundry.org/groot v0.44.0
-	code.cloudfoundry.org/hydrator v0.37.0
-	code.cloudfoundry.org/lager/v3 v3.22.0
+	code.cloudfoundry.org/filelock v0.26.0
+	code.cloudfoundry.org/groot v0.46.0
+	code.cloudfoundry.org/hydrator v0.38.0
+	code.cloudfoundry.org/lager/v3 v3.23.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.9
 	github.com/onsi/ginkgo/v2 v2.22.2
@@ -24,7 +24,7 @@ require (
 require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/containerd/cgroups v1.1.0 // indirect
-	github.com/containers/image/v5 v5.33.0 // indirect
+	github.com/containers/image/v5 v5.33.1 // indirect
 	github.com/containers/libtrust v0.0.0-20230121012942-c1716e8a8d01 // indirect
 	github.com/containers/ocicrypt v1.2.1 // indirect
 	github.com/containers/storage v1.56.1 // indirect
@@ -40,8 +40,9 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad // indirect
+	github.com/google/pprof v0.0.0-20250121033306-997b0b79cac0 // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/moby/sys/capability v0.4.0 // indirect
 	github.com/moby/sys/mountinfo v0.7.2 // indirect
 	github.com/moby/sys/user v0.3.0 // indirect
