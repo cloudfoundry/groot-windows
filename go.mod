@@ -7,10 +7,10 @@ toolchain go1.23.4
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.26.0
-	code.cloudfoundry.org/groot v0.46.0
-	code.cloudfoundry.org/hydrator v0.38.0
-	code.cloudfoundry.org/lager/v3 v3.23.0
+	code.cloudfoundry.org/filelock v0.27.0
+	code.cloudfoundry.org/groot v0.47.0
+	code.cloudfoundry.org/hydrator v0.39.0
+	code.cloudfoundry.org/lager/v3 v3.24.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.12.9
 	github.com/onsi/ginkgo/v2 v2.22.2
@@ -31,7 +31,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v27.5.0+incompatible // indirect
+	github.com/docker/docker v27.5.1+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.8.2 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
@@ -40,7 +40,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/pprof v0.0.0-20250121033306-997b0b79cac0 // indirect
+	github.com/google/pprof v0.0.0-20250128161936-077ca0a936bf // indirect
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/moby/sys/capability v0.4.0 // indirect
@@ -52,7 +52,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/exp v0.0.0-20250106191152-7588d65b2ba8 // indirect
+	golang.org/x/exp v0.0.0-20250128182459-e0ece0dbea4c // indirect
 	golang.org/x/net v0.34.0 // indirect
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/tools v0.29.0 // indirect
