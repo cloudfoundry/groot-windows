@@ -3,10 +3,10 @@ code.cloudfoundry.org/archiver v0.26.0 h1:iB4nK6rhw1KOJpk/hID9xosexjCYoEEWW9DwW1
 code.cloudfoundry.org/archiver v0.26.0/go.mod h1:LPRtzMmTGwT+V19rUepSNTo5ynMImdisXOXniuBcnFM=
 code.cloudfoundry.org/filelock v0.28.0 h1:Kzx0lrMmQ8dBp60Le+GLAPUQTJmw1TA8x+p2ojeyKiY=
 code.cloudfoundry.org/filelock v0.28.0/go.mod h1:FZ4HA1AakbUeaPI6YEAb/Gnbx5fxZB9cun7SFrOHH5c=
-code.cloudfoundry.org/groot v0.47.0 h1:NU9u8XNhhsufzWR4wKmJrsAgVaLkQ9WLJ70uLVrXkjM=
-code.cloudfoundry.org/groot v0.47.0/go.mod h1:nljBNshNifrE+auYBa58JjQhxi66E9F4c9Xnamrz8RI=
-code.cloudfoundry.org/hydrator v0.41.0 h1:g4u4jYdTp/MwANySblOiHzGEfqs+r++sgVfqxWJaNoQ=
-code.cloudfoundry.org/hydrator v0.41.0/go.mod h1:G94QkbUuDlrTNOMEvY6M0L7B59Yp1/5s8k3xZiMEHDI=
+code.cloudfoundry.org/groot v0.48.0 h1:j5g8n7yG3M9jDP9ukTtzozbrGAPn2WAZ5rtd6Mbfys0=
+code.cloudfoundry.org/groot v0.48.0/go.mod h1:QbF1606bLfGGyqB5JyVT74KnfKJrS/i7EEGdwe4xdGY=
+code.cloudfoundry.org/hydrator v0.42.0 h1:dvzPb5FilaBhW14z5qHQd3Ac4eeUT6CDkJcHwCZaKqI=
+code.cloudfoundry.org/hydrator v0.42.0/go.mod h1:Fk45ztU8jT8+toJgM1Culy6oa4ALajCF7+dvJZwvfgU=
 code.cloudfoundry.org/lager/v3 v3.26.0 h1:lXaD3lArg/0wCoFhLwXE1JSMBGQgu1V7qpul0F9GmAQ=
 code.cloudfoundry.org/lager/v3 v3.26.0/go.mod h1:UA5tZ3ZHRsi7rH5k7FpqJI+jcd2fEBgfptXsZsYH69M=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
@@ -217,8 +217,8 @@ golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACk
 golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=
 golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
-golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac h1:l5+whBCLH3iH2ZNHYLbAe58bo7yrN4mVcnkHDYz5vvs=
-golang.org/x/exp v0.0.0-20250210185358-939b2ce775ac/go.mod h1:hH+7mtFmImwwcMvScyxUhjuVHR3HGaDPMn9rMSUUbxo=
+golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa h1:t2QcU6V556bFjYgu4L6C+6VrCPyJZ+eyRsABUPs1mz4=
+golang.org/x/exp v0.0.0-20250218142911-aa4b98e5adaa/go.mod h1:BHOTPb3L19zxehTsLoJXVaTktb06DFgmdW6Wb9s8jqk=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
 golang.org/x/lint v0.0.0-20190227174305-5b3e6a55c961/go.mod h1:wehouNa3lNwaWXcvxsM5YxQ5yQlVC4a0KAMCusXpPoU=
 golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3/go.mod h1:6SW0HCj/g11FgYtHlgUYUwCkIfeOF89ocIRzGO/8vkc=
