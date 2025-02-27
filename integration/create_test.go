@@ -36,6 +36,7 @@ var _ = Describe("Create", func() {
 		Expect(err).ToNot(HaveOccurred())
 
 		bundleID = randomBundleID()
+		setBaseImageBytes()
 	})
 
 	AfterEach(func() {
@@ -241,19 +242,20 @@ var _ = Describe("Create", func() {
 	})
 
 	Context("when provided a disk limit", func() {
-		var baseImageSizeBytes, diskLimitSizeBytes, remainingQuota int
+		var (
+			diskLimitSizeBytes,
+			remainingQuota int64
+		)
 
 		BeforeEach(func() {
 			imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
-			//NOTE: this is for 1809 version of container image
-			baseImageSizeBytes = 357566305
-			diskLimitSizeBytes = baseImageSizeBytes + 50*1024*1024
-			remainingQuota = diskLimitSizeBytes - baseImageSizeBytes
+			diskLimitSizeBytes = baseImageBytes + 50*1024*1024
+			remainingQuota = diskLimitSizeBytes - baseImageBytes
 		})
 
 		Context("--exclude-image-from-quota is not passed", func() {
 			BeforeEach(func() {
-				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes))
+				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.FormatInt(diskLimitSizeBytes, 10))
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 			})
 
@@ -266,14 +268,14 @@ var _ = Describe("Create", func() {
 
 				It("doesn't allow files larger than remaining quota to be created", func() {
 					largeFilePath := filepath.Join(volumeMountDir, "file.txt")
-					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+10*1024)).CombinedOutput()
+					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.FormatInt(remainingQuota+10*1024, 10)).CombinedOutput()
 					Expect(err).To(HaveOccurred(), string(o))
 					Expect(largeFilePath).ToNot(BeAnExistingFile())
 				})
 
 				It("allows files up to the remaining quota to be created", func() {
 					largeFilePath := filepath.Join(volumeMountDir, "file.txt")
-					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota)).CombinedOutput()
+					o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.FormatInt(remainingQuota, 10)).CombinedOutput()
 					Expect(err).NotTo(HaveOccurred(), string(o))
 					Expect(largeFilePath).To(BeAnExistingFile())
 				})
@@ -284,27 +286,27 @@ var _ = Describe("Create", func() {
 			BeforeEach(func() {
 				remainingQuota = diskLimitSizeBytes
 
-				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes), "--exclude-image-from-quota")
+				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.FormatInt(diskLimitSizeBytes, 10), "--exclude-image-from-quota")
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 			})
 
 			It("does not count the base image size against the limit", func() {
 				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 				Expect(err).NotTo(HaveOccurred(), string(output))
-				//NOTE: this is for 1809 version of container image
-				Expect(string(output)).To(MatchRegexp(`Limit:\s*391.01 MB \(Hard\)`))
+				winDiskImageMb := strconv.FormatInt(diskLimitSizeBytes/(1024*1024), 10)
+				Expect(string(output)).To(MatchRegexp(`Limit:\s*` + winDiskImageMb + `.*\(Hard\)`))
 			})
 
 			It("doesn't allow files larger than remaining quota to be created", func() {
 				largeFilePath := filepath.Join(volumeMountDir, "file.txt")
-				o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota+6*1024)).CombinedOutput()
+				o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.FormatInt(remainingQuota+6*1024, 10)).CombinedOutput()
 				Expect(err).To(HaveOccurred(), string(o))
 				Expect(largeFilePath).ToNot(BeAnExistingFile())
 			})
 
 			It("allows files up to the remaining quota to be created", func() {
 				largeFilePath := filepath.Join(volumeMountDir, "file.txt")
-				o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.Itoa(remainingQuota)).CombinedOutput()
+				o, err := exec.Command("fsutil", "file", "createnew", largeFilePath, strconv.FormatInt(remainingQuota, 10)).CombinedOutput()
 				Expect(err).NotTo(HaveOccurred(), string(o))
 				Expect(largeFilePath).To(BeAnExistingFile())
 			})
@@ -317,7 +319,7 @@ var _ = Describe("Create", func() {
 			})
 
 			It("does not set a limit", func() {
-				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes))
+				outputSpec := grootCreate(driverStore, imageURI, bundleID, "--disk-limit-size-bytes", strconv.FormatInt(diskLimitSizeBytes, 10))
 				mountVolume(outputSpec.Root.Path, volumeMountDir)
 
 				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
@@ -334,7 +336,7 @@ var _ = Describe("Create", func() {
 			It("errors", func() {
 				Skip("Something is wrong with the flag parser")
 
-				createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", "--disk-limit-size-bytes", strconv.Itoa(diskLimitSizeBytes), "--exclude-image-from-quota", imageURI, bundleID)
+				createCmd := exec.Command(grootBin, "--driver-store", driverStore, "create", "--disk-limit-size-bytes", strconv.FormatInt(diskLimitSizeBytes, 10), "--exclude-image-from-quota", imageURI, bundleID)
 				stdout, _, err := execute(createCmd)
 				Expect(err).To(HaveOccurred())
 				Expect(stdout.String()).To(ContainSubstring(fmt.Sprintf("invalid disk limit: %d", diskLimitSizeBytes)))
