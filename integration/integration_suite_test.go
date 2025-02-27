@@ -25,8 +25,9 @@ var (
 		"link",
 		"servercore",
 	}
-	ociImagesDir string
-	keepDir      bool
+	ociImagesDir   string
+	keepDir        bool
+	baseImageBytes int64
 )
 
 func TestGrootWindows(t *testing.T) {
@@ -34,6 +35,35 @@ func TestGrootWindows(t *testing.T) {
 	SetDefaultEventuallyTimeout(time.Minute)
 	SetDefaultEventuallyPollingInterval(time.Millisecond * 200)
 	RunSpecs(t, "GrootWindows Suite")
+}
+
+func setBaseImageBytes() {
+	if baseImageBytes != 0 {
+		return
+	}
+	// baseImageBytes should be set dynamically because we don't control the size of the base image from Microsoft
+	// Since the method for determining the image size is equivalent to creating it, just do that.
+	driverStore, err := os.MkdirTemp("", "base.stats.store")
+	Expect(err).ToNot(HaveOccurred())
+
+	volumeMountDir, err := os.MkdirTemp("", "base.mounted-volume")
+	Expect(err).ToNot(HaveOccurred())
+
+	imageURI := pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
+	//imageURI := "mcr.microsoft.com/nanoserver:1809"
+
+	bundleID := randomBundleID()
+
+	outputSpec := grootCreate(driverStore, imageURI, bundleID)
+	mountVolume(outputSpec.Root.Path, volumeMountDir)
+	volumeStats := grootStats(driverStore, bundleID)
+	baseImageBytes = volumeStats.DiskUsage.TotalBytesUsed
+
+	unmountVolume(volumeMountDir)
+	destroyVolumeStore(driverStore)
+	destroyLayerStore(driverStore)
+	Expect(os.RemoveAll(volumeMountDir)).To(Succeed())
+	Expect(os.RemoveAll(driverStore)).To(Succeed())
 }
 
 var _ = SynchronizedBeforeSuite(func() []byte {
@@ -55,6 +85,8 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 	Expect(err).NotTo(HaveOccurred(), string(o))
 
 	ociImagesDir, keepDir = os.LookupEnv("GROOT_WINDOWS_IMAGES")
+
+	//setBaseImageBytes()
 
 	if !keepDir {
 		ociImagesDir, err = os.MkdirTemp("", "groot-windows-test-images")
