@@ -13,8 +13,6 @@ import (
 
 var _ = Describe("Stats", func() {
 	const (
-		//NOTE: this is for 1809 version of container image
-		baseImageSizeBytes = 357566305
 		diskLimitSizeBytes = int64(500 * 1024 * 1024)
 		fileSize           = int64(30 * 1024 * 1024)
 	)
@@ -37,6 +35,8 @@ var _ = Describe("Stats", func() {
 		imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
 
 		bundleID = randomBundleID()
+
+		setBaseImageBytes()
 	})
 
 	AfterEach(func() {
@@ -55,7 +55,7 @@ var _ = Describe("Stats", func() {
 
 		It("reports the image stats", func() {
 			volumeStats := grootStats(driverStore, bundleID)
-			Expect(volumeStats.DiskUsage.TotalBytesUsed).To(BeNumerically("~", baseImageSizeBytes, 7*1024))
+			Expect(volumeStats.DiskUsage.TotalBytesUsed).To(BeNumerically("~", baseImageBytes, 7*1024))
 			Expect(volumeStats.DiskUsage.ExclusiveBytesUsed).To(BeNumerically("~", 0, 7*1024))
 		})
 
@@ -67,7 +67,7 @@ var _ = Describe("Stats", func() {
 
 			It("includes the file in disk usage", func() {
 				volumeStats := grootStats(driverStore, bundleID)
-				Expect(volumeStats.DiskUsage.TotalBytesUsed).To(BeNumerically("~", baseImageSizeBytes+fileSize, 7*1024))
+				Expect(volumeStats.DiskUsage.TotalBytesUsed).To(BeNumerically("~", baseImageBytes+fileSize, 7*1024))
 				Expect(volumeStats.DiskUsage.ExclusiveBytesUsed).To(BeNumerically("~", fileSize, 7*1024))
 			})
 		})
@@ -84,7 +84,7 @@ var _ = Describe("Stats", func() {
 
 		It("returns just the base image size", func() {
 			volumeStats := grootStats(driverStore, bundleID)
-			Expect(volumeStats.DiskUsage.TotalBytesUsed).To(BeNumerically("~", baseImageSizeBytes, 7*1024))
+			Expect(volumeStats.DiskUsage.TotalBytesUsed).To(BeNumerically("~", baseImageBytes, 7*1024))
 			Expect(volumeStats.DiskUsage.ExclusiveBytesUsed).To(BeNumerically("~", 0, 7*1024))
 		})
 	})
