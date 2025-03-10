@@ -50,7 +50,6 @@ func setBaseImageBytes() {
 	Expect(err).ToNot(HaveOccurred())
 
 	imageURI := pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
-	//imageURI := "mcr.microsoft.com/nanoserver:1809"
 
 	bundleID := randomBundleID()
 

@@ -249,8 +249,6 @@ var _ = Describe("Create", func() {
 
 		BeforeEach(func() {
 			imageURI = pathToOCIURI(filepath.Join(ociImagesDir, "regularfile"))
-			//NOTE: this is for 1809 version of container image
-			//baseImageSizeBytes = 357566305
 			diskLimitSizeBytes = baseImageBytes + 50*1024*1024
 			remainingQuota = diskLimitSizeBytes - baseImageBytes
 		})
@@ -295,7 +293,6 @@ var _ = Describe("Create", func() {
 			It("does not count the base image size against the limit", func() {
 				output, err := exec.Command("dirquota", "quota", "list", fmt.Sprintf("/Path:%s", volumeMountDir)).CombinedOutput()
 				Expect(err).NotTo(HaveOccurred(), string(output))
-				//NOTE: this is for 1809 version of container image
 				winDiskImageMb := strconv.FormatInt(diskLimitSizeBytes/(1024*1024), 10)
 				Expect(string(output)).To(MatchRegexp(`Limit:\s*` + winDiskImageMb + `.*\(Hard\)`))
 			})
