@@ -198,7 +198,7 @@ func Run(driver Driver, argv []string, driverFlags []cli.Flag, version string) {
 			return silentError(err)
 		}
 
-		logger, err := newLogger(conf.LogLevel, conf.LogFormat)
+		logger, err := newLogger(conf.LogLevel)
 		if err != nil {
 			return err
 		}
@@ -247,7 +247,7 @@ func shouldSkipImageQuotaValidation(excludeImageFromQuota bool, diskLimitSizeByt
 	return excludeImageFromQuota || diskLimitSizeBytes == 0
 }
 
-func newLogger(logLevelStr, logFormat string) (lager.Logger, error) {
+func newLogger(logLevelStr string) (lager.Logger, error) {
 	logLevels := map[string]lager.LogLevel{
 		"debug": lager.DEBUG,
 		"info":  lager.INFO,
@@ -260,15 +260,7 @@ func newLogger(logLevelStr, logFormat string) (lager.Logger, error) {
 		return nil, fmt.Errorf("invalid log level: %s", logLevelStr)
 	}
 
-	var sink lager.Sink
-	switch logFormat {
-	case "rfc3339":
-		sink = lager.NewPrettySink(os.Stderr, logLevel)
-	case "epoch":
-		sink = lager.NewWriterSink(os.Stderr, logLevel)
-	default:
-		return nil, fmt.Errorf("invalid log format: %s", logFormat)
-	}
+	sink := lager.NewPrettySink(os.Stderr, logLevel)
 
 	logger := lager.NewLogger("groot")
 	logger.RegisterSink(sink)

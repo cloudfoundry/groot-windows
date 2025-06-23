@@ -1,7 +1,7 @@
 # code.cloudfoundry.org/filelock v0.38.0
 ## explicit; go 1.23.0
 code.cloudfoundry.org/filelock
-# code.cloudfoundry.org/groot v0.63.0
+# code.cloudfoundry.org/groot v0.64.0
 ## explicit; go 1.23.3
 code.cloudfoundry.org/groot
 code.cloudfoundry.org/groot/fetcher/filefetcher
