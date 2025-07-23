@@ -7,14 +7,14 @@ toolchain go1.24.4
 replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
-	code.cloudfoundry.org/filelock v0.40.0
-	code.cloudfoundry.org/groot v0.68.0
-	code.cloudfoundry.org/hydrator v0.60.0
+	code.cloudfoundry.org/filelock v0.41.0
+	code.cloudfoundry.org/groot v0.69.0
+	code.cloudfoundry.org/hydrator v0.61.0
 	code.cloudfoundry.org/lager/v3 v3.41.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.13.0
 	github.com/onsi/ginkgo/v2 v2.23.4
-	github.com/onsi/gomega v1.37.0
+	github.com/onsi/gomega v1.38.0
 	github.com/opencontainers/image-spec v1.1.1
 	github.com/opencontainers/runtime-spec v1.2.1
 	github.com/urfave/cli v1.22.17
