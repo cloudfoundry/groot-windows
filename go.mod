@@ -8,9 +8,9 @@ replace github.com/Microsoft/hcsshim => github.com/Microsoft/hcsshim v0.8.7
 
 require (
 	code.cloudfoundry.org/filelock v0.41.0
-	code.cloudfoundry.org/groot v0.69.0
-	code.cloudfoundry.org/hydrator v0.61.0
-	code.cloudfoundry.org/lager/v3 v3.41.0
+	code.cloudfoundry.org/groot v0.70.0
+	code.cloudfoundry.org/hydrator v0.62.0
+	code.cloudfoundry.org/lager/v3 v3.42.0
 	github.com/Microsoft/go-winio v0.6.2
 	github.com/Microsoft/hcsshim v0.13.0
 	github.com/onsi/ginkgo/v2 v2.23.4
@@ -31,7 +31,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
-	github.com/docker/docker v28.3.2+incompatible // indirect
+	github.com/docker/docker v28.3.3+incompatible // indirect
 	github.com/docker/docker-credential-helpers v0.9.3 // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
