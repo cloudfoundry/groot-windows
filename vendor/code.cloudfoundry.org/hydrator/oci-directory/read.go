@@ -66,7 +66,7 @@ func (h *Handler) loadManifest(mDesc oci.Descriptor) (oci.Manifest, error) {
 	}
 
 	for _, layer := range m.Layers {
-		if layer.MediaType != oci.MediaTypeImageLayerGzip {
+		if layer.MediaType != oci.MediaTypeImageLayerGzip && layer.MediaType != oci.MediaTypeImageLayer {
 			return oci.Manifest{}, fmt.Errorf("invalid layer media type: %s", layer.MediaType)
 		}
 
